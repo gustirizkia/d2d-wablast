@@ -13,7 +13,7 @@
         <!-- Scripts -->
         @routes
         @viteReactRefresh
-        @vite(['resources/js/app.jsx?version=0-0-2', "resources/js/Pages/{$page['component']}.jsx?version=0-0-2"])
+        @vite(['resources/js/app.jsx?version=002', "resources/js/Pages/{$page['component']}.jsx?version=002"])
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
