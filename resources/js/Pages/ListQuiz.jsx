@@ -4,9 +4,6 @@ import { Head, Link, router } from "@inertiajs/react";
 import TopUser from "@/Components/TopUser";
 
 export default function ListQuiz({ data_target, count_soal, auth }) {
-    useEffect(() => {
-        console.log("auth", auth);
-    });
     return (
         <Layout>
             <Head title="Survey Saya" />

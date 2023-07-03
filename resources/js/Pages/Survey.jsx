@@ -1,26 +1,35 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../Layouts/User";
 import { Head, router, useForm } from "@inertiajs/react";
-import { Modal } from "antd";
+import { useEffect, useState } from "react";
+import { useGeolocated } from "react-geolocated";
 import Swal from "sweetalert2";
+import Layout from "../Layouts/User";
 
 export default function Survey({ data_soal, session }) {
     const { data, setData, post, processing, errors } = useForm({
         nama: null,
         alamat: null,
-        latitude: null,
-        longitude: null,
     });
+    const [Latitude, SetLatitude] = useState(null);
+    const [Longitude, Setlongitude] = useState(null);
+
+    const { coords, isGeolocationAvailable, isGeolocationEnabled } =
+        useGeolocated({
+            positionOptions: {
+                enableHighAccuracy: true,
+            },
+        });
+
+    useEffect(() => {
+        SetLatitude(coords?.latitude);
+        Setlongitude(coords?.longitude);
+        console.log("coords", coords);
+    }, [coords]);
 
     const [AllowLocation, SetAllowLocation] = useState(false);
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                // console.log("position latitude", position.coords.latitude);
-                // console.log("position longitude", position.coords.longitude);
-                setData("longitude", position.coords.longitude);
-                setData("latitude", position.coords.latitude);
                 SetAllowLocation(true);
             },
             (err) => {
@@ -34,9 +43,9 @@ export default function Survey({ data_soal, session }) {
         );
 
         navigator.permissions.query({ name: "geolocation" }).then((ress) => {
-            console.log("ress", ress);
             if (ress.state === "denied") {
                 // report(result.state);
+                SetAllowLocation(false);
             }
         });
     }, []);
@@ -53,7 +62,6 @@ export default function Survey({ data_soal, session }) {
     };
 
     const handleSubmit = () => {
-        console.log("data", data);
         if (!AllowLocation) {
             Swal.fire({
                 icon: "info",
@@ -66,29 +74,33 @@ export default function Survey({ data_soal, session }) {
                 title: "Data tidak lengkap",
             });
         } else {
-            post("inputDataTarget");
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    SetAllowLocation(true);
+                    console.log("data", data);
+                },
+                (err) => {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Kami membutuhkan lokasi anda",
+                        text: "Aktifkan di pojok atas kiri tanda seru",
+                    });
+                    SetAllowLocation(false);
+                }
+            );
+            let formData = data;
+            formData.latitude = Latitude;
+            formData.longitude = Longitude;
+            // post("inputDataTarget");
+            console.log("formData", formData);
+            router.post("/inputDataTarget", formData);
         }
     };
 
     return (
         <Layout>
             <Head title="Survey" />
-            <Modal
-                title="Info"
-                open={isModalOpen}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                footer={[
-                    <div
-                        className="bg-green-600 inline-block px-3 py-1 rounded-lg text-white"
-                        onClick={handleCancel}
-                    >
-                        Ok
-                    </div>,
-                ]}
-            >
-                <div className="text-base">Data tidak lengkap</div>
-            </Modal>
+
             <div className="min-h-screen  flex justify-center flex-col items-center px-3">
                 {session.success && (
                     <div className="bg-green-100 w-full rounded-lg px-2 text-sm mb-4">
