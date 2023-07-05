@@ -574,6 +574,16 @@
                                     <span class="nav-link-title"> User </span>
                                 </a>
                             </li>
+                            <li class="nav-item {{request()->is('admin/lokasi*') ? 'active' : ''}}">
+                                <a class="nav-link" href="{{route('admin.lokasi.index')}}">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block"
+                                        >
+                                        <i class="bi bi-globe-americas"></i>
+                                    </span>
+                                    <span class="nav-link-title"> Lokasi Survey </span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
