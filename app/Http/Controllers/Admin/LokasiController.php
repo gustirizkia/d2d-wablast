@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\DataTarget;
+use App\Models\PilihanGanda;
+use App\Models\Soal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LokasiController extends Controller
 {
@@ -17,8 +20,28 @@ class LokasiController extends Controller
                 ->join("users", "data_targets.user_survey_id", 'users.id')->get();
         $dataUser = DataTarget::orderBy('data_targets.id', 'desc')
                 ->join("users", "data_targets.user_survey_id", 'users.id')->limit(12)->get();
-        // dd($dataUser);
-        return view('pages.lokasi.lokasi', compact('data', 'dataUser'));
+
+
+        $pilihanTarget = DB::table("pilihan_targets")
+                            ->join("data_targets", 'pilihan_targets.data_target_id', 'data_targets.id')
+                            ->join("pilihan_gandas", 'pilihan_targets.pilihan_ganda_id', 'pilihan_gandas.id')
+                            ->select('latitude', "longitude", 'title', "nama", "pilihan_ganda_id", DB::raw("COUNT(*) as total"))
+                            ->groupBy("pilihan_ganda_id")
+                            ->orderBy("total", 'desc')
+                            ->get();
+        $soal = Soal::get();
+
+        return view('pages.lokasi.lokasi', compact('data', 'dataUser', "pilihanTarget", 'soal'));
+    }
+
+    public function detailSoal($soal_id)
+    {
+        $data = PilihanGanda::where("soal_id", $soal_id)
+                        ->with("pilihanTarget.dataTarget")
+                        ->withCount("pilihanTarget")
+                        ->get();
+
+        return response()->json($data);
     }
 
     /**

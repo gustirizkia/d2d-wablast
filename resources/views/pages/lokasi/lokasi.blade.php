@@ -8,13 +8,49 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
+
+     <style>
+        .icons{
+            height: 16px;
+            width: 16px;
+            background-color: rgb(239, 6, 57);
+            border-radius: 1000px;
+            border: 1px solid black;
+            display: block;
+        }
+     </style>
 @endpush
 
 @section('content')
     <div class="card">
         <div class="card-body">
-            <div class="">
-                <div id="mapid" style="width: 100%; height: 400px;"></div>
+
+            <div class="mt-5">
+                <div id="mapid2" style="width: 100%; height: 400px;"></div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+
+                    <div class="form-floating">
+                        <select class="form-select" id="soal" aria-label="Floating label select example" fdprocessedid="srkiig">
+                            <option >Pilih</option>
+                            @foreach ($soal as $item)
+                                <option value="{{$item->id}}">{{$item->title}}</option>
+                            @endforeach
+                        </select>
+                        <label for="soal">Pertanyaan</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                    <div class="form-floating">
+                        <select class="form-select" id="jawaban" aria-label="Floating label select example" fdprocessedid="srkiig">
+                            <option >Pilih</option>
+                        </select>
+                        <label for="jawaban">Jawaban</label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -70,26 +106,102 @@
     <script>
 
 
-        var locations = [
-            @foreach($data as $item)
-            ["{{$item->nama}}", {{$item->latitude}}, {{$item->longitude}}],
+
+        // pilihan
+
+        var pilihan = [
+            @foreach($pilihanTarget as $item)
+            ["{{$item->nama}}", {{$item->latitude}}, {{$item->longitude}}, "{{$item->title}}"],
             @endforeach
         ];
 
-        var mymap = L.map('mapid').setView([-6.2470928, 106.6501857], 12);
+        var mymap2 = L.map('mapid2').setView([-6.2470928, 106.6501857], 11);
+
+        for (var i = 0; i < pilihan.length; i++) {
+
+           marker = new L.marker([pilihan[i][1], pilihan[i][2]])
+            .bindPopup(pilihan[i][3])
+            .addTo(mymap2);
+        }
 
 
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
+        let layer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 100,
             zoomSnap: 5,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(mymap);
+        }).addTo(mymap2);
 
-        for (var i = 0; i < locations.length; i++) {
-        marker = new L.marker([locations[i][1], locations[i][2]])
-            .bindPopup(locations[i][0])
-            .addTo(mymap);
-        }
+
+        let itemPilihan = null;
+        $("#soal").on("change", function(){
+            let value = $(this).val();
+
+            $.ajax({
+                url : `/admin/detailSoal/${value}`,
+                type: "GET",
+                success: function(data)
+                {
+                    console.log('data', data)
+
+                    let tempData = data;
+
+                    itemPilihan = tempData;
+
+                    let tagOption = '<option>Pilih</option>';
+                    tempData.forEach(element => {
+
+                        tagOption += `<option value="${element.id}">${element.title}</option>`
+                    });
+
+                    $("#jawaban").html(tagOption);
+                },
+                error: function(err){
+                    console.log('err', err)
+                }
+            })
+        })
+
+
+        $("#jawaban").on("change", function(){
+            let value = $(this).val();
+
+
+
+            if(itemPilihan){
+                itemPilihan.forEach(element => {
+                    if(element.id === parseInt(value)){
+                        mymap2.remove();
+
+                        mymap2 = L.map('mapid2').setView([-6.2470928, 106.6501857], 11);
+                        element.pilihan_target.forEach(target => {
+                            var myIcon = L.divIcon({
+                                            className: 'custom-div-icon',
+                                            html: "<div style='background-color:#c30b82;' class='marker-pin'></div><span class='icons'></span>",
+                                            iconSize: [30, 42],
+                                            iconAnchor: [15, 42]
+                                        });
+
+
+                            let data_target = target.data_target;
+                            marker = new L.marker([data_target.latitude, data_target.longitude], {icon: myIcon})
+                                    // .bindPopup()
+                                    .addTo(mymap2);
+                        })
+
+                        let layer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                        maxZoom: 100,
+                                        zoomSnap: 5,
+                                        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                                    }).addTo(mymap2);
+                    }
+                });
+            }
+
+        })
+
+        // end pilihan
+
 
         @foreach($dataUser as $item)
             getAlamat({{$item->id}}, {{$item->latitude}}, {{$item->longitude}})
@@ -100,7 +212,6 @@
                 url: `https://geocode.maps.co/reverse?lat=${lat}&lon=${long}`,
                 type: "GET",
                 success: function(data){
-                    console.log('data', data)
                     // console.log('data.display_name', data.display_name)
                     let address = data.display_name+" ";
                     address += data.address.postcode ? data.address.postcode : '';

@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class PilihanGanda extends Model
 {
     use HasFactory;
+
+    public function pilihanTarget(){
+        return $this->hasMany(PilihanTarget::class);
+    }
 }

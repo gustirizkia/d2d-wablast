@@ -12,4 +12,5 @@ Route::middleware('admin')->group(function(){
     Route::resource('bank-soal', BankSoalController::class);
     Route::resource('user', UserController::class);
     Route::resource('lokasi', LokasiController::class);
+    Route::get('detailSoal/{soal_id}', [LokasiController::class, "detailSoal"])->name("detailSoal");
 });

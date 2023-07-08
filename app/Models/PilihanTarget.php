@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class PilihanTarget extends Model
 {
     use HasFactory;
+
+    public function dataTarget(){
+        return $this->belongsTo(DataTarget::class);
+    }
 }
