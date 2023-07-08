@@ -23,48 +23,50 @@
                     </form>
                 </div>
             </div>
-            <table class="table">
-            <thead>
-                <tr>
-                <th scope="col">No</th>
-                <th scope="col">Nama</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($data['user'] as $key => $item)
-                    <tr>
-                        <td>{{ $data['user']->firstItem() + $key }}</td>
-                        <td>{{$item->name}}</td>
-                        <td>{{$item->email}}</td>
-                        <td>{{$item->phone}}</td>
-                        <td>
-                            <div class="d-flex">
-                                <a href="{{route('admin.user.edit', $item->id)}}" class="btn btn-primary btn-sm">
-                                    <i class="bi bi-eye"></i>
-                                    <span class="ms-1">Detail</span>
-                                </a>
-                                <form action="{{ route('admin.bank-soal.destroy', $item->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method("DELETE")
-                                    <span class="btn btn-danger btn-sm px-2 py-1 text-sm ms-2 delete_confirm cursor-pointer">
-                                        <i class="bi bi-trash"></i><span class="ms-1">Delete</span>
-                                    </span>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="12">
-                            <div class="text-center fw-bold">No Data</div>
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($data['user'] as $key => $item)
+                            <tr>
+                                <td>{{ $data['user']->firstItem() + $key }}</td>
+                                <td>{{$item->name}}</td>
+                                <td>{{$item->email}}</td>
+                                <td>{{$item->phone}}</td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a href="{{route('admin.user.edit', $item->id)}}" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-eye"></i>
+                                            <span class="ms-1">Detail</span>
+                                        </a>
+                                        <form action="{{ route('admin.bank-soal.destroy', $item->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method("DELETE")
+                                            <span class="btn btn-danger btn-sm px-2 py-1 text-sm ms-2 delete_confirm cursor-pointer">
+                                                <i class="bi bi-trash"></i><span class="ms-1">Delete</span>
+                                            </span>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="12">
+                                    <div class="text-center fw-bold">No Data</div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 @endsection

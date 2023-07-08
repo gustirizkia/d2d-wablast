@@ -21,50 +21,52 @@
                     </div>
                 </div>
             </div>
-            <table class="table">
-            <thead>
-                <tr>
-                <th scope="col">No</th>
-                <th scope="col">Soal</th>
-                <th scope="col">Dibuat</th>
-                <th scope="col">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($data['soal'] as $key => $item)
-                    <tr>
-                        <th scope="row">{{ $data['soal']->firstItem() + $key }}</th>
-                        <td>{{$item->title}}</td>
-                        <td>{{$item->created_at}}</td>
-                        <td>
-                            <div class="d-flex">
-                                <a href="{{route('admin.bank-soal.show', $item->id)}}" class="btn btn-success btn-sm">
-                                    <i class="bi bi-eye"></i>
-                                    <span class="ms-1">Detail</span>
-                                </a>
-                                <a href="{{route('admin.bank-soal.edit', $item->id)}}" class="btn btn-primary btn-sm ms-2">
-                                    <i class="bi bi-pencil-square"></i>
-                                    <span class="ms-1">Edit</span>
-                                </a>
-                                <form action="{{ route('admin.bank-soal.destroy', $item->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method("DELETE")
-                                    <span class="btn btn-danger btn-sm px-2 py-1 text-sm ms-2 delete_confirm cursor-pointer">
-                                        <i class="bi bi-trash"></i><span class="ms-1">Delete</span>
-                                    </span>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="12">
-                            <div class="text-center fw-bold">Tidak Ada Data</div>
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Soal</th>
+                        <th scope="col">Dibuat</th>
+                        <th scope="col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($data['soal'] as $key => $item)
+                            <tr>
+                                <th scope="row">{{ $data['soal']->firstItem() + $key }}</th>
+                                <td>{{$item->title}}</td>
+                                <td>{{$item->created_at}}</td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a href="{{route('admin.bank-soal.show', $item->id)}}" class="btn btn-success btn-sm">
+                                            <i class="bi bi-eye"></i>
+                                            <span class="ms-1">Detail</span>
+                                        </a>
+                                        <a href="{{route('admin.bank-soal.edit', $item->id)}}" class="btn btn-primary btn-sm ms-2">
+                                            <i class="bi bi-pencil-square"></i>
+                                            <span class="ms-1">Edit</span>
+                                        </a>
+                                        <form action="{{ route('admin.bank-soal.destroy', $item->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method("DELETE")
+                                            <span class="btn btn-danger btn-sm px-2 py-1 text-sm ms-2 delete_confirm cursor-pointer">
+                                                <i class="bi bi-trash"></i><span class="ms-1">Delete</span>
+                                            </span>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="12">
+                                    <div class="text-center fw-bold">Tidak Ada Data</div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 @endsection
