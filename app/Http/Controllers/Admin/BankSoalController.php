@@ -45,7 +45,8 @@ class BankSoalController extends Controller
                 'title' => $request->soal,
                 'subtitle' => $request->deskripsi,
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
+                'color' => $this->generateColor()
             ];
 
             $insertSoal = DB::table('soals')->insertGetId($dataSoal);
@@ -151,5 +152,16 @@ class BankSoalController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function generateColor(){
+        $color = str_pad(dechex(rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT);
+
+        $cek = DB::table('soals')->where('color', $color)->first();
+        if($cek){
+            $this->generateColor();
+        }
+
+        return $color;
     }
 }

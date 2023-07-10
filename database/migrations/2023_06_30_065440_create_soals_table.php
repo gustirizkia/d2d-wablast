@@ -17,6 +17,7 @@ return new class extends Migration
             $table->longText('subtitle')->nullable();
             $table->longText("jawaban")->nullable();
             $table->string('image')->nullable();
+            $table->string('color')->nullable();
             $table->timestamps();
         });
     }

@@ -26,7 +26,7 @@
         <div class="card-body">
 
             <div class="mt-5">
-                <div id="mapid2" style="width: 100%; height: 400px;"></div>
+                <div id="mapid2" style="width: 100%; height: 500px;"></div>
             </div>
 
             <div class="row mt-4">
@@ -36,7 +36,7 @@
                         <select class="form-select" id="soal" aria-label="Floating label select example" fdprocessedid="srkiig">
                             <option >Pilih</option>
                             @foreach ($soal as $item)
-                                <option value="{{$item->id}}">{{$item->title}}</option>
+                                <option value="{{$item->id}}" class="circle_soal" style="background-color: #{{$item->color}}">{{$item->title}}</option>
                             @endforeach
                         </select>
                         <label for="soal">Pertanyaan</label>
@@ -174,6 +174,7 @@
                         mymap2.remove();
 
                         mymap2 = L.map('mapid2').setView([-6.2470928, 106.6501857], 11);
+                        console.log('element', element)
                         element.pilihan_target.forEach(target => {
                             var myIcon = L.divIcon({
                                             className: 'custom-div-icon',

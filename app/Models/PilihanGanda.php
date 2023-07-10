@@ -12,4 +12,8 @@ class PilihanGanda extends Model
     public function pilihanTarget(){
         return $this->hasMany(PilihanTarget::class);
     }
+
+    public function soal(){
+        return $this->belongsTo(Soal::class);
+    }
 }

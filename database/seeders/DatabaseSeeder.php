@@ -21,5 +21,9 @@ class DatabaseSeeder extends Seeder
             'phone' => '2023',
             'roles' => 'admin'
         ]);
+
+        $this->call([
+            SoalSeeder::class
+        ]);
     }
 }

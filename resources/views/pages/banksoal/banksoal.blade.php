@@ -11,6 +11,7 @@
             <div class="row justify-content-between mb-3">
                 <div class="col-6">
                     <a href="{{route('admin.bank-soal.create')}}" class="btn btn-primary">Tambah Data</a>
+                    <div class="btn btn-success ms-2">Ekspor Excel</div>
                 </div>
                 <div class="col-md-3 col-6">
                     <div class="input-icon">
@@ -66,6 +67,10 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            <div class="mt-4">
+                {{$data['soal']->links()}}
             </div>
         </div>
     </div>

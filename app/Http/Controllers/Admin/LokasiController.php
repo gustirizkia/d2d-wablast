@@ -38,6 +38,7 @@ class LokasiController extends Controller
     {
         $data = PilihanGanda::where("soal_id", $soal_id)
                         ->with("pilihanTarget.dataTarget")
+                        ->with('soal')
                         ->withCount("pilihanTarget")
                         ->get();
 
