@@ -91,8 +91,6 @@ export default function Survey({ data_soal, session }) {
             let formData = data;
             formData.latitude = Latitude;
             formData.longitude = Longitude;
-            // post("inputDataTarget");
-            console.log("formData", formData);
             router.post("/inputDataTarget", formData);
         }
     };
@@ -103,7 +101,7 @@ export default function Survey({ data_soal, session }) {
 
             <div className="min-h-screen  flex justify-center flex-col items-center px-3">
                 {session.success && (
-                    <div className="bg-green-100 w-full rounded-lg px-2 text-sm mb-4">
+                    <div className="bg-yellow-100 w-full rounded-lg px-2 text-sm mb-4">
                         <div className="font-medium w-full py-2  block">
                             Berhasil simpan data
                         </div>
@@ -140,7 +138,7 @@ export default function Survey({ data_soal, session }) {
                         penginputan survey ini
                     </div> */}
                     <div
-                        className="mt-4 bg-green-600 text-center py-2  px-10 rounded-lg text-white w-full"
+                        className="mt-4 bg-yellow-600 text-center py-2  px-10 rounded-lg text-white w-full"
                         onClick={handleSubmit}
                     >
                         Mulai

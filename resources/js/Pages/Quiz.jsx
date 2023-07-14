@@ -103,8 +103,8 @@ export default function Quiz({
             {/* Loading */}
             {LoadingUp && <LoadingPage />}
             {/* Loading end*/}
-            <div className="bg-green-50 min-h-screen">
-                <div className="bg-green-600 h-36 w-full rounded-b-3xl">
+            <div className="bg-yellow-50 min-h-screen">
+                <div className="bg-yellow-600 h-36 w-full rounded-b-3xl">
                     <Link href="/" className="flex items-center px-3 pt-2">
                         <div className="text-white">
                             <svg
@@ -137,8 +137,8 @@ export default function Quiz({
                             <div
                                 className={`p-3 rounded-full mb-3 border flex items-center ${
                                     PilihanId === item.id
-                                        ? "bg-green-500 text-white  border-green-500 "
-                                        : "bg-green-100 border-green-100"
+                                        ? "bg-yellow-500 text-white  border-yellow-500 "
+                                        : "bg-yellow-100 border-yellow-100"
                                 }`}
                                 key={item.id}
                                 onClick={() => SetPilihanId(item.id)}
@@ -170,7 +170,7 @@ export default function Quiz({
                         <>
                             <div
                                 onClick={handleSelesai}
-                                className=" bg-green-600 text-white text-center px-2 py-3 rounded-full w-full mt-10"
+                                className=" bg-yellow-600 text-white text-center px-2 py-3 rounded-full w-full mt-10"
                             >
                                 Selesai
                             </div>
@@ -200,7 +200,7 @@ export default function Quiz({
                             )}
                             <div
                                 onClick={handelNext}
-                                className=" bg-green-600 text-white text-center px-2 py-3 rounded-full w-1/2"
+                                className=" bg-yellow-600 text-white text-center px-2 py-3 rounded-full w-1/2"
                             >
                                 Selanjutnya
                             </div>

@@ -19,7 +19,7 @@ class SoalSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create('id_ID');
-        for ($i=0; $i < 300; $i++) {
+        for ($i=0; $i < 100; $i++) {
             $soal = DB::table("soals")->insertGetId([
                 'title' => $faker->sentence($nbWords = 6, $variableNbWords = true)." ?",
                 'subtitle' => $faker->sentence($nbWords = 12, $variableNbWords = true),
@@ -42,7 +42,7 @@ class SoalSeeder extends Seeder
 
         $lang = -6.326069;
         $long = 106.708912;
-        for ($i=0; $i < 200; $i++) {
+        for ($i=0; $i < 100; $i++) {
            $user = User::create([
                 'name' => $faker->name(),
                 'email' => $faker->email(),
@@ -54,10 +54,10 @@ class SoalSeeder extends Seeder
                 'user_survey_id' => $user->id,
                 'nama' => $faker->name(),
                 'alamat' => $faker->address(),
-                'latitude' => $faker->latitude( $min = ($lang * 10000 - rand(0, 50)) / 10000,
-    $max = ($lang * 10000 + rand(0, 50)) / 10000),
-                'longitude' => $faker->longitude( $min = ($long * 10000 - rand(0, 50)) / 10000,
-    $max = ($long * 10000 + rand(0, 50)) / 10000),
+                'latitude' => $faker->latitude( $min = ($lang * 110000 - rand(0, 50)) / 110000,
+    $max = ($lang * 110000 + rand(0, 50)) / 110000),
+                'longitude' => $faker->longitude( $min = ($long * 110000 - rand(0, 50)) / 110000,
+    $max = ($long * 110000 + rand(0, 50)) / 110000),
                 'created_at' => Carbon::now()->addDay($faker->randomDigitNot(5)),
                 'updated_at' => Carbon::now()->addDay($faker->randomDigitNot(5)),
            ]);

@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\SurveyController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +29,11 @@ use Inertia\Inertia;
 //     ]);
 // });
 
+Route::get("g/{username?}", [RelawanController::class, 'index']);
+Route::get("getCalon", [RelawanController::class, 'getCalon']);
+Route::post("addRelawan", [RelawanController::class, 'addRelawan'])->name("addRelawan");
+Route::get("survey-relawan", [RelawanController::class, 'survey'])->name("survey-relawan");
+
 Route::middleware('auth')->group(function () {
 
     Route::get('/', [HomeController::class, 'index'])->name("home");
@@ -47,6 +54,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // alamat
+    Route::get('listKota', [AlamatController::class, 'listKota'])->name('listKota');
+    Route::get('listKecamatan', [AlamatController::class, 'listKecamatan'])->name('listKecamatan');
 });
 
 require __DIR__.'/auth.php';

@@ -36,7 +36,7 @@
                         <select class="form-select" id="soal" aria-label="Floating label select example" fdprocessedid="srkiig">
                             <option >Pilih</option>
                             @foreach ($soal as $item)
-                                <option value="{{$item->id}}" class="circle_soal" style="background-color: #{{$item->color}}">{{$item->title}}</option>
+                                <option value="{{$item->id}}" class="circle_soal" >{{$item->title}}</option>
                             @endforeach
                         </select>
                         <label for="soal">Pertanyaan</label>
@@ -178,7 +178,7 @@
                         element.pilihan_target.forEach(target => {
                             var myIcon = L.divIcon({
                                             className: 'custom-div-icon',
-                                            html: "<div style='background-color:#c30b82;' class='marker-pin'></div><span class='icons'></span>",
+                                            html: `<div class='marker-pin'></div><span class='icons' style='background-color: #${element.soal.color}'></span>`,
                                             iconSize: [30, 42],
                                             iconAnchor: [15, 42]
                                         });

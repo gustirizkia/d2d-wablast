@@ -7,7 +7,7 @@ export default function Home({ auth }) {
     return (
         <Layout>
             <Head title="Home" />
-            <div className="bg-green-600 h-32 w-full rounded-b-3xl">
+            <div className="bg-yellow-600 h-32 w-full rounded-b-3xl">
                 <TopUser auth={auth} />
             </div>
             <div className="mx-3 -mt-20">

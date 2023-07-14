@@ -13,7 +13,7 @@ export default function User({ children }) {
                     <Link
                         href="/"
                         className={`text-center ${
-                            route().current("home") ? "text-green-600" : ""
+                            route().current("home") ? "text-yellow-600" : ""
                         }`}
                     >
                         {route().current("home") ? (
@@ -50,7 +50,7 @@ export default function User({ children }) {
                         className={`text-center ${
                             route().current("survey") ||
                             route().current("list-survey")
-                                ? "text-green-600"
+                                ? "text-yellow-600"
                                 : ""
                         }`}
                     >
@@ -93,7 +93,7 @@ export default function User({ children }) {
                     <div
                         className={`text-center ${
                             route().current("profile.edit")
-                                ? "text-green-600"
+                                ? "text-yellow-600"
                                 : ""
                         }`}
                     >

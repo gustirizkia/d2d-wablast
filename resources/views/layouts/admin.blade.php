@@ -574,6 +574,26 @@
                                     <span class="nav-link-title"> User </span>
                                 </a>
                             </li>
+                            <li class="nav-item {{request()->is('admin/relawan*') ? 'active' : ''}}">
+                                <a class="nav-link" href="{{route('admin.relawan.index')}}">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block"
+                                        >
+                                        <i class="bi bi-person"></i>
+                                    </span>
+                                    <span class="nav-link-title"> Relawan </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{request()->is('admin/calon*') ? 'active' : ''}}">
+                                <a class="nav-link" href="{{route('admin.calon-legislatif.index')}}">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block"
+                                        >
+                                        <i class="bi bi-people"></i>
+                                    </span>
+                                    <span class="nav-link-title"> Calon Legislatif </span>
+                                </a>
+                            </li>
                             <li class="nav-item {{request()->is('admin/lokasi*') ? 'active' : ''}}">
                                 <a class="nav-link" href="{{route('admin.lokasi.index')}}">
                                     <span
