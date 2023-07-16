@@ -3,14 +3,13 @@
 use App\Http\Controllers\Admin\AdminRelawanController;
 use App\Http\Controllers\Admin\BankSoalController;
 use App\Http\Controllers\Admin\CalonController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LokasiController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('admin')->group(function(){
-    Route::get('/', function(){
-        return redirect()->route('admin.bank-soal.index');
-    });
+    Route::get('/', [DashboardController::class, 'index']);
     Route::resource('bank-soal', BankSoalController::class);
     Route::resource('user', UserController::class);
     Route::resource('lokasi', LokasiController::class);
@@ -23,4 +22,6 @@ Route::middleware('admin')->group(function(){
     Route::post('insertSoalCalon', [CalonController::class, 'insertSoalCalon'])->name("insertSoalCalon");
 
     Route::resource('relawan', AdminRelawanController::class);
+
+
 });

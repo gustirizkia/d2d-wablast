@@ -10,7 +10,7 @@
 
             <div class="row justify-content-between mb-3">
                 <div class="col-6">
-                    <a href="{{route('admin.bank-soal.create')}}" class="btn btn-primary">Tambah Data</a>
+                    <a href="{{route('admin.bank-soal.create')}}" class="btn btn-warning">Tambah Data</a>
                     <div class="btn btn-success ms-2">Ekspor Excel</div>
                 </div>
                 <div class="col-md-3 col-6">
@@ -44,7 +44,7 @@
                                             <i class="bi bi-eye"></i>
                                             <span class="ms-1">Detail</span>
                                         </a>
-                                        <a href="{{route('admin.bank-soal.edit', $item->id)}}" class="btn btn-primary btn-sm ms-2">
+                                        <a href="{{route('admin.bank-soal.edit', $item->id)}}" class="btn btn-warning btn-sm ms-2">
                                             <i class="bi bi-pencil-square"></i>
                                             <span class="ms-1">Edit</span>
                                         </a>

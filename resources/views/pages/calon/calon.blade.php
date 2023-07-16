@@ -10,7 +10,7 @@
 
             <div class="row justify-content-between mb-3">
                 <div class="col-6">
-                    <a href="{{route('admin.calon-legislatif.create')}}" class="btn btn-primary">Tambah Data</a>
+                    <a href="{{route('admin.calon-legislatif.create')}}" class="btn btn-warning">Tambah Data</a>
                 </div>
                 <div class="col-md-3 col-6">
                     <form action="">
@@ -43,7 +43,7 @@
                                 <td>{{url("g/".$item->username)}}</td>
                                 <td>
                                     <div class="d-flex">
-                                        <a href="{{route('admin.calon-legislatif.edit', $item->id)}}" class="btn btn-sm btn-primary ">
+                                        <a href="{{route('admin.calon-legislatif.edit', $item->id)}}" class="btn btn-sm btn-warning ">
                                             <i class="bi bi-pen"></i>
                                             <span class="ms-1">Edit</span>
                                         </a>

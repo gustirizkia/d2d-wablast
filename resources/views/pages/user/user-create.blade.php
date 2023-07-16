@@ -36,7 +36,7 @@
                     <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required value="{{old('password')}}">
                 </div>
 
-                <button type="submit" class="btn btn-primary">Simpan Data</button>
+                <button type="submit" class="btn btn-warning">Simpan Data</button>
             </form>
         </div>
     </div>

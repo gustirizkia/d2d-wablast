@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-warning">Simpan</button>
                 </div>
             </div>
         </form>

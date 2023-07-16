@@ -37,11 +37,11 @@
                     @endforeach
                 </div>
                 <div class="text-center mt-3">
-                    <div class="btn btn-outline-primary add_pilihan">Tambah Pilihan</div>
+                    <div class="btn btn-outline-warning add_pilihan">Tambah Pilihan</div>
                 </div>
 
                 <div class="mt-5">
-                    <button class="btn btn-primary">Simpan</button>
+                    <button class="btn btn-warning">Simpan</button>
                 </div>
             </form>
         </div>

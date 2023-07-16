@@ -38,7 +38,7 @@
                     <small>Kosongkan jika tidak ingin diubah</small>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Simpan Data</button>
+                <button type="submit" class="btn btn-warning">Simpan Data</button>
             </form>
         </div>
     </div>
