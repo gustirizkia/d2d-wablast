@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    User
+    Surveyer
 @endsection
 
 @section('content')
@@ -10,7 +10,7 @@
 
             <div class="row justify-content-between mb-3">
                 <div class="col-6">
-                    <a href="{{route('admin.user.create')}}" class="btn btn-warning">Tambah Data</a>
+                    <a href="{{route('admin.data.user.create')}}" class="btn btn-warning">Tambah Data</a>
                 </div>
                 <div class="col-md-3 col-6">
                     <form action="">
@@ -43,7 +43,7 @@
                                 <td>{{$item->phone}}</td>
                                 <td>
                                     <div class="d-flex">
-                                        <a href="{{route('admin.user.edit', $item->id)}}" class="btn btn-warning btn-sm">
+                                        <a href="{{route('admin.data.user.edit', $item->id)}}" class="btn btn-warning btn-sm">
                                             <i class="bi bi-eye"></i>
                                             <span class="ms-1">Detail</span>
                                         </a>

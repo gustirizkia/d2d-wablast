@@ -2,20 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\DataTargetExport;
 use App\Http\Controllers\Controller;
-use App\Models\Relawan;
+use App\Models\DataTarget;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
-class AdminRelawanController extends Controller
+class RespondenController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Relawan::orderBy("id", 'desc')->with("calon")->get();
-        // dd($data);
-        return view('pages.relawan.index', [
+        $data = DataTarget::get();
+
+        return view('pages.responden.index', [
             'items' => $data
         ]);
     }
@@ -66,5 +70,17 @@ class AdminRelawanController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function export(Request $request)
+    {
+        try {
+            return Excel::download(new DataTargetExport, 'responden-'.Carbon::now()->format("d-M-Y").'.xlsx');
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', "Failed export data");
+        }
+
+
+
     }
 }

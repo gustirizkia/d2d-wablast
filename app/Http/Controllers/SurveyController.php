@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\DataTarget;
 use App\Models\PilihanTarget;
 use App\Models\Soal;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -32,7 +34,7 @@ class SurveyController extends Controller
             'alamat' => 'required'
         ]);
 
-        $insertData = DB::table('data_targets')->insertGetId([
+        $data = [
             'nama' => $request->nama,
             'alamat' => $request->alamat,
             'user_survey_id' => auth()->user()->id,
@@ -40,7 +42,28 @@ class SurveyController extends Controller
             'updated_at' => now(),
             'longitude' => $request->longitude,
             'latitude' => $request->latitude
-        ]);
+        ];
+        try {
+            $latitude = $request->latitude;
+            $longitude = $request->longitude;
+
+            $client = new Client();
+            $response = $client->get("https://geocode.maps.co/reverse?lat=$latitude&lon=$longitude")->getBody()->getContents();
+
+            $result = json_decode($response);
+
+            if($result->address){
+                $data['provinsi'] = isset($result->address->state) ? $result->address->state : null;
+                $data['kota'] = isset($result->address->city) ? $result->address->city : null;
+                $data['kecamatan'] = isset($result->address->city_district) ? $result->address->city_district : null;
+                $data['desa'] = isset($result->address->village) ? $result->address->village : null;
+            }
+
+        } catch (BadResponseException $e) {
+
+        }
+
+        $insertData = DB::table('data_targets')->insertGetId($data);
 
         return redirect()->route('quiz', $insertData)->with('success', "Berhasil simpan data");
     }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\CalonHasSoal;
 use App\Models\CalonLegislatif;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -55,6 +57,26 @@ class RelawanController extends Controller
             'updated_at' => now(),
             "username_calon" => $username
         ];
+
+        try {
+            $latitude = $request->latitude;
+            $longitude = $request->longitude;
+
+            $client = new Client();
+            $response = $client->get("https://geocode.maps.co/reverse?lat=$latitude&lon=$longitude")->getBody()->getContents();
+
+            $result = json_decode($response);
+
+            if($result->address){
+                $data['provinsi'] = isset($result->address->state) ? $result->address->state : null;
+                $data['kota'] = isset($result->address->city) ? $result->address->city : null;
+                $data['kecamatan'] = isset($result->address->city_district) ? $result->address->city_district : null;
+                $data['desa'] = isset($result->address->village) ? $result->address->village : null;
+            }
+
+        } catch (BadResponseException $e) {
+
+        }
 
         $insert = DB::table('relawans')->insertGetId($data);
 

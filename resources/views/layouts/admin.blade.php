@@ -564,7 +564,7 @@
                                     <span class="nav-link-title"> Bank Soal </span>
                                 </a>
                             </li>
-                            <li class="nav-item {{request()->is('admin/user*') ? 'active' : ''}}">
+                            {{-- <li class="nav-item {{request()->is('admin/user*') ? 'active' : ''}}">
                                 <a class="nav-link" href="{{route('admin.user.index')}}">
                                     <span
                                         class="nav-link-icon d-md-none d-lg-inline-block"
@@ -573,8 +573,8 @@
                                     </span>
                                     <span class="nav-link-title"> User </span>
                                 </a>
-                            </li>
-                            <li class="nav-item {{request()->is('admin/relawan*') ? 'active' : ''}}">
+                            </li> --}}
+                            {{-- <li class="nav-item {{request()->is('admin/relawan*') ? 'active' : ''}}">
                                 <a class="nav-link" href="{{route('admin.relawan.index')}}">
                                     <span
                                         class="nav-link-icon d-md-none d-lg-inline-block"
@@ -583,7 +583,7 @@
                                     </span>
                                     <span class="nav-link-title"> Relawan </span>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="nav-item {{request()->is('admin/calon*') ? 'active' : ''}}">
                                 <a class="nav-link" href="{{route('admin.calon-legislatif.index')}}">
                                     <span
@@ -603,6 +603,48 @@
                                     </span>
                                     <span class="nav-link-title"> Lokasi Survey </span>
                                 </a>
+                            </li>
+
+                            <li class="nav-item dropdown {{request()->is("admin/data*") ? "active" : ''}}">
+                                <a
+                                    class="nav-link dropdown-toggle"
+                                    href="#navbar-extra"
+                                    data-bs-toggle="dropdown"
+                                    data-bs-auto-close="false"
+                                    role="button"
+                                    aria-expanded="false"
+                                >
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block"
+                                        ><!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                        <i class="bi bi-database-fill-check"></i>
+                                    </span>
+                                    <span class="nav-link-title"> Data </span>
+                                </a>
+                                <div class="dropdown-menu {{request()->is("admin/data*") ? "show" : ''}}">
+                                    <div class="dropdown-menu-columns">
+                                        <div class="dropdown-menu-column">
+                                            <a
+                                                class="dropdown-item {{request()->is("admin/data/relawan*") ? "active" : ''}}"
+                                                href="{{ route('admin.data.relawan.index') }}"
+                                            >
+                                                Relawan
+                                            </a>
+                                            <a
+                                                class="dropdown-item {{request()->is("admin/data/user*") ? "active" : ''}}"
+                                                href="{{ route('admin.data.user.index') }}"
+                                            >
+                                                Surveyer
+                                            </a>
+                                            <a
+                                                class="dropdown-item {{request()->is("admin/data/responden*") ? "active" : ''}}"
+                                                href="{{ route('admin.data.responden.index') }}"
+                                            >
+                                                Responden
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </li>
                         </ul>
                     </div>
