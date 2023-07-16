@@ -518,7 +518,7 @@
                     </div>
                     <div class="collapse navbar-collapse" id="sidebar-menu">
                         <ul class="navbar-nav pt-lg-3">
-                            <li class="nav-item {{request()->is('backend/dashboard') ? 'active' : ''}}">
+                            <li class="nav-item {{request()->is('admin') ? 'active' : ''}}">
                                 <a class="nav-link" href="/admin">
                                     <span
                                         class="nav-link-icon d-md-none d-lg-inline-block"
