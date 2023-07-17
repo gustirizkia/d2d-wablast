@@ -113,6 +113,15 @@ class SurveyController extends Controller
                 ->where('data_target_id', $request->target_id)
                 ->first();
 
+        $fotoBersama = null;
+        if($request->image){
+            $fotoBersama = $request->image->store("foto-bersama", "public");
+            $dataTarget = DataTarget::where("id", $request->target_id)
+                            ->update([
+                                'foto_bersama' => $fotoBersama
+                            ]);
+        }
+
         if($cekPilihan){
             $updatePilihan = DB::table('pilihan_targets')
                 ->where('soal_id', $request->soal_id)
@@ -120,6 +129,7 @@ class SurveyController extends Controller
                 ->update([
                     'updated_at' => now(),
                     'pilihan_ganda_id' => $request->pilihan_id,
+
                 ]);
 
         }else{
@@ -128,14 +138,14 @@ class SurveyController extends Controller
                 'pilihan_ganda_id' => $request->pilihan_id,
                 'created_at' => now(),
                 'updated_at' => now(),
-                "soal_id" => $request->soal_id
+                "soal_id" => $request->soal_id,
             ]);
         }
 
 
         $is_last_soal = false;
         $cekLastSoal = Soal::orderBy('id', 'desc')->first();
-        if($cekLastSoal->id === $request->soal_id){
+        if($cekLastSoal->id === (int)$request->soal_id){
             return response()->json([
                 'next_soal' => false,
                 'is_last_soal' => $is_last_soal

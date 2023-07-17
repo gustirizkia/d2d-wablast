@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Layout from "../Layouts/User";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import Swal from "sweetalert2";
@@ -17,6 +17,10 @@ export default function Quiz({
     const [FirstSoal, SetFirstSoal] = useState(is_first_soal);
     const [PilihanId, SetPilihanId] = useState(0);
     const [LoadingUp, SetLoadingUp] = useState(false);
+    const [FotoBersama, SetFotoBersama] = useState(null);
+    const [PreviewImage, SetPreviewImage] = useState(null);
+
+    const inputRef = useRef(null);
 
     const handelNext = () => {
         if (PilihanId === 0) {
@@ -55,27 +59,62 @@ export default function Quiz({
         if (PilihanId === 0) {
             Swal.fire("Info!", "Pilih jawaban ", "info");
         } else {
-            SetLoadingUp(true);
-            let formData = {
-                soal_id: TempSoal.id,
-                target_id: target.id,
-                pilihan_id: PilihanId,
-            };
-            formData._token = csrf_token;
-            axios
-                .post("/nextSoal", formData)
-                .then((ress) => {
-                    Swal.fire({
-                        icon: "success",
-                        title: "Anda telah menyelesaikan survey",
+            if (!FotoBersama) {
+                Swal.fire(
+                    "Info!",
+                    "Silahkan Upload Bersama Responden ",
+                    "info"
+                );
+            } else {
+                SetLoadingUp(true);
+
+                const formData = new FormData();
+
+                formData.append("soal_id", TempSoal.id);
+                formData.append("target_id", target.id);
+                formData.append("pilihan_id", PilihanId);
+                formData.append("image", FotoBersama);
+                // let formData = {
+                //     soal_id: TempSoal.id,
+                //     target_id: target.id,
+                //     pilihan_id: PilihanId,
+                // };
+                // formData._token = csrf_token;
+                axios
+                    .post("/nextSoal", formData)
+                    .then((ress) => {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Anda telah menyelesaikan survey",
+                        });
+                        router.get("/list-survey");
+                        console.log("ress", ress);
+                        SetLoadingUp(false);
+                    })
+                    .catch((err) => {
+                        console.log("err", err);
+                        SetLoadingUp(false);
+                        console.log("err", err);
                     });
-                    router.get("/list-survey");
-                    SetLoadingUp(false);
-                })
-                .catch((err) => {
-                    SetLoadingUp(false);
-                    console.log("err", err);
-                });
+            }
+        }
+    };
+
+    const handleClickFile = () => {
+        inputRef.current.click();
+    };
+
+    const handleChangeImage = (e) => {
+        if (e.target.files.length) {
+            SetFotoBersama(e.target.files[0]);
+
+            const oFReader = new FileReader();
+            oFReader.readAsDataURL(e.target.files[0]);
+
+            oFReader.onload = function (oFREvent) {
+                let imageSrc = oFREvent.target.result;
+                SetPreviewImage(imageSrc);
+            };
         }
     };
 
@@ -168,6 +207,53 @@ export default function Quiz({
                     })}
                     {TempLastSoal ? (
                         <>
+                            <div
+                                onClick={handleClickFile}
+                                className="flex flex-col items-center justify-center h-32 w-full bg-gray-200 rounded-lg mt-6"
+                            >
+                                {PreviewImage ? (
+                                    <img
+                                        src={PreviewImage}
+                                        alt=""
+                                        className="h-32 mx-auto object-contain  text-center"
+                                    />
+                                ) : (
+                                    <>
+                                        <div className="">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth={1.5}
+                                                stroke="currentColor"
+                                                className="w-6 h-6"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
+                                                />
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <div className="">Foto Bersama</div>
+                                    </>
+                                )}
+                            </div>
+
+                            <input
+                                type="file"
+                                ref={inputRef}
+                                className=""
+                                hidden
+                                accept="image/*"
+                                capture="camera"
+                                onChange={handleChangeImage}
+                            />
                             <div
                                 onClick={handleSelesai}
                                 className=" bg-yellow-600 text-white text-center px-2 py-3 rounded-full w-full mt-10"
