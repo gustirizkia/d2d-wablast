@@ -51,7 +51,7 @@ class UserController extends Controller
 
         $user = User::create($data);
 
-        return redirect()->route('admin.user.index')->with('success', "Berhasil tambah user");
+        return redirect()->route('admin.data.user.index')->with('success', "Berhasil tambah user");
 
     }
 
@@ -108,7 +108,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('admin.user.index')->with('success', "Berhasil update data user");
+        return redirect()->route('admin.data.user.index')->with('success', "Berhasil update data user");
 
     }
 
