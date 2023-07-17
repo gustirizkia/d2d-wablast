@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BankSoalController;
 use App\Http\Controllers\Admin\CalonController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LokasiController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RespondenController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,7 @@ Route::middleware('admin')->group(function(){
         Route::resource('relawan', AdminRelawanController::class);
         Route::resource('user', UserController::class);
         Route::resource('responden', RespondenController::class);
+        Route::get('report', [ReportController::class, 'index']);
     });
     Route::get('responden/export', [RespondenController::class, 'export'])->name('responden-export');
 

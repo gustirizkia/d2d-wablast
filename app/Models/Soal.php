@@ -12,4 +12,8 @@ class Soal extends Model
     public function pilihan(){
         return $this->hasMany(PilihanGanda::class);
     }
+
+    public function statistikPilihan(){
+        return $this->hasMany(StatistikPilihan::class);
+    }
 }
