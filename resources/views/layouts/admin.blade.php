@@ -635,13 +635,19 @@
                                                 class="dropdown-item {{request()->is("admin/data/user*") ? "active" : ''}}"
                                                 href="{{ route('admin.data.user.index') }}"
                                             >
-                                                Surveyer
+                                                Surveyor
                                             </a>
                                             <a
                                                 class="dropdown-item {{request()->is("admin/data/responden*") ? "active" : ''}}"
                                                 href="{{ route('admin.data.responden.index') }}"
                                             >
                                                 Responden
+                                            </a>
+                                            <a
+                                                class="dropdown-item {{request()->is("admin/data/report*") ? "active" : ''}}"
+                                                href="{{ route('admin.data.report') }}"
+                                            >
+                                                Report Grafik
                                             </a>
                                         </div>
                                     </div>

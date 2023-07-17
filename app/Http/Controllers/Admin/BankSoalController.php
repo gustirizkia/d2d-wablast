@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Models\DataTarget;
 use App\Models\PilihanTarget;
@@ -9,6 +10,7 @@ use App\Models\Soal;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BankSoalController extends Controller
 {
@@ -175,5 +177,9 @@ class BankSoalController extends Controller
         }
 
         return $color;
+    }
+
+    public function exportDataSoal(){
+        return Excel::download(new UsersExport, 'data.xlsx');
     }
 }

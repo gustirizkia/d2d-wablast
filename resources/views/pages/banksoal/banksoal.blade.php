@@ -12,7 +12,7 @@
             <div class="row justify-content-between mb-3">
                 <div class="col-6">
                     <a href="{{route('admin.bank-soal.create')}}" class="btn btn-warning">Tambah Data</a>
-                    <div class="btn btn-success ms-2">Ekspor Excel</div>
+                    <a href="{{route('admin.exportDataSoal')}}" class="btn btn-success ms-2">Ekspor Excel</a>
                     @if ($filter)
                         <a href="/admin/bank-soal" class="btn btn-secondary ms-2 filter_btn">Reset</a>
                     @else

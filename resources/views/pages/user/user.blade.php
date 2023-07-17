@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Surveyer
+    Surveyor
 @endsection
 
 @section('content')
@@ -43,10 +43,10 @@
                                 <td>{{$item->phone}}</td>
                                 <td>
                                     <div class="d-flex">
-                                        <a href="{{route('admin.data.user.edit', $item->id)}}" class="btn btn-warning btn-sm">
+                                        {{-- <a href="{{route('admin.data.user.edit', $item->id)}}" class="btn btn-warning btn-sm">
                                             <i class="bi bi-eye"></i>
                                             <span class="ms-1">Detail</span>
-                                        </a>
+                                        </a> --}}
                                         <form action="{{ route('admin.bank-soal.destroy', $item->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method("DELETE")

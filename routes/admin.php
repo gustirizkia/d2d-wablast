@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('admin')->group(function(){
     Route::get('/', [DashboardController::class, 'index']);
     Route::resource('bank-soal', BankSoalController::class);
+    Route::get('exportDataSoal', [BankSoalController::class, 'exportDataSoal'])->name("exportDataSoal");
     Route::post('filter', [BankSoalController::class, 'filter'])->name("filter");
 
     Route::resource('lokasi', LokasiController::class);
@@ -29,7 +30,7 @@ Route::middleware('admin')->group(function(){
         Route::resource('relawan', AdminRelawanController::class);
         Route::resource('user', UserController::class);
         Route::resource('responden', RespondenController::class);
-        Route::get('report', [ReportController::class, 'index']);
+        Route::get('report', [ReportController::class, 'index'])->name("report");
     });
     Route::get('responden/export', [RespondenController::class, 'export'])->name('responden-export');
 

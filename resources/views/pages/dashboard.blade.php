@@ -17,7 +17,7 @@
         <div class="col-md-3 col-6">
             <div class="card">
                 <div class="card-body">
-                    <div class="h3 mb-0">Surveyer</div>
+                    <div class="h3 mb-0">Surveyor</div>
                     <div class="" style="font-size: 24px">{{$data["count_surveyor"]}}</div>
                 </div>
             </div>
