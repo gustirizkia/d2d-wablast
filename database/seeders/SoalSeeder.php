@@ -19,9 +19,9 @@ class SoalSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create('id_ID');
-        for ($i=0; $i < 100; $i++) {
+        for ($i=0; $i < 5; $i++) {
             $soal = DB::table("soals")->insertGetId([
-                'title' => $faker->sentence($nbWords = 6, $variableNbWords = true)." ?",
+                'title' => $faker->sentence($nbWords = 2, $variableNbWords = true)." ?",
                 'subtitle' => $faker->sentence($nbWords = 12, $variableNbWords = true),
                 'color' => str_pad(dechex(rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT),
                 'created_at' => now(),

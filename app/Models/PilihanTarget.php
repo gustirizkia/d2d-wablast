@@ -12,4 +12,8 @@ class PilihanTarget extends Model
     public function dataTarget(){
         return $this->belongsTo(DataTarget::class);
     }
+
+    public function pilihan(){
+        return $this->belongsTo(PilihanGanda::class, 'pilihan_ganda_id', 'id');
+    }
 }

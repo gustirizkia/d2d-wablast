@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('admin')->group(function(){
     Route::get('/', [DashboardController::class, 'index']);
     Route::resource('bank-soal', BankSoalController::class);
+    Route::post('filter', [BankSoalController::class, 'filter'])->name("filter");
 
     Route::resource('lokasi', LokasiController::class);
     Route::get('detailSoal/{soal_id}', [LokasiController::class, "detailSoal"])->name("detailSoal");

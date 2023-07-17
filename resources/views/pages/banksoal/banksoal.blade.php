@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+{{-- {{dd($filter)}}; --}}
     <div class="card">
         <div class="card-body">
 
@@ -12,6 +13,11 @@
                 <div class="col-6">
                     <a href="{{route('admin.bank-soal.create')}}" class="btn btn-warning">Tambah Data</a>
                     <div class="btn btn-success ms-2">Ekspor Excel</div>
+                    @if ($filter)
+                        <a href="/admin/bank-soal" class="btn btn-secondary ms-2 filter_btn">Reset</a>
+                    @else
+                        <button class="btn btn-secondary ms-2 filter_btn">Filter</button>
+                    @endif
                 </div>
                 <div class="col-md-3 col-6">
                     <div class="input-icon">
@@ -23,60 +29,101 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Soal</th>
-                        <th scope="col">Dibuat</th>
-                        <th scope="col">Aksi</th>
+                            <th scope="col">Responden</th>
+                        <form action="" id="form_filter" method="GET">
+                        @forelse ($data['soal'] as $key => $item)
+
+                            <th scope="col">
+                                <div class="">
+                                    {{$item->title}}
+                                </div>
+
+                                    <select name="filter[]" id="key_soal_{{$key}}" class="form-select form-select-sm filter_pilihan">
+                                        <option value="">All</option>
+                                        @foreach ($item->pilihan as $pg)
+                                            @if ($filter)
+
+                                                <option value="{{$pg->id}}" {{(int)$filter[$key] === $pg->id ? 'selected' : '' }}>{{$pg->title}} ada filter</option>
+                                            @else
+                                                <option value="{{$pg->id}}" >{{$pg->title}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+
+                                    {{-- <input type="checkbox" name="OK[{{$key+1}}]" value="ok 1" checked>
+                                    <input type="checkbox" name="OK[{{$key+1}}]" value="ok 2" checked> --}}
+                                </th>
+                            @empty
+                            </form>
+
+                        @endforelse
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($data['soal'] as $key => $item)
-                            <tr>
-                                <th scope="row">{{ $data['soal']->firstItem() + $key }}</th>
-                                <td>{{$item->title}}</td>
-                                <td>{{$item->created_at}}</td>
-                                <td>
-                                    <div class="d-flex">
-                                        <a href="{{route('admin.bank-soal.show', $item->id)}}" class="btn btn-success btn-sm">
-                                            <i class="bi bi-eye"></i>
-                                            <span class="ms-1">Detail</span>
-                                        </a>
-                                        <a href="{{route('admin.bank-soal.edit', $item->id)}}" class="btn btn-warning btn-sm ms-2">
-                                            <i class="bi bi-pencil-square"></i>
-                                            <span class="ms-1">Edit</span>
-                                        </a>
-                                        <form action="{{ route('admin.bank-soal.destroy', $item->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method("DELETE")
-                                            <span class="btn btn-danger btn-sm px-2 py-1 text-sm ms-2 delete_confirm cursor-pointer">
-                                                <i class="bi bi-trash"></i><span class="ms-1">Delete</span>
-                                            </span>
-                                        </form>
-                                    </div>
-                                </td>
+                        @foreach ($data['responden'] as $index => $item)
+                            <tr id="{{$index}}">
+                                <th scope="row">
+                                    <span style="font-size: 10px">{{ $item->nama }}</span>
+                                </th>
+                                @for ($i = 0; $i < count($data['soal']); $i++)
+                                    <td>
+                                        <span style="font-size: 10px">{{ $item->pilihanTarget->where("soal_id", $data['soal'][$i]->id)->first()->pilihan->title }}</span>
+                                    </td>
+                                @endfor
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="12">
-                                    <div class="text-center fw-bold">Tidak Ada Data</div>
-                                </td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>
 
             <div class="mt-4">
-                {{$data['soal']->links()}}
+                {{-- {{$data['soal']->links()}} --}}
             </div>
         </div>
     </div>
 @endsection
 
 @push('addScript')
+
+<script>
+    $(".filter_btn").click(function(){
+        $("#form_filter").submit();
+    });
+
+    $(".filter_pilihan").on("change", function(){
+        let key_id = $(this).attr("id");
+        let value = $(this).val();
+
+        console.log('value', value)
+        console.log('key_id', key_id)
+    })
+
+
+</script>
+@if ($filter)
+    @foreach ($data['responden'] as $index => $item)
+        @php
+            $removeClass = true;
+        @endphp
+            @for ($i = 0; $i < count($data['soal']); $i++)
+                @if ($item->pilihanTarget->where("soal_id", $data['soal'][$i]->id)->first()->pilihan->id === (int)$filter[$i])
+                    @php
+                        $removeClass = false;
+                    @endphp
+
+                @endif
+            @endfor
+        @if ($removeClass)
+            <script>
+                $("tr").remove("#{{$index}}");
+            </script>
+        @endif
+    @endforeach
+@endif
+
     <script>
         $('.delete_confirm').click(function(event) {
             var form =  $(this).closest("form");

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\DataTarget;
+use App\Models\PilihanTarget;
 use App\Models\Soal;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,11 +15,21 @@ class BankSoalController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['soal'] = Soal::orderBy('id', 'desc')->paginate(12);
+        $filter = $request->filter;
 
-        return view('pages.banksoal.banksoal', compact('data'));
+        $data['data_target'] = PilihanTarget::get();
+        $data['responden'] = DataTarget::get();
+        // return response()->json($data['responden']);
+
+        $data['soal'] = Soal::orderBy('id', 'desc')->get();
+
+        return view('pages.banksoal.banksoal', compact('data', 'filter'));
+    }
+
+    public function filter(Request $request){
+        dd($request->all());
     }
 
     /**
