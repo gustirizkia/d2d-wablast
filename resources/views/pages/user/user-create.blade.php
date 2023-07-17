@@ -7,7 +7,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="{{route('admin.user.store')}}" method="POST">
+            <form action="{{route('admin.data.user.store')}}" method="POST">
                 @csrf
                 <div class="mb-3">
                     <label for="" class="form-label">Nama</label>
