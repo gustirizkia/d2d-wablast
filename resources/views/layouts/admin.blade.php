@@ -605,6 +605,7 @@
                                 </a>
                             </li>
 
+
                             <li class="nav-item dropdown {{request()->is("admin/data*") ? "active" : ''}}">
                                 <a
                                     class="nav-link dropdown-toggle"
@@ -646,6 +647,18 @@
                                     </div>
                                 </div>
                             </li>
+
+                            <li class="nav-item {{request()->is('admin/quick-qount*') ? 'active' : ''}}">
+                                <a class="nav-link" href="{{route('admin.quick-qount')}}">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block"
+                                        >
+                                        <i class="bi bi-box2"></i>
+                                    </span>
+                                    <span class="nav-link-title"> Quick Qount </span>
+                                </a>
+                            </li>
+
                         </ul>
                     </div>
                 </div>
