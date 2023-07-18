@@ -57,7 +57,7 @@ class CommandPilihanTarget extends Command
             }
         }
 
-        // \Log::info('------statistik:pilihan successfully----');
+        \Log::info('------statistik:pilihan successfully----');
         $this->info('------statistik:pilihan successfully----');
     }
 }
