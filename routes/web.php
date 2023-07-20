@@ -69,8 +69,4 @@ require __DIR__.'/auth.php';
 
 Route::get('/register', function(){
     return abort(404);
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> 2a5df886058416c4889c37a4a9935df88b0262c1
