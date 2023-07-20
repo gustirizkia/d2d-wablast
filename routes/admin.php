@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminRelawanController;
 use App\Http\Controllers\Admin\BankSoalController;
 use App\Http\Controllers\Admin\CalonController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\KuisionerKecamatanController;
 use App\Http\Controllers\Admin\LokasiController;
 use App\Http\Controllers\Admin\QuickCountController;
 use App\Http\Controllers\Admin\ReportController;
@@ -32,6 +33,7 @@ Route::middleware('admin')->group(function(){
         Route::resource('responden', RespondenController::class);
         Route::get('report', [ReportController::class, 'index'])->name("report");
         Route::resource('bank-soal', BankSoalController::class);
+        Route::resource('kuisioner-kecamatan', KuisionerKecamatanController::class);
     });
     Route::get('responden/export', [RespondenController::class, 'export'])->name('responden-export');
 

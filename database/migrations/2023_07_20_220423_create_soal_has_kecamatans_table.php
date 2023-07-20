@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('soal_has_kecamatans', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('kecamatan_id');
+            $table->bigInteger('provinsi_id');
+            $table->bigInteger('kota_id');
             $table->bigInteger("soal_id");
             $table->bigInteger('is_active')->default(1);
             $table->timestamps();

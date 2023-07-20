@@ -29,10 +29,10 @@
                   <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
                       <li class="nav-item" role="presentation">
-                        <a href="#tabs-home-1" class="nav-link active" tipe-pilihan="mulitple" data-bs-toggle="tab" aria-selected="true" role="tab">Multiple Choice</a>
+                        <a href="#tabs-home-1" class="nav-link active" tipe-pilihan="mulitple" data-bs-toggle="tab" aria-selected="true" role="tab">Form Custome</a>
                       </li>
                       <li class="nav-item" role="presentation">
-                        <a href="#tabs-profile-1" class="nav-link" tipe-pilihan="ya_tidak" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">Profile</a>
+                        <a href="#tabs-profile-1" class="nav-link" tipe-pilihan="ya_tidak" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">Hanya Ya atau Tidak</a>
                       </li>
                     </ul>
                   </div>

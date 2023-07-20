@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Edit Data Bank Soal {{$item->title}}
+    Edit Data
 @endsection
 
 @section('content')

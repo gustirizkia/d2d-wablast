@@ -619,7 +619,13 @@
                                                 class="dropdown-item {{request()->is("admin/data/bank-soal*") ? "active" : ''}}"
                                                 href="{{route('admin.data.bank-soal.index')}}"
                                             >
-                                                Kuesioner
+                                                Kuisioner
+                                            </a>
+                                            <a
+                                                class="dropdown-item {{request()->is("admin/data/kuisioner-kecamatan*") ? "active" : ''}}"
+                                                href="{{route('admin.data.kuisioner-kecamatan.index')}}"
+                                            >
+                                                Kuisioner Kecamatan
                                             </a>
                                             {{-- <a
                                                 class="dropdown-item {{request()->is("admin/data/report*") ? "active" : ''}}"
