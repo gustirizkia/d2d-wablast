@@ -459,7 +459,7 @@
                   <a class="text-gradient" href="#!"
                     ><i class="bi bi-linkedin"></i
                   ></a>
-                  <a class="text-gradient" href="#!"
+                  <a class="text-gradient" href="https://www.instagram.com/prayudhaseptiadiwijaya/"
                     ><i class="bi bi-instagram"></i
                   ></a>
                 </div>

@@ -37,7 +37,7 @@ Route::get("survey-relawan", [RelawanController::class, 'survey'])->name("survey
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/', [HomeController::class, 'index'])->name("home");
+    Route::get('/login', [HomeController::class, 'index'])->name("home");
 
     Route::get('/list-survey', [SurveyController::class, 'riwayat'])->name('list-survey');
     Route::get('/survey', [SurveyController::class, 'index'])->name('survey');
