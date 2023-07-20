@@ -34,9 +34,14 @@ Route::get("getCalon", [RelawanController::class, 'getCalon']);
 Route::post("addRelawan", [RelawanController::class, 'addRelawan'])->name("addRelawan");
 Route::get("survey-relawan", [RelawanController::class, 'survey'])->name("survey-relawan");
 
+Route::get('page-login', function(){
+    return view("auth.login");
+});
+
+
+Route::get('/', [HomeController::class, 'welcome'])->name("home");
 Route::middleware('auth')->group(function () {
 
-    Route::get('/', [HomeController::class, 'index'])->name("home");
 
     Route::get('/list-survey', [SurveyController::class, 'riwayat'])->name('list-survey');
     Route::get('/survey', [SurveyController::class, 'index'])->name('survey');
@@ -65,4 +70,3 @@ require __DIR__.'/auth.php';
 Route::get('/register', function(){
     return abort(404);
 });
-
