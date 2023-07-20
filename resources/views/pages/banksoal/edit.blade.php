@@ -7,7 +7,7 @@
 @section('content')
     <div class="card mb-3">
         <div class="card-body">
-            <form action="{{route('admin.bank-soal.update', $item->id)}}" method="post">
+            <form action="{{route('admin.data.bank-soal.update', $item->id)}}" method="post">
             @csrf
             @method("PUT")
                 <div class="row">

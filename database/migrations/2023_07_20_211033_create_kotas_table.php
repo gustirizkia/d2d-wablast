@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('soals', function (Blueprint $table) {
+        Schema::create('kotas', function (Blueprint $table) {
             $table->id();
-            $table->longText('title');
-            $table->longText('subtitle')->nullable();
-            $table->longText("jawaban")->nullable();
-            $table->string('image')->nullable();
-            $table->string('color')->nullable();
-            $table->integer('yes_no')->default(0);
+            $table->bigInteger("id_kota");
+            $table->bigInteger("provinsi_id");
+            $table->string('nama');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('soals');
+        Schema::dropIfExists('kotas');
     }
 };

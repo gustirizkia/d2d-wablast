@@ -10,7 +10,9 @@ use App\Http\Controllers\Controller;
 use App\Models\CalonHasSoal;
 use App\Models\City;
 use App\Models\Kecamatan;
+use App\Models\Kota;
 use App\Models\Provinci;
+use App\Models\Provinsi;
 use App\Models\Soal;
 use Exception;
 
@@ -31,7 +33,7 @@ class CalonController extends Controller
      */
     public function create()
     {
-        $provinsi = DB::table('provinces')->orderBy('name', 'asc')->get();
+        $provinsi = DB::table('provinsis')->whereIn('id', [11, 16])->orderBy('nama', 'asc')->get();
 
         return view('pages.calon.calon-create', [
             'provinsi' => $provinsi
@@ -83,8 +85,8 @@ class CalonController extends Controller
     public function edit(string $id)
     {
         $item = CalonLegislatif::findOrFail($id);
-        $provinsi = Provinci::get();
-        $kota = City::where("province_id", $item->provinsi_id)->get();
+        $provinsi = Provinsi::get();
+        $kota = Kota::where("province_id", $item->provinsi_id)->get();
         $kecamatan = Kecamatan::where("city_id", $item->kota_id)->get();
 
         return view('pages.calon.calon-edit', [

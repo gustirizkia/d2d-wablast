@@ -31,7 +31,7 @@ class BankSoalController extends Controller
     }
 
     public function filter(Request $request){
-        dd($request->all());
+        // dd($request->all());
     }
 
     /**
@@ -47,9 +47,9 @@ class BankSoalController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'soal' => 'required|string',
-            'pilihan' => 'required|array',
         ]);
 
         DB::beginTransaction();
@@ -63,20 +63,27 @@ class BankSoalController extends Controller
                 'color' => $this->generateColor()
             ];
 
+            if($request->tipe_pilihan === 'ya_tidak'){
+                $dataSoal['yes_no'] = 1;
+            }
+
             $insertSoal = DB::table('soals')->insertGetId($dataSoal);
 
-            foreach($request->pilihan as $key => $value){
-                DB::table('pilihan_gandas')->insert([
-                    'soal_id' => $insertSoal,
-                    'title' => $value,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]);
+            if($request->tipe_pilihan !== 'ya_tidak'){
+                foreach($request->pilihan as $key => $value){
+                    DB::table('pilihan_gandas')->insert([
+                        'soal_id' => $insertSoal,
+                        'title' => $value,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
             }
+
 
             DB::commit();
 
-            return redirect()->route('admin.bank-soal.index')->with('success', "Berhasil Tambah Bank Soal");
+            return redirect()->route('admin.data.bank-soal.index')->with('success', "Berhasil Tambah Bank Soal");
         } catch (Exception $e) {
             DB::rollBack();
 
@@ -153,7 +160,7 @@ class BankSoalController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.bank-soal.index')->with('success', "Berhasil Update Bank Soal");
+            return redirect()->route('admin.data.bank-soal.index')->with('success', "Berhasil Update Bank Soal");
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Gagal simpan data server error '.$e->getMessage());

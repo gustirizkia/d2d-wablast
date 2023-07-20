@@ -554,36 +554,8 @@
                                     <span class="nav-link-title"> Home </span>
                                 </a>
                             </li>
-                            <li class="nav-item {{request()->is('admin/bank-soal*') ? 'active' : ''}}">
-                                <a class="nav-link" href="{{route('admin.bank-soal.index')}}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"
-                                        ><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                       <i class="bi bi-question-circle"></i>
-                                    </span>
-                                    <span class="nav-link-title"> Bank Soal </span>
-                                </a>
-                            </li>
-                            {{-- <li class="nav-item {{request()->is('admin/user*') ? 'active' : ''}}">
-                                <a class="nav-link" href="{{route('admin.user.index')}}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"
-                                        >
-                                        <i class="bi bi-person"></i>
-                                    </span>
-                                    <span class="nav-link-title"> User </span>
-                                </a>
-                            </li> --}}
-                            {{-- <li class="nav-item {{request()->is('admin/relawan*') ? 'active' : ''}}">
-                                <a class="nav-link" href="{{route('admin.relawan.index')}}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"
-                                        >
-                                        <i class="bi bi-person"></i>
-                                    </span>
-                                    <span class="nav-link-title"> Relawan </span>
-                                </a>
-                            </li> --}}
+
+
                             <li class="nav-item {{request()->is('admin/calon*') ? 'active' : ''}}">
                                 <a class="nav-link" href="{{route('admin.calon-legislatif.index')}}">
                                     <span
@@ -620,7 +592,7 @@
                                         ><!-- Download SVG icon from http://tabler-icons.io/i/star -->
                                         <i class="bi bi-database-fill-check"></i>
                                     </span>
-                                    <span class="nav-link-title"> Data </span>
+                                    <span class="nav-link-title"> Survey </span>
                                 </a>
                                 <div class="dropdown-menu {{request()->is("admin/data*") ? "show" : ''}}">
                                     <div class="dropdown-menu-columns">
@@ -644,11 +616,17 @@
                                                 Responden
                                             </a>
                                             <a
+                                                class="dropdown-item {{request()->is("admin/data/bank-soal*") ? "active" : ''}}"
+                                                href="{{route('admin.data.bank-soal.index')}}"
+                                            >
+                                                Kuesioner
+                                            </a>
+                                            {{-- <a
                                                 class="dropdown-item {{request()->is("admin/data/report*") ? "active" : ''}}"
                                                 href="{{ route('admin.data.report') }}"
                                             >
                                                 Report Grafik
-                                            </a>
+                                            </a> --}}
                                         </div>
                                     </div>
                                 </div>

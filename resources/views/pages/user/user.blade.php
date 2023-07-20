@@ -47,7 +47,7 @@
                                             <i class="bi bi-eye"></i>
                                             <span class="ms-1">Detail</span>
                                         </a> --}}
-                                        <form action="{{ route('admin.bank-soal.destroy', $item->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.data.bank-soal.destroy', $item->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method("DELETE")
                                             <span class="btn btn-danger btn-sm px-2 py-1 text-sm ms-2 delete_confirm cursor-pointer">
