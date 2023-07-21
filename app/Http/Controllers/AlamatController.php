@@ -52,4 +52,26 @@ class AlamatController extends Controller
             'data' => $data
         ]);
     }
+    public function listDesa(Request $request)
+    {
+        $validasi = Validator::make($request->all(),[
+            'kecamatan' => 'required|exists:kecamatans,id_kecamatan'
+        ]);
+
+
+        if($validasi->fails())
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => $validasi->errors()->first()
+            ], 422);
+        }
+
+        $data = DB::table('desas')->where('kecamatan_id', $request->kecamatan)->orderBy('nama', 'asc')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
+        ]);
+    }
 }

@@ -36,6 +36,7 @@ Route::middleware('admin')->group(function(){
         Route::resource('kuisioner-kecamatan', KuisionerKecamatanController::class);
     });
     Route::get('responden/export', [RespondenController::class, 'export'])->name('responden-export');
+    Route::get('responden/exportDetail/{id}', [RespondenController::class, 'exportDetail'])->name('responden-exportDetail');
 
     Route::get('quick-qount', [QuickCountController::class, 'index'])->name("quick-qount");
 

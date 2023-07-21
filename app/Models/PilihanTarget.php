@@ -16,4 +16,8 @@ class PilihanTarget extends Model
     public function pilihan(){
         return $this->belongsTo(PilihanGanda::class, 'pilihan_ganda_id', 'id');
     }
+
+    public function soal(){
+        return $this->belongsTo(Soal::class, 'soal_id', 'id');
+    }
 }

@@ -32,8 +32,7 @@ export default function ListQuiz({ data_target, count_soal, auth }) {
                 </div>
                 {data_target.map((item, index) => {
                     return (
-                        <Link
-                            href={`quiz/${item.id}`}
+                        <div
                             className="mx-3 border mb-3 p-3 rounded-lg bg-white block"
                             key={index}
                         >
@@ -41,12 +40,27 @@ export default function ListQuiz({ data_target, count_soal, auth }) {
                             <div className="text-gray-500 text-xs">
                                 {item.alamat}
                             </div>
-                            <div className="flex justify-end">
-                                <div className="text-gray-500 bg-yellow-200 inline-block py-1 px-5 rounded text-xs text-right">
-                                    {item.pilihan_target_count} / {count_soal}
+                            <div className="flex justify-between mt-4">
+                                <div className="flex">
+                                    <div className="text-white bg-yellow-600 inline-block py-1 px-5 rounded text-xs z-40">
+                                        Edit
+                                    </div>
                                 </div>
+                                {item.pilihan_target_count !== count_soal ? (
+                                    <Link
+                                        href={`quiz/${item.id}`}
+                                        className="text-gray-500 bg-yellow-200 inline-block py-1 px-5 rounded text-xs text-right"
+                                    >
+                                        Lanjut
+                                    </Link>
+                                ) : (
+                                    <div className="text-gray-500 bg-yellow-200 inline-block py-1 px-5 rounded text-xs text-right">
+                                        {item.pilihan_target_count} /{" "}
+                                        {count_soal}
+                                    </div>
+                                )}
                             </div>
-                        </Link>
+                        </div>
                     );
                 })}
             </div>

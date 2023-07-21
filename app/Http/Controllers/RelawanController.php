@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CalonHasSoal;
 use App\Models\CalonLegislatif;
+use App\Models\Provinsi;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Http\Request;
@@ -14,14 +15,12 @@ use Inertia\Inertia;
 class RelawanController extends Controller
 {
     public function index($username = null){
-
-        if(!$username)
-        {
-            return abort(404);
-        }
-
-        Session::put("username_calon", $username);
-        return Inertia::render("Relawan/InputData");
+        $calon = CalonLegislatif::first();
+        $provinsi = Provinsi::whereIn('id', [11, 16])->orderBy('nama', 'asc')->get();
+        return Inertia::render("Relawan/TambahRelawan", [
+            'provinsi' => $provinsi,
+            'calon' => $calon
+        ]);
 
     }
 
@@ -34,6 +33,10 @@ class RelawanController extends Controller
         return response()->json($calon);
     }
 
+    public function successAdd(){
+        return Inertia::render("Relawan/RelawanSuccess");
+    }
+
     public function addRelawan(Request $request)
     {
         $request->validate([
@@ -43,11 +46,6 @@ class RelawanController extends Controller
             'longitude' => 'required',
         ]);
 
-        $username = Session::get("username_calon");
-        if(!$username){
-            return abort(404);
-        }
-
         $data = [
             'nama' => $request->nama,
             'alamat' => $request->alamat,
@@ -55,32 +53,36 @@ class RelawanController extends Controller
             'longitude' => $request->longitude,
             'created_at' => now(),
             'updated_at' => now(),
-            "username_calon" => $username
+            "provinsi_id" => $request->provinsi,
+            "kota_id" => $request->kota,
+            "kecamatan_id" => $request->kecamatan,
+            "desa_id" => $request->desa,
+            "tanggal_lahir" => $request->tanggal_lahir
         ];
 
-        try {
-            $latitude = $request->latitude;
-            $longitude = $request->longitude;
+        // try {
+        //     $latitude = $request->latitude;
+        //     $longitude = $request->longitude;
 
-            $client = new Client();
-            $response = $client->get("https://geocode.maps.co/reverse?lat=$latitude&lon=$longitude")->getBody()->getContents();
+        //     $client = new Client();
+        //     $response = $client->get("https://geocode.maps.co/reverse?lat=$latitude&lon=$longitude")->getBody()->getContents();
 
-            $result = json_decode($response);
+        //     $result = json_decode($response);
 
-            if($result->address){
-                $data['provinsi'] = isset($result->address->state) ? $result->address->state : null;
-                $data['kota'] = isset($result->address->city) ? $result->address->city : null;
-                $data['kecamatan'] = isset($result->address->city_district) ? $result->address->city_district : null;
-                $data['desa'] = isset($result->address->village) ? $result->address->village : null;
-            }
+        //     if($result->address){
+        //         $data['provinsi'] = isset($result->address->state) ? $result->address->state : null;
+        //         $data['kota'] = isset($result->address->city) ? $result->address->city : null;
+        //         $data['kecamatan'] = isset($result->address->city_district) ? $result->address->city_district : null;
+        //         $data['desa'] = isset($result->address->village) ? $result->address->village : null;
+        //     }
 
-        } catch (BadResponseException $e) {
+        // } catch (BadResponseException $e) {
 
-        }
+        // }
 
         $insert = DB::table('relawans')->insertGetId($data);
 
-        return redirect()->route("survey-relawan");
+        return redirect("/successAdd");
 
     }
 

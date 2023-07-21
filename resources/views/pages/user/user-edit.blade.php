@@ -7,7 +7,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="{{route('admin.user.update', $item->id)}}" method="POST">
+            <form action="{{route('admin.data.user.update', $item->id)}}" method="POST">
                 @csrf
                 @method("PUT")
                 <div class="mb-3">
