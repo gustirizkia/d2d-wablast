@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class SoalHasKecamatan extends Model
 {
     use HasFactory;
+
+    public function soal(){
+        return $this->belongsTo(Soal::class, 'soal_id', 'id');
+    }
 }

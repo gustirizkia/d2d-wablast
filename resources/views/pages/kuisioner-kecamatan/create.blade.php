@@ -13,7 +13,7 @@
                     <div class="col-md-4 mb-3">
                         <label for="" class="form-label">Provinsi</label>
                         <select required name="provinsi" id="provinsi" class="form-select">
-                            <option >Pilih Kota</option>
+                            <option >Pilih Provinsi</option>
                             @foreach ($provinsi as $item)
                                 <option value="{{$item->id_provinsi}}">{{$item->nama}}</option>
                             @endforeach

@@ -30,6 +30,16 @@
                         <div class="">{{$item->total_pertanyaan}}</div>
                     </div>
                 </div>
+                <div class="d-flex justify-content-end">
+                    <div class="d-flex">
+                        <a href="{{route('admin.data.kuisioner-kecamatan.edit', $item->kecamatan_id)}}" class="me-3 btn btn-warning">Edit</a>
+                        <form action="{{route('admin.data.kuisioner-kecamatan.destroy', $item->kecamatan_id)}}" method="POST">
+                            @csrf
+                            @method("DELETE")
+                            <span class="btn btn-danger delete_confirm">Delete</span>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     @endforeach

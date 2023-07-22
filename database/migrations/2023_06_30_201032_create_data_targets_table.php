@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('data_targets', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('alamat');
+            $table->longText('alamat');
             $table->string('foto_bersama')->nullable();
             $table->string('user_survey_id');
             $table->string('latitude');

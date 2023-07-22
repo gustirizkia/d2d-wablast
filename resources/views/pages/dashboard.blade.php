@@ -27,6 +27,16 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <img src="{{asset('icon/support.png')}}" alt="" class="img-fluid" style="width: 50px">
+                    <div class="h3 mb-0">
+                        Relawan
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
     <div class="row">

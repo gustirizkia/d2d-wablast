@@ -52,6 +52,7 @@ export default function Quiz({
                         SetPilihanId(ress.data.riwayatPilihan.pilihan_ganda_id);
                     } else {
                         SetPilihanId(0);
+                        SetYesNo(null);
                     }
 
                     SetLoadingUp(false);
@@ -65,8 +66,10 @@ export default function Quiz({
 
     const handleSelesai = () => {
         console.log("PilihanId", PilihanId);
-        if (PilihanId === 0) {
+        if (PilihanId === 0 && TempSoal.yes_no !== 1) {
             Swal.fire("Info!", "Pilih jawaban ", "info");
+        } else if (!YesNo && TempSoal.yes_no === 1) {
+            Swal.fire("Info!", "Pilih jawaban ya atau tidak", "info");
         } else {
             if (!FotoBersama) {
                 Swal.fire(
@@ -81,7 +84,7 @@ export default function Quiz({
 
                 formData.append("soal_id", TempSoal.id);
                 formData.append("target_id", target.id);
-                formData.append("pilihan_id", PilihanId);
+                // formData.append("pilihan_id", PilihanId);
                 formData.append("image", FotoBersama);
                 // let formData = {
                 //     soal_id: TempSoal.id,
@@ -89,6 +92,12 @@ export default function Quiz({
                 //     pilihan_id: PilihanId,
                 // };
                 // formData._token = csrf_token;
+
+                if (YesNo && TempSoal.yes_no === 1) {
+                    formData.append("pilihan_id", YesNo);
+                } else {
+                    formData.append("pilihan_id", PilihanId);
+                }
                 axios
                     .post("/nextSoal", formData)
                     .then((ress) => {
@@ -97,7 +106,6 @@ export default function Quiz({
                             title: "Anda telah menyelesaikan survey",
                         });
                         router.get("/list-survey");
-                        console.log("ress", ress);
                         SetLoadingUp(false);
                     })
                     .catch((err) => {

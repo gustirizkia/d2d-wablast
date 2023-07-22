@@ -32,9 +32,46 @@
                     @enderror
                 </div>
                 <div class="mb-3">
+                    <label for="" class="form-label">Target</label>
+                    <input type="number" class="form-control @error('target') is-invalid @enderror" name="target" required value="{{old('target')}}">
+                </div>
+                <div class="mb-3">
                     <label for="" class="form-label">Password</label>
                     <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required value="{{old('password')}}">
                 </div>
+
+                {{-- alamat --}}
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <label for="" class="form-label">Provinsi</label>
+                        <select required name="provinsi" id="provinsi" class="form-select">
+                            <option >Pilih Provinsi</option>
+                            @foreach ($provinsi as $item)
+                                <option value="{{$item->id_provinsi}}">{{$item->nama}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label for="" class="form-label">Kota/Kabupaten</label>
+                        <select required name="kota" id="kota" class="form-select">
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="" class="form-label">Kecamatan</label>
+                        <select required name="kecamatan" id="kecamatan" class="form-select">
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="" class="form-label">Desa</label>
+                        <select required name="desa" id="desa" class="form-select">
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <textarea name="alamat" class="form-control">{{old('alamat')}}</textarea>
+                    </div>
+                </div>
+                {{-- alamat end --}}
 
                 <button type="submit" class="btn btn-warning">Simpan Data</button>
             </form>
@@ -43,24 +80,78 @@
 @endsection
 
 @push('addScript')
-    <script>
-        $('.delete_confirm').click(function(event) {
-            var form =  $(this).closest("form");
-            event.preventDefault();
-            Swal.fire({
-                title: `Hapus data`,
-                // text: "If you delete this, it will be gone forever.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Hapus!'
-            })
-            .then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
+
+
+<script>
+        $("#provinsi").on("change", function(){
+            let value = $(this).val();
+
+            $.ajax({
+                url: `{{route('listKota')}}?provinsi=${value}`,
+                type: "GET",
+                success: function(data){
+                    let tagHtml = "<option >Pilih kota</option>";
+
+                    let tempData = data.data;
+                    tempData.forEach(element => {
+                        tagHtml += `<option value="${element.id_kota}">${element.nama}</option>`
+                    });
+
+                    $("#kota").html(tagHtml);
+
+
+                },
+                error: function(err){
+                    console.log('err', err)
                 }
-            });
-        });
-    </script>
+            })
+        })
+        $("#kota").on("change", function(){
+            let value = $(this).val();
+
+            $.ajax({
+                url: `{{route('listKecamatan')}}?kota=${value}`,
+                type: "GET",
+                success: function(data){
+                    let tagHtml = "<option >Pilih kecamatan</option>";
+
+                    let tempData = data.data;
+                    tempData.forEach(element => {
+                        tagHtml += `<option value="${element.id_kecamatan}">${element.nama}</option>`
+                    });
+
+                    $("#kecamatan").html(tagHtml);
+
+
+                },
+                error: function(err){
+                    console.log('err', err)
+                }
+            })
+        })
+        $("#kecamatan").on("change", function(){
+            let value = $(this).val();
+
+            $.ajax({
+                url: `{{route('listDesa')}}?kecamatan=${value}`,
+                type: "GET",
+                success: function(data){
+                    console.log('data', data.data)
+                    let tagHtml = "<option >Pilih Desa</option>";
+
+                    let tempData = data.data;
+                    tempData.forEach(element => {
+                        tagHtml += `<option value="${element.id}">${element.nama}</option>`
+                    });
+
+                    $("#desa").html(tagHtml);
+
+
+                },
+                error: function(err){
+                    console.log('err', err)
+                }
+            })
+        })
+</script>
 @endpush

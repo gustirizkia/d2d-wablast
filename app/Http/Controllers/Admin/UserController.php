@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\DataTarget;
+use App\Models\Provinsi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -32,7 +33,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('pages.user.user-create');
+        $provinsi = Provinsi::whereIn('id', [11, 16])->orderBy('nama', 'asc')->get();
+        return view('pages.user.user-create', compact('provinsi'));
     }
 
     /**
@@ -40,15 +42,28 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'email' => 'required|unique:users,email|email',
             'phone' => 'required|unique:users,phone',
             'password' => 'required|string',
             'name' => 'required|string',
+            'desa' => 'required|exists:desas,id',
+            'provinsi' => 'required|exists:provinsis,id_provinsi'
         ]);
 
-        $data = $request->except('_token');
-        $data['password'] = Hash::make($request->password);
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'phone' => $request->phone,
+            'alamat' => $request->alamat,
+            'provinsi_id' => $request->provinsi,
+            'kota_id' => $request->kota,
+            'kecamatan_id' => $request->kecamatan,
+            'desa_id' => $request->desa,
+            'target' => $request->target,
+        ];
 
         $user = User::create($data);
 
@@ -83,8 +98,10 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $item = User::findOrFail($id);
+        // dd($item);
+        $provinsi = Provinsi::whereIn('id', [11, 16])->orderBy('nama', 'asc')->get();
 
-        return view('pages.user.user-edit', compact('item'));
+        return view('pages.user.user-edit', compact('item', 'provinsi'));
     }
 
     /**
@@ -92,10 +109,13 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request->all());
         $request->validate([
             'email' => 'required|email',
             'phone' => 'required',
             'name' => 'required|string',
+            'desa' => 'required|exists:desas,id',
+            'provinsi' => 'required|exists:provinsis,id_provinsi'
         ]);
 
         $validasi = [
@@ -119,6 +139,11 @@ class UserController extends Controller
         }else{
             unset($data['password']);
         }
+
+        $data['desa_id'] = $request->desa;
+        $data['kecamatan_id'] = $request->kecamatan;
+        $data['kota_id'] = $request->kota;
+        $data['provinsi_id'] = $request->provinsi;
 
         $user->update($data);
 

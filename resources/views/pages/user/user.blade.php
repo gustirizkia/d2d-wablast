@@ -31,6 +31,7 @@
                         <th scope="col">Nama</th>
                         <th scope="col">Email</th>
                         <th scope="col">Phone</th>
+                        <th scope="col">Target</th>
                         <th scope="col">Aksi</th>
                         </tr>
                     </thead>
@@ -41,6 +42,7 @@
                                 <td>{{$item->name}}</td>
                                 <td>{{$item->email}}</td>
                                 <td>{{$item->phone}}</td>
+                                <td>{{$item->target}}</td>
                                 <td>
                                     <div class="d-flex">
                                         <a href="{{route('admin.data.user.edit', $item->id)}}" class="btn btn-warning ">
