@@ -24,7 +24,7 @@
       rel="stylesheet"
     />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="{{ asset('/styles.css') }}" rel="stylesheet" />
+    <link href="{{ asset('/css/styles.css') }}" rel="stylesheet" />
   </head>
   <body class="d-flex flex-column h-100">
     <main class="flex-shrink-0">

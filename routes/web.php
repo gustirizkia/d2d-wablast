@@ -29,15 +29,20 @@ use Inertia\Inertia;
 //     ]);
 // });
 
-Route::get("g/{username?}", [RelawanController::class, 'index']);
+Route::get("relawan", [RelawanController::class, 'index']);
 Route::get("getCalon", [RelawanController::class, 'getCalon']);
+Route::get("successAdd", [RelawanController::class, 'successAdd']);
 Route::post("addRelawan", [RelawanController::class, 'addRelawan'])->name("addRelawan");
 Route::get("survey-relawan", [RelawanController::class, 'survey'])->name("survey-relawan");
 
+Route::get('page-login', function(){
+    return view("auth.login");
+});
 
+
+Route::get('/', [HomeController::class, 'welcome'])->name("home");
 Route::middleware('auth')->group(function () {
 
-    Route::get('/login', [HomeController::class, 'index'])->name("home");
 
     Route::get('/list-survey', [SurveyController::class, 'riwayat'])->name('list-survey');
     Route::get('/survey', [SurveyController::class, 'index'])->name('survey');
@@ -56,13 +61,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // alamat
-    Route::get('listKota', [AlamatController::class, 'listKota'])->name('listKota');
-    Route::get('listKecamatan', [AlamatController::class, 'listKecamatan'])->name('listKecamatan');
 });
+// alamat
+Route::get('listKota', [AlamatController::class, 'listKota'])->name('listKota');
+Route::get('listKecamatan', [AlamatController::class, 'listKecamatan'])->name('listKecamatan');
+Route::get('listDesa', [AlamatController::class, 'listDesa'])->name('listDesa');
 
 require __DIR__.'/auth.php';
 
+
 Route::get('/register', function(){
     return abort(404);
+});
+Route::get('/login', function(){
+    return view('login');
 });
