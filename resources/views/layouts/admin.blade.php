@@ -556,7 +556,7 @@
                             </li>
 
 
-                            <li class="nav-item {{request()->is('admin/calon*') ? 'active' : ''}}">
+                            {{-- <li class="nav-item {{request()->is('admin/calon*') ? 'active' : ''}}">
                                 <a class="nav-link" href="{{route('admin.calon-legislatif.index')}}">
                                     <span
                                         class="nav-link-icon d-md-none d-lg-inline-block"
@@ -565,7 +565,7 @@
                                     </span>
                                     <span class="nav-link-title"> Calon Legislatif </span>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="nav-item {{request()->is('admin/lokasi*') ? 'active' : ''}}">
                                 <a class="nav-link" href="{{route('admin.lokasi.index')}}">
                                     <span
