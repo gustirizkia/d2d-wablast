@@ -1,0 +1,1 @@
+import{j as a,a as s}from"./app-3595c014.js";function t({auth:e}){return a("div",{className:"flex px-3 py-2 items-center",children:[s("img",{src:`https://ui-avatars.com/api/?name=${e.user.name}`,alt:"",className:"h-8 w-8 object-cover rounded-full mr-2"}),s("div",{className:"font-semibold text-sm text-white",children:e.user.name})]})}export{t as T};
