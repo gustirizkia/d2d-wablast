@@ -335,7 +335,7 @@ export default function TambahRelawan({ session, provinsi, calon }) {
                             className="mt-4 bg-yellow-600 text-center py-2  px-10 rounded-lg text-white w-full"
                             onClick={handleSubmit}
                         >
-                            Mulai
+                            Daftar
                         </div>
                     </div>
                 </div>

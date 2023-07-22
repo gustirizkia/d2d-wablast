@@ -31,8 +31,8 @@
       <!-- Navigation-->
       <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
         <div class="container">
-          <a class="navbar-brand" href="index.html"
-            ><span class="fw-bolder text-warning d-md-block d-none"
+          <a class="navbar-brand" href="/"
+            ><span class="fw-bolder text-primary d-md-block d-none"
               >Relawan Prayudha Septiadi Wijaya</span
             ></a
           >
@@ -50,7 +50,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0  fw-bolder">
               <li class="nav-item mx-2">
-                <a class="nav-link" href="index.html">Home</a>
+                <a class="nav-link" href="/">Home</a>
               </li>
               <li class="nav-item mx-2">
                 <a class="nav-link" href="#">Profile</a>
@@ -59,7 +59,7 @@
                 <a class="nav-link" href="#">Contact</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link btn btn-warning text-light py-2 px-3" href="/login">Login</a>
+                <a class="nav-link btn btn-primary text-light px-4 py-2" href="/login">Login</a>
               </li>
             </ul>
           </div>
@@ -91,7 +91,7 @@
                   class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xxl-start mb-3"
                 >
                   <a
-                    class="btn btn-warning btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder text-light"
+                    class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder text-light"
                     href="/login"
                     >Login</a
                   >
@@ -470,14 +470,14 @@
       </section>
     </main>
     <!-- Footer-->
-    <footer class="bg-white py-4 mt-auto">
-      <div class="container px-5">
+    <footer class="bg-white py-4 mt-auto text-center">
+      <div class="container">
         <div
           class="row align-items-center justify-content-between flex-column flex-sm-row"
         >
           <div class="col-auto">
             <div class="small m-0">
-              Copyright &copy; Relawan Prayudha Septiadi Wijaya
+              Copyright &copy; <a href="/" class="text-dark">Relawan Prayudha Septiadi Wijaya </a><script>document.write(new Date().getFullYear())</script>
             </div>
           </div>
           <!-- <div class="col-auto">
