@@ -198,143 +198,145 @@ export default function TambahRelawan({ session, provinsi, calon }) {
     return (
         <>
             <Head title="Relawan" />
-            <div className="bg-yellow-600 h-36 w-full rounded-b-3xl p-3 font-semibold text-white">
-                Daftar Relawan
-            </div>
-            <div className="min-h-screen  flex justify-center flex-col items-center px-3 bg-white -mt-24 rounded-t-2xl pb-8">
-                {session.success && (
-                    <div className="bg-yellow-100 w-full rounded-lg px-2 text-sm mb-4">
-                        <div className="font-medium w-full py-2  block">
-                            Berhasil simpan data
+            <div className="md:w-1/3  mx-auto w-full relative">
+                <div className="bg-yellow-600 h-36 w-full rounded-b-3xl p-3 font-semibold text-white">
+                    Daftar Relawan
+                </div>
+                <div className="min-h-screen  flex justify-center flex-col items-center px-3 bg-white -mt-24 rounded-t-2xl pb-8">
+                    {session.success && (
+                        <div className="bg-yellow-100 w-full rounded-lg px-2 text-sm mb-4">
+                            <div className="font-medium w-full py-2  block">
+                                Berhasil simpan data
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
 
-                <label className="block w-full mt-4">
-                    <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                        Nama
-                    </span>
-                    <input
-                        type="text"
-                        name="nama"
-                        onChange={(e) => setData("nama", e.target.value)}
-                        className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
-                        placeholder="masukan nama"
-                    />
-                </label>
-                <label className="block w-full mt-6">
-                    <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                        Tanggal Lahir
-                    </span>
-                    <input
-                        type="date"
-                        name="tanggal"
-                        onChange={(e) => SetUmur(e.target.value)}
-                        className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
-                        placeholder="masukan nama"
-                    />
-                </label>
-                <label className="block w-full mt-6">
-                    <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                        Alamat
-                    </span>
-                    <input
-                        type="text"
-                        name="nik"
-                        onChange={(e) => setData("alamat", e.target.value)}
-                        className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
-                        placeholder="masukan nama"
-                    />
-                </label>
+                    <label className="block w-full mt-4">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
+                            Nama
+                        </span>
+                        <input
+                            type="text"
+                            name="nama"
+                            onChange={(e) => setData("nama", e.target.value)}
+                            className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+                            placeholder="masukan nama"
+                        />
+                    </label>
+                    <label className="block w-full mt-6">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
+                            Tanggal Lahir
+                        </span>
+                        <input
+                            type="date"
+                            name="tanggal"
+                            onChange={(e) => SetUmur(e.target.value)}
+                            className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+                            placeholder="masukan nama"
+                        />
+                    </label>
+                    <label className="block w-full mt-6">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
+                            Alamat
+                        </span>
+                        <input
+                            type="text"
+                            name="nik"
+                            onChange={(e) => setData("alamat", e.target.value)}
+                            className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+                            placeholder="masukan nama"
+                        />
+                    </label>
 
-                <label
-                    htmlFor="provinsi"
-                    className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
-                >
-                    Pilih Provinsi
-                </label>
-                <select
-                    id="provinsi"
-                    onChange={changeProvinsi}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
-                >
-                    <option value={0}>Pilih provinsi</option>
-                    {provinsi.map((item) => {
-                        return (
-                            <option value={item.id_provinsi} key={item.id}>
-                                {item.nama}
-                            </option>
-                        );
-                    })}
-                </select>
-                <label
-                    htmlFor="kota"
-                    className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
-                >
-                    Pilih Kota/Kabupaten
-                </label>
-                <select
-                    id="kota"
-                    onChange={changeKota}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
-                >
-                    <option value={0}>Pilih kota</option>
-                    {Kota.map((item) => {
-                        return (
-                            <option value={item.id_kota} key={item.id}>
-                                {item.nama}
-                            </option>
-                        );
-                    })}
-                </select>
-
-                <label
-                    htmlFor="kecamatan"
-                    className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
-                >
-                    Pilih Kecamatan
-                </label>
-                <select
-                    id="kecamatan"
-                    onChange={changeKecamatan}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
-                >
-                    <option value={0}>Pilih Kecamatan</option>
-                    {Kecamatan.map((item) => {
-                        return (
-                            <option value={item.id_kecamatan} key={item.id}>
-                                {item.nama}
-                            </option>
-                        );
-                    })}
-                </select>
-                <label
-                    htmlFor="desa"
-                    className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
-                >
-                    Pilih Desa
-                </label>
-                <select
-                    id="desa"
-                    onChange={changeDesa}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
-                >
-                    <option value={0}>Pilih Desa</option>
-                    {Desa.map((item) => {
-                        return (
-                            <option value={item.id} key={item.id}>
-                                {item.nama}
-                            </option>
-                        );
-                    })}
-                </select>
-
-                <div className=" text-center w-full mt-3">
-                    <div
-                        className="mt-4 bg-yellow-600 text-center py-2  px-10 rounded-lg text-white w-full"
-                        onClick={handleSubmit}
+                    <label
+                        htmlFor="provinsi"
+                        className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
                     >
-                        Mulai
+                        Pilih Provinsi
+                    </label>
+                    <select
+                        id="provinsi"
+                        onChange={changeProvinsi}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
+                    >
+                        <option value={0}>Pilih provinsi</option>
+                        {provinsi.map((item) => {
+                            return (
+                                <option value={item.id_provinsi} key={item.id}>
+                                    {item.nama}
+                                </option>
+                            );
+                        })}
+                    </select>
+                    <label
+                        htmlFor="kota"
+                        className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
+                    >
+                        Pilih Kota/Kabupaten
+                    </label>
+                    <select
+                        id="kota"
+                        onChange={changeKota}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
+                    >
+                        <option value={0}>Pilih kota</option>
+                        {Kota.map((item) => {
+                            return (
+                                <option value={item.id_kota} key={item.id}>
+                                    {item.nama}
+                                </option>
+                            );
+                        })}
+                    </select>
+
+                    <label
+                        htmlFor="kecamatan"
+                        className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
+                    >
+                        Pilih Kecamatan
+                    </label>
+                    <select
+                        id="kecamatan"
+                        onChange={changeKecamatan}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
+                    >
+                        <option value={0}>Pilih Kecamatan</option>
+                        {Kecamatan.map((item) => {
+                            return (
+                                <option value={item.id_kecamatan} key={item.id}>
+                                    {item.nama}
+                                </option>
+                            );
+                        })}
+                    </select>
+                    <label
+                        htmlFor="desa"
+                        className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
+                    >
+                        Pilih Desa
+                    </label>
+                    <select
+                        id="desa"
+                        onChange={changeDesa}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
+                    >
+                        <option value={0}>Pilih Desa</option>
+                        {Desa.map((item) => {
+                            return (
+                                <option value={item.id} key={item.id}>
+                                    {item.nama}
+                                </option>
+                            );
+                        })}
+                    </select>
+
+                    <div className=" text-center w-full mt-3">
+                        <div
+                            className="mt-4 bg-yellow-600 text-center py-2  px-10 rounded-lg text-white w-full"
+                            onClick={handleSubmit}
+                        >
+                            Mulai
+                        </div>
                     </div>
                 </div>
             </div>

@@ -69,6 +69,10 @@ Route::get('listDesa', [AlamatController::class, 'listDesa'])->name('listDesa');
 
 require __DIR__.'/auth.php';
 
+
 Route::get('/register', function(){
     return abort(404);
+});
+Route::get('/login', function(){
+    return view('login');
 });
