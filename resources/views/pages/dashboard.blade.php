@@ -5,6 +5,30 @@
 @endsection
 
 @section('content')
+<div class="mb-4">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <img src="{{asset('icon/archive.png')}}" alt="" class="img-fluid" style="width: 50px">
+                    <div class="h3 mb-0">
+                        Quick Count
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <img src="{{asset('icon/online-survey.png')}}" alt="" class="img-fluid" style="width: 50px">
+                    <div class="h3 mb-0">
+                        Survey Online
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="row">
         <div class="col-md-3 col-6">
             <div class="card">
