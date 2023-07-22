@@ -9,5 +9,5 @@ class Kecamatan extends Model
 {
     use HasFactory;
 
-    protected $table = "subdistricts";
+    protected $guard = [];
 }

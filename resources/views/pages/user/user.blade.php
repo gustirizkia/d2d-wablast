@@ -43,14 +43,18 @@
                                 <td>{{$item->phone}}</td>
                                 <td>
                                     <div class="d-flex">
-                                        {{-- <a href="{{route('admin.data.user.edit', $item->id)}}" class="btn btn-warning btn-sm">
+                                        <a href="{{route('admin.data.user.edit', $item->id)}}" class="btn btn-warning ">
+                                            <i class="bi bi-pen"></i>
+                                            <span class="ms-1">Edit</span>
+                                        </a>
+                                        <a href="{{route('admin.data.user.show', $item->id)}}" class="btn btn-info  ms-2">
                                             <i class="bi bi-eye"></i>
                                             <span class="ms-1">Detail</span>
-                                        </a> --}}
-                                        <form action="{{ route('admin.bank-soal.destroy', $item->id) }}" method="POST" class="d-inline">
+                                        </a>
+                                        <form action="{{ route('admin.data.bank-soal.destroy', $item->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method("DELETE")
-                                            <span class="btn btn-danger btn-sm px-2 py-1 text-sm ms-2 delete_confirm cursor-pointer">
+                                            <span class="btn btn-danger   ms-2 delete_confirm cursor-pointer">
                                                 <i class="bi bi-trash"></i><span class="ms-1">Delete</span>
                                             </span>
                                         </form>
@@ -66,6 +70,10 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            <div class="mt-4">
+                {{$data['user']->links("pagination::bootstrap-5")}}
             </div>
         </div>
     </div>

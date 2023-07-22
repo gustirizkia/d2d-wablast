@@ -26,7 +26,7 @@
                     <select required name="provinsi" id="provinsi" class="form-control">
                         <option >Pilih provinsi</option>
                         @foreach ($provinsi as $item)
-                            <option value="{{$item->province_id}}">{{$item->name}}</option>
+                            <option value="{{$item->id_provinsi}}">{{$item->nama}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -66,7 +66,7 @@
 
                     let tempData = data.data;
                     tempData.forEach(element => {
-                        tagHtml += `<option value="${element.city_id}">${element.city_name}</option>`
+                        tagHtml += `<option value="${element.id_kota}">${element.nama}</option>`
                     });
 
                     $("#kota").html(tagHtml);
@@ -90,7 +90,7 @@
 
                     let tempData = data.data;
                     tempData.forEach(element => {
-                        tagHtml += `<option value="${element.subdistrict_id}">${element.name}</option>`
+                        tagHtml += `<option value="${element.id_kecamatan}">${element.nama}</option>`
                     });
 
                     $("#kecamatan").html(tagHtml);

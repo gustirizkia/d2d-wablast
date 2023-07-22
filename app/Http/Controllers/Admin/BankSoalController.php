@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Models\DataTarget;
+use App\Models\PilihanGanda;
 use App\Models\PilihanTarget;
 use App\Models\Soal;
+use App\Models\SoalHasKecamatan;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,19 +21,14 @@ class BankSoalController extends Controller
      */
     public function index(Request $request)
     {
-        $filter = $request->filter;
-
-        $data['data_target'] = PilihanTarget::get();
-        $data['responden'] = DataTarget::get();
-        // return response()->json($data['responden']);
 
         $data['soal'] = Soal::orderBy('id', 'desc')->get();
 
-        return view('pages.banksoal.banksoal', compact('data', 'filter'));
+        return view('pages.banksoal.banksoal', compact('data'));
     }
 
     public function filter(Request $request){
-        dd($request->all());
+        // dd($request->all());
     }
 
     /**
@@ -47,9 +44,9 @@ class BankSoalController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'soal' => 'required|string',
-            'pilihan' => 'required|array',
         ]);
 
         DB::beginTransaction();
@@ -63,20 +60,27 @@ class BankSoalController extends Controller
                 'color' => $this->generateColor()
             ];
 
+            if($request->tipe_pilihan === 'ya_tidak'){
+                $dataSoal['yes_no'] = 1;
+            }
+
             $insertSoal = DB::table('soals')->insertGetId($dataSoal);
 
-            foreach($request->pilihan as $key => $value){
-                DB::table('pilihan_gandas')->insert([
-                    'soal_id' => $insertSoal,
-                    'title' => $value,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]);
+            if($request->tipe_pilihan !== 'ya_tidak'){
+                foreach($request->pilihan as $key => $value){
+                    DB::table('pilihan_gandas')->insert([
+                        'soal_id' => $insertSoal,
+                        'title' => $value,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
             }
+
 
             DB::commit();
 
-            return redirect()->route('admin.bank-soal.index')->with('success', "Berhasil Tambah Bank Soal");
+            return redirect()->route('admin.data.bank-soal.index')->with('success', "Berhasil Tambah Bank Soal");
         } catch (Exception $e) {
             DB::rollBack();
 
@@ -109,9 +113,9 @@ class BankSoalController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request->all());
         $request->validate([
             'soal' => 'required|string',
-            'pilihan' => 'required|array',
         ]);
 
         DB::beginTransaction();
@@ -123,37 +127,47 @@ class BankSoalController extends Controller
                 'updated_at' => now()
             ];
 
-            $insertSoal = DB::table('soals')->where('id', $id)->update($dataSoal);
-            $array_id_pilihan = [];
-            foreach($request->pilihan as $key => $value){
-                array_push($array_id_pilihan, $value['id']);
-                DB::table('pilihan_gandas')->where('id', $value['id'])->update([
-                    'soal_id' => $id,
-                    'title' => $value['title'],
-                    'updated_at' => now()
-                ]);
+            if($request->tipe_pilihan === 'ya_tidak'){
+                $dataSoal['yes_no'] = 1;
+            }else{
+                $dataSoal['yes_no'] = 0;
+
             }
+            $insertSoal = DB::table('soals')->where('id', $id)->update($dataSoal);
 
-            // dd($array_id_pilihan);
-
-            // delete
-            $delete = DB::table('pilihan_gandas')->where('soal_id', $id)->whereNotIn('id', $array_id_pilihan)->delete();
-
-            if($request->new_pilihan){
-                foreach ($request->new_pilihan as $key => $value) {
-                    DB::table('pilihan_gandas')->insert([
+            if($request->tipe_pilihan !== 'ya_tidak'){
+                $array_id_pilihan = [];
+                foreach($request->pilihan as $key => $value){
+                    array_push($array_id_pilihan, $value['id']);
+                    DB::table('pilihan_gandas')->where('id', $value['id'])->update([
                         'soal_id' => $id,
-                        'title' => $value,
-                        'created_at' => now(),
+                        'title' => $value['title'],
                         'updated_at' => now()
                     ]);
+                }
+
+                // dd($array_id_pilihan);
+
+                // delete
+                $delete = DB::table('pilihan_gandas')->where('soal_id', $id)->whereNotIn('id', $array_id_pilihan)->delete();
+
+                if($request->new_pilihan){
+                    foreach ($request->new_pilihan as $key => $value) {
+                        DB::table('pilihan_gandas')->insert([
+                            'soal_id' => $id,
+                            'title' => $value,
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]);
+                    }
                 }
             }
 
 
+
             DB::commit();
 
-            return redirect()->route('admin.bank-soal.index')->with('success', "Berhasil Update Bank Soal");
+            return redirect()->route('admin.data.bank-soal.index')->with('success', "Berhasil Update Bank Soal");
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Gagal simpan data server error '.$e->getMessage());
@@ -165,7 +179,25 @@ class BankSoalController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $data = Soal::findOrFail($id);
+
+            $soalhas = SoalHasKecamatan::where("soal_id", $id)->delete();
+
+            PilihanGanda::where("soal_id", $id)->delete();
+
+            $data->delete();
+
+            DB::commit();
+            return redirect()->back()->with("success", "Berhasil Hapus data");
+        } catch (Exception $th) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error', "Gagal hapus data");
+        }
+
+
     }
 
     public function generateColor(){

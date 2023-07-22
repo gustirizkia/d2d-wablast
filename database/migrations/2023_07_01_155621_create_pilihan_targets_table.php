@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('data_target_id');
             $table->bigInteger('soal_id');
-            $table->bigInteger('pilihan_ganda_id');
+            $table->bigInteger('pilihan_ganda_id')->nullable();
+            $table->string('yes_no')->nullable();
+            $table->bigInteger('kecamatan_id')->nullable();
             $table->timestamps();
         });
     }

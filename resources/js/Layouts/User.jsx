@@ -139,7 +139,7 @@ export default function User({ children }) {
                     </div>
                 </div>
                 {/* bottombar end */}
-                {children}
+                <div className="pb-16">{children}</div>
             </div>
         </div>
     );

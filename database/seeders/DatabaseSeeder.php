@@ -23,7 +23,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            SoalSeeder::class
+            SoalSeeder::class,
+            ProvinsiSeeder::class,
+            KotaSeeder::class,
+            KecamatanSeeder::class,
+            DesaSeeder::class,
         ]);
     }
 }

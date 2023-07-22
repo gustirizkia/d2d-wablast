@@ -1,16 +1,31 @@
-import { Head, router, useForm } from "@inertiajs/react";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { useGeolocated } from "react-geolocated";
 import Swal from "sweetalert2";
 import Layout from "../Layouts/User";
+import axios from "axios";
 
-export default function Survey({ data_soal, session }) {
-    const { data, setData, post, processing, errors } = useForm({
+export default function Survey({ data_soal, session, provinsi, k }) {
+    const { errors } = usePage().props;
+
+    useEffect(() => {
+        console.log("errors", errors);
+    }, [errors]);
+    const { data, setData, post, processing } = useForm({
         nama: null,
         alamat: null,
     });
     const [Latitude, SetLatitude] = useState(null);
     const [Longitude, Setlongitude] = useState(null);
+    const [Kota, SetKota] = useState([]);
+    const [Kecamatan, SetKecamatan] = useState([]);
+    const [Desa, SetDesa] = useState([]);
+    const [Alamat, SetAlamat] = useState({
+        provinsi_id: 0,
+        kota_id: 0,
+        kecamatan_id: 0,
+        desa_id: 0,
+    });
 
     const { coords, isGeolocationAvailable, isGeolocationEnabled } =
         useGeolocated({
@@ -22,7 +37,6 @@ export default function Survey({ data_soal, session }) {
     useEffect(() => {
         SetLatitude(coords?.latitude);
         Setlongitude(coords?.longitude);
-        console.log("coords", coords);
     }, [coords]);
 
     const [AllowLocation, SetAllowLocation] = useState(false);
@@ -77,7 +91,6 @@ export default function Survey({ data_soal, session }) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     SetAllowLocation(true);
-                    console.log("data", data);
                 },
                 (err) => {
                     Swal.fire({
@@ -88,10 +101,100 @@ export default function Survey({ data_soal, session }) {
                     SetAllowLocation(false);
                 }
             );
-            let formData = data;
-            formData.latitude = Latitude;
-            formData.longitude = Longitude;
-            router.post("/inputDataTarget", formData);
+
+            let errAlamat = null;
+
+            if (!Alamat.provinsi_id) {
+                errAlamat = "Provinsi";
+            } else if (!Alamat.kota_id) {
+                errAlamat = "Kota";
+            } else if (!Alamat.kecamatan_id) {
+                errAlamat = "Kecamatan";
+            } else if (!Alamat.desa_id) {
+                errAlamat = "Kecamatan";
+            }
+
+            console.log("Alamat", Alamat);
+
+            if (errAlamat) {
+                Swal.fire({
+                    icon: "info",
+                    title: `Silahkan Pilih ${errAlamat}`,
+                    text: `Form Alamat Belum Lengkap`,
+                });
+            } else {
+                let formData = {
+                    nama: data.nama,
+                    alamat: data.alamat,
+                    provinsi: Alamat.provinsi_id,
+                    kota: Alamat.kota_id,
+                    kecamatan: Alamat.kecamatan_id,
+                    desa: Alamat.desa_id,
+                };
+                formData.latitude = Latitude;
+                formData.longitude = Longitude;
+
+                if (k) {
+                    formData.k = k;
+                }
+
+                console.log("formData", formData);
+
+                // return;
+                router.post("/inputDataTarget", formData);
+            }
+        }
+    };
+
+    const changeProvinsi = (e) => {
+        let value = e.target.value;
+
+        SetAlamat({ ...Alamat, provinsi_id: value });
+        if (value > 0) {
+            axios
+                .get(`/listKota?provinsi=${value}`)
+                .then((ress) => {
+                    SetKota(ress.data.data);
+                })
+                .catch((err) => {
+                    console.log("err", err);
+                });
+        }
+    };
+    const changeKota = (e) => {
+        let value = e.target.value;
+        SetAlamat({ ...Alamat, kota_id: value });
+        if (value > 0) {
+            axios
+                .get(`/listKecamatan?kota=${value}`)
+                .then((ress) => {
+                    SetKecamatan(ress.data.data);
+                })
+                .catch((err) => {
+                    console.log("err", err);
+                });
+        }
+    };
+    const changeKecamatan = (e) => {
+        let value = e.target.value;
+
+        SetAlamat({ ...Alamat, kecamatan_id: value });
+        if (value > 0) {
+            axios
+                .get(`/listDesa?kecamatan=${value}`)
+                .then((ress) => {
+                    SetDesa(ress.data.data);
+                })
+                .catch((err) => {
+                    console.log("err", err);
+                });
+        }
+    };
+    const changeDesa = (e) => {
+        let value = e.target.value;
+        console.log("value", value);
+        SetAlamat({ ...Alamat, desa_id: value });
+        if (value > 0) {
         }
     };
 
@@ -131,12 +234,90 @@ export default function Survey({ data_soal, session }) {
                         placeholder="masukan nama"
                     />
                 </label>
+
+                <label
+                    htmlFor="provinsi"
+                    className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
+                >
+                    Pilih Provinsi
+                </label>
+                <select
+                    id="provinsi"
+                    onChange={changeProvinsi}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
+                >
+                    <option value={0}>Pilih provinsi</option>
+                    {provinsi.map((item) => {
+                        return (
+                            <option value={item.id_provinsi} key={item.id}>
+                                {item.nama}
+                            </option>
+                        );
+                    })}
+                </select>
+                <label
+                    htmlFor="kota"
+                    className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
+                >
+                    Pilih Kota/Kabupaten
+                </label>
+                <select
+                    id="kota"
+                    onChange={changeKota}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
+                >
+                    <option value={0}>Pilih kota</option>
+                    {Kota.map((item) => {
+                        return (
+                            <option value={item.id_kota} key={item.id}>
+                                {item.nama}
+                            </option>
+                        );
+                    })}
+                </select>
+
+                <label
+                    htmlFor="kecamatan"
+                    className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
+                >
+                    Pilih Kecamatan
+                </label>
+                <select
+                    id="kecamatan"
+                    onChange={changeKecamatan}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
+                >
+                    <option value={0}>Pilih Kecamatan</option>
+                    {Kecamatan.map((item) => {
+                        return (
+                            <option value={item.id_kecamatan} key={item.id}>
+                                {item.nama}
+                            </option>
+                        );
+                    })}
+                </select>
+                <label
+                    htmlFor="desa"
+                    className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
+                >
+                    Pilih Desa
+                </label>
+                <select
+                    id="desa"
+                    onChange={changeDesa}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
+                >
+                    <option value={0}>Pilih Desa</option>
+                    {Desa.map((item) => {
+                        return (
+                            <option value={item.id} key={item.id}>
+                                {item.nama}
+                            </option>
+                        );
+                    })}
+                </select>
+
                 <div className=" text-center w-full mt-3">
-                    {/* <div className="text-xl font-medium">Mulai Survey</div>
-                    <div className="text-gray-700 text-sm">
-                        Siapkan Koneksi dan tempat yang nyaman sebelum melakukan
-                        penginputan survey ini
-                    </div> */}
                     <div
                         className="mt-4 bg-yellow-600 text-center py-2  px-10 rounded-lg text-white w-full"
                         onClick={handleSubmit}

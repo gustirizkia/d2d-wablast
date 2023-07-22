@@ -19,19 +19,28 @@ export default function Quiz({
     const [LoadingUp, SetLoadingUp] = useState(false);
     const [FotoBersama, SetFotoBersama] = useState(null);
     const [PreviewImage, SetPreviewImage] = useState(null);
+    const [YesNo, SetYesNo] = useState(null);
 
     const inputRef = useRef(null);
 
     const handelNext = () => {
-        if (PilihanId === 0) {
+        if (PilihanId === 0 && TempSoal.yes_no !== 1) {
             Swal.fire("Info!", "Pilih jawaban ", "info");
+        } else if (!YesNo && TempSoal.yes_no === 1) {
+            Swal.fire("Info!", "Pilih jawaban ya atau tidak", "info");
         } else {
             SetLoadingUp(true);
             let formData = {
                 soal_id: TempSoal.id,
                 target_id: target.id,
-                pilihan_id: PilihanId,
             };
+
+            if (YesNo && TempSoal.yes_no === 1) {
+                formData.pilihan_id = YesNo;
+            } else {
+                formData.pilihan_id = PilihanId;
+            }
+
             formData._token = csrf_token;
             axios
                 .post("/nextSoal", formData)
@@ -129,11 +138,53 @@ export default function Quiz({
                 SetFirstSoal(ress.data.first_soal);
                 SetTempLastSoal(false);
                 SetLoadingUp(false);
+
+                SetYesNo(null);
             })
             .catch((err) => {
                 SetLoadingUp(false);
                 console.log("err", err);
+                SetYesNo(null);
             });
+    };
+
+    const MultiplePilihan = () => {
+        return (
+            <>
+                {TempSoal.pilihan.map((item, index) => {
+                    return (
+                        <div
+                            className={`p-3 rounded-full mb-3 border flex items-center ${
+                                PilihanId === item.id
+                                    ? "bg-yellow-500 text-white  border-yellow-500 "
+                                    : "bg-yellow-100 border-yellow-100"
+                            }`}
+                            key={item.id}
+                            onClick={() => SetPilihanId(item.id)}
+                        >
+                            {PilihanId === item.id && (
+                                <div className="mr-2">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                        className="w-6 h-6"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                </div>
+                            )}
+                            <span className="mr-2 text-sm">{index + 1}.</span>
+                            <span className="text-sm">{item.title}</span>
+                        </div>
+                    );
+                })}
+            </>
+        );
     };
 
     return (
@@ -144,7 +195,10 @@ export default function Quiz({
             {/* Loading end*/}
             <div className="bg-yellow-50 min-h-screen">
                 <div className="bg-yellow-600 h-36 w-full rounded-b-3xl">
-                    <Link href="/" className="flex items-center px-3 pt-2">
+                    <Link
+                        href="/list-survey"
+                        className="flex items-center px-3 pt-2"
+                    >
                         <div className="text-white">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -161,7 +215,7 @@ export default function Quiz({
                                 />
                             </svg>
                         </div>
-                        <div className="text-white ml-3">Home</div>
+                        <div className="text-white ml-3">Survey</div>
                     </Link>
                 </div>
                 <div className="bg-white p-3 rounded-lg -mt-24 mx-3">
@@ -171,18 +225,17 @@ export default function Quiz({
                     <div className="text-sm">{TempSoal.subtitle}</div>
                 </div>
                 <div className="bg-white p-3 rounded-lg  mx-3 mt-2">
-                    {TempSoal.pilihan.map((item, index) => {
-                        return (
+                    {TempSoal.yes_no > 0 ? (
+                        <>
                             <div
                                 className={`p-3 rounded-full mb-3 border flex items-center ${
-                                    PilihanId === item.id
+                                    YesNo === "iya"
                                         ? "bg-yellow-500 text-white  border-yellow-500 "
                                         : "bg-yellow-100 border-yellow-100"
                                 }`}
-                                key={item.id}
-                                onClick={() => SetPilihanId(item.id)}
+                                onClick={() => SetYesNo("iya")}
                             >
-                                {PilihanId === item.id && (
+                                {YesNo === "iya" && (
                                     <div className="mr-2">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -198,13 +251,40 @@ export default function Quiz({
                                         </svg>
                                     </div>
                                 )}
-                                <span className="mr-2 text-sm">
-                                    {index + 1}.
-                                </span>
-                                <span className="text-sm">{item.title}</span>
+                                <span className="mr-2 text-sm">1.</span>
+                                <span className="text-sm">Iya</span>
                             </div>
-                        );
-                    })}
+                            <div
+                                className={`p-3 rounded-full mb-3 border flex items-center ${
+                                    YesNo === "tidak"
+                                        ? "bg-yellow-500 text-white  border-yellow-500 "
+                                        : "bg-yellow-100 border-yellow-100"
+                                }`}
+                                onClick={() => SetYesNo("tidak")}
+                            >
+                                {YesNo === "tidak" && (
+                                    <div className="mr-2">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24"
+                                            fill="currentColor"
+                                            className="w-6 h-6"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                    </div>
+                                )}
+                                <span className="mr-2 text-sm">2.</span>
+                                <span className="text-sm">Tidak</span>
+                            </div>
+                        </>
+                    ) : (
+                        <MultiplePilihan />
+                    )}
                     {TempLastSoal ? (
                         <>
                             <div

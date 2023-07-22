@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\DataTarget;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -60,7 +61,20 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $item = User::findOrFail($id);
+        $responden = DataTarget::where("user_survey_id", $id)->paginate(12);
+
+        $count['responden'] = count(DataTarget::where("user_survey_id", $id)->get());
+        $count['responden_kecamatan'] = count(DataTarget::where("user_survey_id", $id)->groupBy("kecamatan_id")->get());
+        $count['responden_provinsi'] = count(DataTarget::where("user_survey_id", $id)->groupBy("provinsi_id")->get());
+        $count['responden_kota'] = count(DataTarget::where("user_survey_id", $id)->groupBy("kota_id")->get());
+
+
+        return view('pages.user.detail', [
+            'item' => $item,
+            'responden' => $responden,
+            'count' => $count
+        ]);
     }
 
     /**

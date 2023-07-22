@@ -18,6 +18,7 @@ return new class extends Migration
             $table->longText("jawaban")->nullable();
             $table->string('image')->nullable();
             $table->string('color')->nullable();
+            $table->integer('yes_no')->default(0);
             $table->timestamps();
         });
     }

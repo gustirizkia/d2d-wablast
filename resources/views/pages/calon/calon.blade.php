@@ -55,7 +55,7 @@
                                             </span>
                                         </form>
                                         <a href="{{route('admin.bankSoalCalon', $item->id)}}" class="btn btn-sm btn-secondary ms-2">
-                                            <i class="bi bi-bounding-box"></i> <span class="ms-2">Bank Soal</span>
+                                            <i class="bi bi-bounding-box"></i> <span class="ms-2">Kuesioner</span>
                                         </a>
                                     </div>
                                 </td>

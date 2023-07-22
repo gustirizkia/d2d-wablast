@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminRelawanController;
 use App\Http\Controllers\Admin\BankSoalController;
 use App\Http\Controllers\Admin\CalonController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\KuisionerKecamatanController;
 use App\Http\Controllers\Admin\LokasiController;
 use App\Http\Controllers\Admin\QuickCountController;
 use App\Http\Controllers\Admin\ReportController;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('admin')->group(function(){
     Route::get('/', [DashboardController::class, 'index']);
-    Route::resource('bank-soal', BankSoalController::class);
+
     Route::get('exportDataSoal', [BankSoalController::class, 'exportDataSoal'])->name("exportDataSoal");
     Route::post('filter', [BankSoalController::class, 'filter'])->name("filter");
 
@@ -31,8 +32,11 @@ Route::middleware('admin')->group(function(){
         Route::resource('user', UserController::class);
         Route::resource('responden', RespondenController::class);
         Route::get('report', [ReportController::class, 'index'])->name("report");
+        Route::resource('bank-soal', BankSoalController::class);
+        Route::resource('kuisioner-kecamatan', KuisionerKecamatanController::class);
     });
     Route::get('responden/export', [RespondenController::class, 'export'])->name('responden-export');
+    Route::get('responden/exportDetail/{id}', [RespondenController::class, 'exportDetail'])->name('responden-exportDetail');
 
     Route::get('quick-qount', [QuickCountController::class, 'index'])->name("quick-qount");
 

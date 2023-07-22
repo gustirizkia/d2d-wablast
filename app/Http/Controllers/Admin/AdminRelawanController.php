@@ -3,20 +3,37 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Provinsi;
 use App\Models\Relawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminRelawanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Relawan::orderBy("id", 'desc')->with("calon")->get();
+        $provinsi = $request->provinsi;
+        $kota = $request->kota;
+        $kecamatan = $request->kecamatan;
+
+        $data = Relawan::when($provinsi, function($query)use($provinsi){
+                                return $query->where("provinsi_id", $provinsi);
+                            })
+                            ->when($kota, function($query)use($kota){
+                                return $query->where("kota_id", $kota);
+                            })
+                            ->when($kecamatan, function($query)use($kecamatan){
+                                return $query->where("kecamatan_id", $kecamatan);
+                            })
+                            ->get();
         // dd($data);
+        $provinsi = DB::table('provinsis')->whereIn('id', [11, 16])->orderBy('nama', 'asc')->get();
         return view('pages.relawan.index', [
-            'items' => $data
+            'items' => $data,
+            'provinsi' => $provinsi
         ]);
     }
 

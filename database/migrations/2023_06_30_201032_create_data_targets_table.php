@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('user_survey_id');
             $table->string('latitude');
             $table->string('longitude');
+            $table->bigInteger('provinsi_id');
+            $table->bigInteger('kota_id');
+            $table->bigInteger('kecamatan_id');
+            $table->bigInteger('desa_id');
             $table->timestamps();
         });
     }

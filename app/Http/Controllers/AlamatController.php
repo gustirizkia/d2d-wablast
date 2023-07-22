@@ -11,7 +11,7 @@ class AlamatController extends Controller
     public function listKota(Request $request)
     {
         $validasi = Validator::make($request->all(),[
-            'provinsi' => 'required|exists:provinces,province_id'
+            'provinsi' => 'required|exists:provinsis,id_provinsi'
         ]);
 
 
@@ -23,7 +23,7 @@ class AlamatController extends Controller
             ], 422);
         }
 
-        $data = DB::table('cities')->where('province_id', $request->provinsi)->orderBy('city_name', 'asc')->get();
+        $data = DB::table('kotas')->where('provinsi_id', $request->provinsi)->orderBy('nama', 'asc')->get();
 
         return response()->json([
             'status' => 'success',
@@ -33,7 +33,7 @@ class AlamatController extends Controller
     public function listKecamatan(Request $request)
     {
         $validasi = Validator::make($request->all(),[
-            'kota' => 'required|exists:cities,city_id'
+            'kota' => 'required|exists:kotas,id_kota'
         ]);
 
 
@@ -45,7 +45,29 @@ class AlamatController extends Controller
             ], 422);
         }
 
-        $data = DB::table('subdistricts')->where('city_id', $request->kota)->orderBy('name', 'asc')->get();
+        $data = DB::table('kecamatans')->where('kota_id', $request->kota)->orderBy('nama', 'asc')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
+        ]);
+    }
+    public function listDesa(Request $request)
+    {
+        $validasi = Validator::make($request->all(),[
+            'kecamatan' => 'required|exists:kecamatans,id_kecamatan'
+        ]);
+
+
+        if($validasi->fails())
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => $validasi->errors()->first()
+            ], 422);
+        }
+
+        $data = DB::table('desas')->where('kecamatan_id', $request->kecamatan)->orderBy('nama', 'asc')->get();
 
         return response()->json([
             'status' => 'success',
