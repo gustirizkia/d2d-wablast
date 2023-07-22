@@ -24,6 +24,9 @@ export default function Quiz({
     const inputRef = useRef(null);
 
     const handelNext = () => {
+        console.log("TempSoal", TempSoal);
+        console.log("PilihanId", PilihanId);
+        console.log("parseInt(TempSoal.yes_no)", parseInt(TempSoal.yes_no));
         if (PilihanId === 0 && parseInt(TempSoal.yes_no) !== 1) {
             Swal.fire("Info!", "Pilih jawaban ", "info");
         } else if (!YesNo && parseInt(TempSoal.yes_no) === 1) {
