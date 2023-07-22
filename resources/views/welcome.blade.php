@@ -30,14 +30,14 @@
     <main class="flex-shrink-0">
       <!-- Navigation-->
       <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
-        <div class="container px-5">
+        <div class="container">
           <a class="navbar-brand" href="index.html"
-            ><span class="fw-bolder text-primary"
+            ><span class="fw-bolder text-warning d-md-block d-none"
               >Relawan Prayudha Septiadi Wijaya</span
             ></a
           >
           <button
-            class="navbar-toggler"
+            class="navbar-toggler d-none"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent"
@@ -48,26 +48,26 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-bolder">
-              <li class="nav-item">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0  fw-bolder">
+              <li class="nav-item mx-2">
                 <a class="nav-link" href="index.html">Home</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item mx-2">
                 <a class="nav-link" href="#">Profile</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
-              </li>
-              <li class="nav-item">
+              </li>       
+              <li class="nav-item mx-2">
                 <a class="nav-link" href="#">Contact</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link btn btn-warning text-light py-2 px-3" href="/login">Login</a>
               </li>
             </ul>
           </div>
         </div>
       </nav>
       <!-- Header-->
-      <header class="py-5">
-        <div class="container px-5 pb-5">
+      <header class="">
+        <div class="container pb-5">
           <div class="row gx-5 align-items-center">
             <div class="col-xxl-5">
               <!-- Header text content-->
@@ -91,7 +91,7 @@
                   class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xxl-start mb-3"
                 >
                   <a
-                    class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder"
+                    class="btn btn-warning btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder text-light"
                     href="/login"
                     >Login</a
                   >
