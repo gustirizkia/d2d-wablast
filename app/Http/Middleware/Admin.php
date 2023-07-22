@@ -18,7 +18,7 @@ class Admin
     {
 
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect('/login');
         }elseif (Auth::user()->roles !== 'admin') {
             return abort(404);
         }
