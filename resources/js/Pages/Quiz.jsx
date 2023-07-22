@@ -28,7 +28,7 @@ export default function Quiz({
         console.log("PilihanId", PilihanId);
         if (PilihanId === 0 && TempSoal.yes_no !== 1) {
             Swal.fire("Info!", "Pilih jawaban ", "info");
-        } else if (!YesNo && TempSoal.yes_no === 1) {
+        } else if (!YesNo && parseInt(TempSoal.yes_no) === 1) {
             Swal.fire("Info!", "Pilih jawaban ya atau tidak", "info");
         } else {
             SetLoadingUp(true);
