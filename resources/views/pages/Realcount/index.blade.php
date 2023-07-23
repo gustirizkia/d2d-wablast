@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Quick Qount
+    Realcount
 @endsection
 
 @section('content')

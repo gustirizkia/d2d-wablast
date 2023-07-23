@@ -592,7 +592,7 @@
                                         ><!-- Download SVG icon from http://tabler-icons.io/i/star -->
                                         <i class="bi bi-database-fill-check"></i>
                                     </span>
-                                    <span class="nav-link-title"> Survey </span>
+                                    <span class="nav-link-title"> Data </span>
                                 </a>
                                 <div class="dropdown-menu {{request()->is("admin/data*") ? "show" : ''}}">
                                     <div class="dropdown-menu-columns">
@@ -645,7 +645,7 @@
                                         >
                                         <i class="bi bi-box2"></i>
                                     </span>
-                                    <span class="nav-link-title"> Quick Qount </span>
+                                    <span class="nav-link-title"> Realcount </span>
                                 </a>
                             </li>
 

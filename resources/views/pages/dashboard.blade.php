@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <img src="{{asset('icon/archive.png')}}" alt="" class="img-fluid" style="width: 50px">
                     <div class="h3 mb-0">
-                        Quick Count
+                        Real Qount
                     </div>
                 </div>
             </div>
