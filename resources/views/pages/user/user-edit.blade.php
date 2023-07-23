@@ -33,6 +33,15 @@
                     @enderror
                 </div>
                 <div class="mb-3">
+                    <label for="" class="form-label">Target</label>
+                    <input type="number" class="form-control @error('target') is-invalid @enderror" name="target" required value="{{$item->target}}">
+                    @error('target')
+                        <small class="text-danger">
+                            <i>{{$message}}</i>
+                        </small>
+                    @enderror
+                </div>
+                <div class="mb-3">
                     <label for="" class="form-label">Password</label>
                     <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"  >
                     <small class="text-danger"><i>Kosongkan jika tidak ingin diubah</i></small>

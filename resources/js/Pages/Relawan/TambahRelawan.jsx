@@ -47,11 +47,11 @@ export default function TambahRelawan({ session, provinsi, calon }) {
                 SetAllowLocation(true);
             },
             (err) => {
-                Swal.fire({
-                    icon: "info",
-                    title: "Kami membutuhkan lokasi anda",
-                    text: "Aktifkan di pojok atas kiri tanda seru",
-                });
+                // Swal.fire({
+                //     icon: "info",
+                //     title: "Kami membutuhkan lokasi anda",
+                //     text: "Aktifkan di pojok atas kiri tanda seru",
+                // });
                 SetAllowLocation(false);
             }
         );
@@ -76,7 +76,7 @@ export default function TambahRelawan({ session, provinsi, calon }) {
     };
 
     const handleSubmit = () => {
-        if (!AllowLocation) {
+        if (false) {
             Swal.fire({
                 icon: "info",
                 title: "Kami membutuhkan lokasi anda",
@@ -134,8 +134,6 @@ export default function TambahRelawan({ session, provinsi, calon }) {
                 };
                 formData.latitude = Latitude;
                 formData.longitude = Longitude;
-
-                console.log("formData", formData);
 
                 // return;
                 router.post("/addRelawan", formData);

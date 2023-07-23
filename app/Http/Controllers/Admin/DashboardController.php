@@ -25,14 +25,7 @@ class DashboardController extends Controller
         $data['count_surveyor'] = DB::table('users')->where('roles', 'user')->count();
         $data['count_responden'] = DB::table('data_targets')->count();
 
-        $data['statistik_relawan'] = Relawan::select(
-                                "id" ,
-                                DB::raw("(count(*)) as total"),
-                                DB::raw("(DATE_FORMAT(created_at, '%w-%m-%Y')) as month_year")
-                            )
-                            ->orderBy('created_at')
-                            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%w-%m-%Y')"))
-                            ->get();
+
 
         // return response()->json($data['statistik_relawan']);
 

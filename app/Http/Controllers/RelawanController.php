@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
+use Stevebauman\Location\Facades\Location;
 
 class RelawanController extends Controller
 {
@@ -41,16 +42,14 @@ class RelawanController extends Controller
     {
         $request->validate([
             'nama' => 'required|string',
-            'alamat' => 'required|string',
-            'latitude' => 'required',
-            'longitude' => 'required',
+            'alamat' => 'required|string'
         ]);
 
         $data = [
             'nama' => $request->nama,
             'alamat' => $request->alamat,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
+            'latitude' => $request->latitude ? $request->latitude : 1,
+            'longitude' => $request->longitude ? $request->longitude : 1,
             'created_at' => now(),
             'updated_at' => now(),
             "provinsi_id" => $request->provinsi,
@@ -59,6 +58,15 @@ class RelawanController extends Controller
             "desa_id" => $request->desa,
             "tanggal_lahir" => $request->tanggal_lahir
         ];
+
+
+        if(!$request->latitude || !$request->longitude){
+            $location = Location::get(request()->getClientIp());
+            if($location){
+                $data['latitude'] = $location->latitude;
+                $data['longitude'] = $location->longitude;
+            }
+        }
 
         // try {
         //     $latitude = $request->latitude;
