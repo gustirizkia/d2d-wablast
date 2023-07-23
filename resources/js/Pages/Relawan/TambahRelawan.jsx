@@ -93,11 +93,11 @@ export default function TambahRelawan({ session, provinsi, calon }) {
                     SetAllowLocation(true);
                 },
                 (err) => {
-                    Swal.fire({
-                        icon: "info",
-                        title: "Kami membutuhkan lokasi anda",
-                        text: "Aktifkan di pojok atas kiri tanda seru",
-                    });
+                    // Swal.fire({
+                    //     icon: "info",
+                    //     title: "Kami membutuhkan lokasi anda",
+                    //     text: "Aktifkan di pojok atas kiri tanda seru",
+                    // });
                     SetAllowLocation(false);
                 }
             );

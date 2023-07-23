@@ -80,16 +80,12 @@
                 </div>
             @endforeach
 
-            <div class="col-12 mb-3">
-                <div class="card">
-                    <div class="card-header">Statistik Relawan</div>
-                  <div class="card-body">
 
-                  </div>
-                </div>
-            </div>
         </div>
     </div>
+
+@include('pages.components._statistik-relawa')
+
 @endsection
 
 @push('addScript')

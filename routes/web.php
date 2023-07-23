@@ -75,4 +75,4 @@ Route::get('/register', function(){
 });
 Route::get('/login', function(){
     return view('login');
-})->name('login');
+})->middleware('guest')->name('login');

@@ -26,4 +26,8 @@ class DataTarget extends Model
     public function rel_desa(){
         return $this->belongsTo(Desa::class, 'desa_id', 'id');
     }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_survey_id', 'id');
+    }
 }

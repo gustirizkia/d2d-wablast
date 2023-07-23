@@ -29,8 +29,10 @@ Route::middleware('admin')->group(function(){
 
     Route::name('data.')->prefix('data')->group(function(){
         Route::resource('relawan', AdminRelawanController::class);
+        Route::get('relawan-data/getStatistik', [AdminRelawanController::class, 'getStatistik'])->name('relawan-getStatistik');
         Route::resource('user', UserController::class);
         Route::resource('responden', RespondenController::class);
+        Route::get('responden-data/statistik', [RespondenController::class, 'statistik'])->name('responden-statistik');
         Route::get('report', [ReportController::class, 'index'])->name("report");
         Route::resource('bank-soal', BankSoalController::class);
         Route::resource('kuisioner-kecamatan', KuisionerKecamatanController::class);

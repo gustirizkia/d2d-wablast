@@ -54,13 +54,15 @@
               </li>
               <li class="nav-item mx-2">
                 <a class="nav-link" href="#">Profile</a>
-              </li>       
+              </li>
               <li class="nav-item mx-2">
                 <a class="nav-link" href="#">Contact</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link btn btn-primary text-light px-4 py-2" href="/login">Login</a>
-              </li>
+              @if (!auth()->user())
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary text-light px-4 py-2" href="/login">Login</a>
+                </li>
+              @endif
             </ul>
           </div>
         </div>
@@ -90,11 +92,13 @@
                 <div
                   class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xxl-start mb-3"
                 >
-                  <a
+                @if (!auth()->user())
+                    <a
                     class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder text-light"
                     href="/login"
                     >Login</a
-                  >
+                    >
+                @endif
                   <a
                     class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder"
                     href="/relawan"

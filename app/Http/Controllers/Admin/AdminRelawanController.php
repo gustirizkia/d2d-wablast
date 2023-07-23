@@ -28,9 +28,11 @@ class AdminRelawanController extends Controller
                             ->when($kecamatan, function($query)use($kecamatan){
                                 return $query->where("kecamatan_id", $kecamatan);
                             })
-                            ->get();
-        // dd($data);
+                            ->paginate(12);
         $provinsi = DB::table('provinsis')->whereIn('id', [11, 16])->orderBy('nama', 'asc')->get();
+
+
+
         return view('pages.relawan.index', [
             'items' => $data,
             'provinsi' => $provinsi
@@ -83,5 +85,28 @@ class AdminRelawanController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getStatistik(Request $request){
+        $relawan = Relawan::with("rel_provinsi", 'rel_kota', 'rel_kecamatan', 'rel_desa')
+                    ->select("relawans.*", DB::raw("COUNT(*) as total"))
+                    ->groupBy("kecamatan_id")
+                    ->get();
+        $count['kecamatan'] = count(DB::table('relawans')
+                            ->groupBy('kecamatan_id')
+                            ->get());
+        $count['kota'] = count(DB::table('relawans')
+                            ->groupBy('kota_id')
+                            ->get());
+        $count['provinsi'] = count(DB::table('relawans')
+                            ->groupBy('provinsi_id')
+                            ->get());
+        $allRelawan = Relawan::get();
+
+        return response()->json([
+            'count' => $count,
+            'relawan' => $relawan,
+            'all_relawan' => $allRelawan
+        ]);
     }
 }

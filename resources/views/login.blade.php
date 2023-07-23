@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    @section('title')
-    Login
-    @endsection
+    <title>Login</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--===============================================================================================-->
@@ -60,7 +58,7 @@
   <body>
     <div class="limiter">
       <div class="container-login100">
-        
+
         <div class="wrap-login100">
           <form class="login100-form validate-form" action="login" method="post" novalidate="">
             @csrf

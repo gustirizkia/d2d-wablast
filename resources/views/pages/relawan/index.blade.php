@@ -4,6 +4,12 @@
     Relawan
 @endsection
 
+@push('addStyle')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+@endpush
+
 @section('content')
     <div class="card">
         <div class="card-body">
@@ -77,11 +83,21 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="mt-5">
+                {{$items->links("pagination::bootstrap-5")}}
+            </div>
         </div>
     </div>
+
+    @include('pages.components._statistik-relawa')
+
+
 @endsection
 
 @push('addScript')
+
+
     @if (request()->get('provinsi'))
         <script>
             $.ajax({
@@ -132,54 +148,54 @@
         </script>
     @endif
 
-        <script>
-            $("#provinsi").on("change", function(){
-                let value = $(this).val();
+    <script>
+        $("#provinsi").on("change", function(){
+            let value = $(this).val();
 
-                $.ajax({
-                    url: `{{route('listKota')}}?provinsi=${value}`,
-                    type: "GET",
-                    success: function(data){
-                        console.log('data', data.data)
-                        let tagHtml = "<option >Pilih kota</option>";
+            $.ajax({
+                url: `{{route('listKota')}}?provinsi=${value}`,
+                type: "GET",
+                success: function(data){
+                    console.log('data', data.data)
+                    let tagHtml = "<option >Pilih kota</option>";
 
-                        let tempData = data.data;
-                        tempData.forEach(element => {
-                            tagHtml += `<option value="${element.id_kota}">${element.nama}</option>`
-                        });
+                    let tempData = data.data;
+                    tempData.forEach(element => {
+                        tagHtml += `<option value="${element.id_kota}">${element.nama}</option>`
+                    });
 
-                        $("#kota").html(tagHtml);
+                    $("#kota").html(tagHtml);
 
 
-                    },
-                    error: function(err){
-                        console.log('err', err)
-                    }
-                })
+                },
+                error: function(err){
+                    console.log('err', err)
+                }
             })
-            $("#kota").on("change", function(){
-                let value = $(this).val();
+        })
+        $("#kota").on("change", function(){
+            let value = $(this).val();
 
-                $.ajax({
-                    url: `{{route('listKecamatan')}}?kota=${value}`,
-                    type: "GET",
-                    success: function(data){
-                        console.log('data', data.data)
-                        let tagHtml = "<option >Pilih kecamatan</option>";
+            $.ajax({
+                url: `{{route('listKecamatan')}}?kota=${value}`,
+                type: "GET",
+                success: function(data){
+                    console.log('data', data.data)
+                    let tagHtml = "<option >Pilih kecamatan</option>";
 
-                        let tempData = data.data;
-                        tempData.forEach(element => {
-                            tagHtml += `<option value="${element.id_kecamatan}">${element.nama}</option>`
-                        });
+                    let tempData = data.data;
+                    tempData.forEach(element => {
+                        tagHtml += `<option value="${element.id_kecamatan}">${element.nama}</option>`
+                    });
 
-                        $("#kecamatan").html(tagHtml);
+                    $("#kecamatan").html(tagHtml);
 
 
-                    },
-                    error: function(err){
-                        console.log('err', err)
-                    }
-                })
+                },
+                error: function(err){
+                    console.log('err', err)
+                }
             })
-        </script>
+        })
+    </script>
 @endpush

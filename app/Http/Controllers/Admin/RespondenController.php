@@ -7,6 +7,7 @@ use App\Exports\RespondenDetailExport;
 use App\Http\Controllers\Controller;
 use App\Models\DataTarget;
 use App\Models\PilihanTarget;
+use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,6 +24,8 @@ class RespondenController extends Controller
         $provinsi = $request->provinsi;
         $kota = $request->kota;
         $kecamatan = $request->kecamatan;
+        $start = $request->start_date;
+        $end = $request->end_date;
 
         $data = DataTarget::when($provinsi, function($query)use($provinsi){
                                 return $query->where("provinsi_id", $provinsi);
@@ -30,14 +33,48 @@ class RespondenController extends Controller
                             ->when($kota, function($query)use($kota){
                                 return $query->where("kota_id", $kota);
                             })
+                            ->when($start, function($query)use($start){
+                                return $query->where("created_at", ">=", $start);
+                            })
+                            ->when($end, function($query)use($end){
+                                return $query->whereDate("created_at", "<=", $end);
+                            })
                             ->when($kecamatan, function($query)use($kecamatan){
                                 return $query->where("kecamatan_id", $kecamatan);
                             })
-                            ->get();
+                            ->paginate(12);
+
+        if($request->surveyor){
+            // dd("CEK");
+            $userId = $request->surveyor;
+            $data = DataTarget::when($provinsi, function($query)use($provinsi){
+                                    return $query->where("provinsi_id", $provinsi);
+                                })
+                                ->when($kota, function($query)use($kota){
+                                    return $query->where("kota_id", $kota);
+                                })
+                                ->when($start, function($query)use($start){
+                                    return $query->where("created_at", ">=", $start);
+                                })
+                                ->when($end, function($query)use($end){
+                                    return $query->where("created_at", "<=", $end);
+                                })
+                                ->when($kecamatan, function($query)use($kecamatan){
+                                    return $query->where("kecamatan_id", $kecamatan);
+                                })
+                                ->whereHas("user", function($q)use($userId){
+                                    return $q->where("id", $userId);
+                                })
+                                ->paginate(12);
+
+        }
+
         $provinsi = DB::table('provinsis')->whereIn('id', [11, 16])->orderBy('nama', 'asc')->get();
+        $user = User::orderBy('name', 'asc')->get();
         return view('pages.responden.index', [
             'items' => $data,
-            'provinsi' => $provinsi
+            'provinsi' => $provinsi,
+            'users' => $user
         ]);
     }
 
@@ -110,5 +147,29 @@ class RespondenController extends Controller
     public function exportDetail($id){
         $responden = DataTarget::find($id);
         return Excel::download(new RespondenDetailExport($id), "Responden $responden->nama".".xlsx");
+    }
+
+    public function statistik()
+    {
+        $responden = DataTarget::with("rel_provinsi", 'rel_kota', 'rel_kecamatan', 'rel_desa')
+                    ->select("data_targets.*", DB::raw("COUNT(*) as total"))
+                    ->groupBy("kecamatan_id")
+                    ->get();
+        $count['kecamatan'] = count(DB::table('data_targets')
+                            ->groupBy('kecamatan_id')
+                            ->get());
+        $count['kota'] = count(DB::table('data_targets')
+                            ->groupBy('kota_id')
+                            ->get());
+        $count['provinsi'] = count(DB::table('data_targets')
+                            ->groupBy('provinsi_id')
+                            ->get());
+        $allResponden = DataTarget::get();
+
+        return response()->json([
+            'responden' => $responden,
+            'count' => $count,
+            'all_responden' => $allResponden
+        ]);
     }
 }
