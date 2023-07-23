@@ -76,3 +76,6 @@ Route::get('/register', function(){
 Route::get('/login', function(){
     return view('login');
 })->middleware('guest')->name('login');
+
+Route::get("logoutData", [SurveyController::class, "logoutData"])->name("logoutData");
+

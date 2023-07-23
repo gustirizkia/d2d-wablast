@@ -80,7 +80,7 @@ export default function UpdateProfileInformation({
                         </p>
 
                         {status === "verification-link-sent" && (
-                            <div className="mt-2 font-medium text-sm text-green-600 ">
+                            <div className="mt-2 font-medium text-sm text-yellow-600 ">
                                 A new verification link has been sent to your
                                 email address.
                             </div>
@@ -97,7 +97,7 @@ export default function UpdateProfileInformation({
                         leaveTo="opacity-0"
                         className="transition ease-in-out"
                     >
-                        <p className="text-sm text-green-600 ">Saved.</p>
+                        <p className="text-sm text-yellow-600 ">Saved.</p>
                     </Transition>
                 </div>
             </form>

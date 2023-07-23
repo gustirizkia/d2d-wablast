@@ -8,8 +8,8 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
     return (
         <Layout>
             <Head title="Profile Saya" />
-            <div className="bg-green-50 min-h-screen pb-32">
-                <div className="bg-green-600 h-32 w-full rounded-b-3xl">
+            <div className="bg-yellow-50 min-h-screen pb-32">
+                <div className="bg-yellow-600 h-32 w-full rounded-b-3xl">
                     <TopUser auth={auth} />
                 </div>
                 <div className="-mt-20 mx-3 rounded-lg ">
@@ -27,13 +27,13 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
                         </div>
                     </div>
                 </div>
-                <div
-                    className="text-center mt-6  "
-                    onClick={() => router.post("logout")}
-                >
-                    <div className="border-green-600 border-2 inline-block px-3 py-2 rounded-lg text-green-600">
-                        Logout
-                    </div>
+                <div className="text-center mt-6  ">
+                    <a
+                        href="/logoutData"
+                        className="border-yellow-600 border-2 inline-block px-3 py-2 rounded-lg text-yellow-600"
+                    >
+                        <div className="">Logout</div>
+                    </a>
                 </div>
             </div>
         </Layout>

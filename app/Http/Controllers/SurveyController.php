@@ -10,6 +10,7 @@ use App\Models\SoalHasKecamatan;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -206,5 +207,15 @@ class SurveyController extends Controller
     public function selesaiQuiz(Request $request)
     {
 
+    }
+
+    public function logoutData(Request $request){
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }
