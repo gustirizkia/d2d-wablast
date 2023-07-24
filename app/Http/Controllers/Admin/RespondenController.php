@@ -100,8 +100,8 @@ class RespondenController extends Controller
     public function show(string $id)
     {
         $dataTarget = DataTarget::findOrFail($id);
-        $pilihanTarget = PilihanTarget::where("data_target_id", $id)->paginate(12);
-        // dd($pilihanTarget);
+        $pilihanTarget = PilihanTarget::with("pilihan")->where("data_target_id", $id)->paginate(12);
+        // return response()->json($pilihanTarget);
         return view('pages.responden.detail', [
             'items' => $pilihanTarget,
             'item' => $dataTarget
@@ -172,4 +172,6 @@ class RespondenController extends Controller
             'all_responden' => $allResponden
         ]);
     }
+
+
 }

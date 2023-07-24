@@ -16,6 +16,7 @@
                 <th scope="col">Pertanyaan</th>
                 <th scope="col">Notes/Deskripsi</th>
                 <th scope="col">Jenis Pilihan</th>
+                <th scope="col">Kecamatan</th>
                 <th scope="col">Aksi</th>
                 </tr>
             </thead>
@@ -26,6 +27,15 @@
                         <td>{{$item->title}}</td>
                         <td>{{$item->subtitle}}</td>
                         <td>{{$item->yes_no ? "Hanya iya atau tidak" : "Form Custom"}}</td>
+                        <td>
+                            @if ($item->soal_kecamatan)
+                                <span class="soal_kecamatan{{$item->id}}">loading</span>
+                            @else
+                                <span class="text-warning">
+                                    General
+                                </span>
+                            @endif
+                        </td>
                         <td>
                             <div class="d-flex">
                                 <a href="{{route('admin.data.bank-soal.edit', $item->id)}}" class="btn btn-warning">Edit</a>
@@ -41,11 +51,41 @@
                 @endforeach
             </tbody>
             </table>
+
+            {{$data['soal']->links("pagination::bootstrap-5")}}
         </div>
     </div>
 @endsection
 
 @push('addScript')
+
+<script>
+    let tempSoalKecamatan = [
+        @foreach($data['soal'] as $soal)
+            @if ($soal->soal_kecamatan)
+                {
+                    id: {{$soal->id}},
+                    kecamatan_id: {{$soal->soal_kecamatan->kecamatan_id}}
+                },
+            @endif
+        @endforeach
+    ];
+
+    tempSoalKecamatan.forEach(element => {
+        $.ajax({
+            url: `/admin/getKecamatanById/${element.kecamatan_id}`,
+            type: "GET",
+            success: function(data){
+                $(".soal_kecamatan"+element.id).text(`${data.kota.nama}, ${data.nama}`)
+            },
+            error: function(err){
+                console.log('err', err)
+            }
+        });
+    });
+
+
+</script>
 
 <script>
     $(".filter_btn").click(function(){

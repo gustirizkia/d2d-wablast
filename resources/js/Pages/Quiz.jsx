@@ -11,6 +11,7 @@ export default function Quiz({
     is_last_soal,
     csrf_token,
     is_first_soal,
+    kecamatan,
 }) {
     const [TempSoal, SetTempSoal] = useState(soal);
     const [TempLastSoal, SetTempLastSoal] = useState(is_last_soal);
@@ -60,6 +61,11 @@ export default function Quiz({
                 .catch((err) => {
                     SetLoadingUp(false);
                     console.log("err", err);
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Opps, Terjadi Kesalahan Server",
+                    });
                 });
         }
     };
@@ -84,14 +90,7 @@ export default function Quiz({
 
                 formData.append("soal_id", TempSoal.id);
                 formData.append("target_id", target.id);
-                // formData.append("pilihan_id", PilihanId);
                 formData.append("image", FotoBersama);
-                // let formData = {
-                //     soal_id: TempSoal.id,
-                //     target_id: target.id,
-                //     pilihan_id: PilihanId,
-                // };
-                // formData._token = csrf_token;
 
                 if (YesNo && TempSoal.yes_no === 1) {
                     formData.append("pilihan_id", YesNo);
@@ -109,6 +108,10 @@ export default function Quiz({
                         SetLoadingUp(false);
                     })
                     .catch((err) => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Opps, Terjadi Kesalahan Server",
+                        });
                         console.log("err", err);
                         SetLoadingUp(false);
                         console.log("err", err);
@@ -223,7 +226,9 @@ export default function Quiz({
                                 />
                             </svg>
                         </div>
-                        <div className="text-white ml-3">Survey</div>
+                        <div className="text-white ml-3">
+                            <div className="">Survey Kec. {kecamatan.nama}</div>
+                        </div>
                     </Link>
                 </div>
                 <div className="bg-white p-3 rounded-lg -mt-24 mx-3">
@@ -348,33 +353,35 @@ export default function Quiz({
                             >
                                 Selesai
                             </div>
-                            <div
+                            {/* <div
                                 onClick={handleBackSoal}
                                 className=" bg-gray-600 w-full mt-4 text-white text-center px-2 py-3 rounded-full "
                             >
                                 Back
-                            </div>
+                            </div> */}
                         </>
                     ) : (
                         <div className="flex justify-between mt-16">
                             {FirstSoal ? (
-                                <div
-                                    onClick={() => router.get("/list-survey")}
-                                    className=" bg-gray-600 text-white text-center px-2 py-3 rounded-full w-1/3"
-                                >
-                                    Back Home
-                                </div>
+                                <></>
                             ) : (
-                                <div
-                                    onClick={handleBackSoal}
-                                    className=" bg-gray-600 text-white text-center px-2 py-3 rounded-full w-1/3"
-                                >
-                                    Back
-                                </div>
+                                // <div
+                                //     onClick={() => router.get("/list-survey")}
+                                //     className=" bg-gray-600 text-white text-center px-2 py-3 rounded-full w-1/3"
+                                // >
+                                //     Back Home
+                                // </div>
+                                <></>
+                                // <div
+                                //     onClick={handleBackSoal}
+                                //     className=" bg-gray-600 text-white text-center px-2 py-3 rounded-full w-1/3"
+                                // >
+                                //     Back
+                                // </div>
                             )}
                             <div
                                 onClick={handelNext}
-                                className=" bg-yellow-600 text-white text-center px-2 py-3 rounded-full w-1/2"
+                                className=" bg-yellow-600 text-white text-center px-2 py-3 rounded-full w-full"
                             >
                                 Selanjutnya
                             </div>

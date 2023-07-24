@@ -46,7 +46,7 @@ export default function ListQuiz({ data_target, count_soal, auth }) {
                                         Edit
                                     </div>
                                 </div>
-                                {item.pilihan_target_count !== count_soal ? (
+                                {item.foto_bersama === null ? (
                                     <Link
                                         href={`quiz/${item.id}`}
                                         className="text-gray-500 bg-yellow-200 inline-block py-1 px-5 rounded text-xs text-right"
@@ -54,9 +54,8 @@ export default function ListQuiz({ data_target, count_soal, auth }) {
                                         Lanjut
                                     </Link>
                                 ) : (
-                                    <div className="text-gray-500 bg-yellow-200 inline-block py-1 px-5 rounded text-xs text-right">
-                                        {item.pilihan_target_count} /{" "}
-                                        {count_soal}
+                                    <div className="text-white bg-yellow-600 inline-block py-1 px-5 rounded text-xs text-right">
+                                        {item.pilihan_target_count} Selesai
                                     </div>
                                 )}
                             </div>

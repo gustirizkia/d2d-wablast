@@ -12,4 +12,8 @@ class SoalHasKecamatan extends Model
     public function soal(){
         return $this->belongsTo(Soal::class, 'soal_id', 'id');
     }
+
+    public function kecamatan(){
+        return $this->belongsTo(Kecamatan::class, 'kecamatan_id', 'id_kecamatan');
+    }
 }

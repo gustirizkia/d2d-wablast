@@ -1,11 +1,14 @@
 import { Head, router, useForm, usePage } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGeolocated } from "react-geolocated";
 import Swal from "sweetalert2";
 import axios from "axios";
+import KTP from "../../src/ktp.png";
+import LoadingPage from "@/Components/LoadingPage";
 
 export default function TambahRelawan({ session, provinsi, calon }) {
     const { errors } = usePage().props;
+    const inputRef = useRef(null);
 
     useEffect(() => {
         console.log("errors", errors);
@@ -26,6 +29,9 @@ export default function TambahRelawan({ session, provinsi, calon }) {
         desa_id: 0,
     });
     const [Umur, SetUmur] = useState(null);
+    const [FotoKTP, SetFotoKTP] = useState(null);
+    const [PreviewImage, SetPreviewImage] = useState(null);
+    const [LoadingUp, SetLoadingUp] = useState(false);
 
     const { coords, isGeolocationAvailable, isGeolocationEnabled } =
         useGeolocated({
@@ -75,7 +81,27 @@ export default function TambahRelawan({ session, provinsi, calon }) {
         setIsModalOpen(false);
     };
 
+    const handleClickFile = () => {
+        inputRef.current.click();
+    };
+
+    const handleChangeImage = (e) => {
+        if (e.target.files.length) {
+            SetFotoKTP(e.target.files[0]);
+
+            const oFReader = new FileReader();
+            oFReader.readAsDataURL(e.target.files[0]);
+
+            oFReader.onload = function (oFREvent) {
+                let imageSrc = oFREvent.target.result;
+                SetPreviewImage(imageSrc);
+            };
+        }
+    };
+
     const handleSubmit = () => {
+        SetLoadingUp(true);
+
         if (false) {
             Swal.fire({
                 icon: "info",
@@ -87,6 +113,7 @@ export default function TambahRelawan({ session, provinsi, calon }) {
                 icon: "info",
                 title: "Data tidak lengkap",
             });
+            SetLoadingUp(false);
         } else {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -122,21 +149,41 @@ export default function TambahRelawan({ session, provinsi, calon }) {
                     title: `Silahkan Lengkapi ${errAlamat}`,
                     text: `Data Anda Belum Lengkap`,
                 });
+                SetLoadingUp(false);
+            } else if (!FotoKTP) {
+                Swal.fire({
+                    icon: "info",
+                    title: `Silahkan Upload KTP`,
+                    text: `Data Anda Belum Lengkap`,
+                });
+                SetLoadingUp(false);
             } else {
-                let formData = {
-                    nama: data.nama,
-                    alamat: data.alamat,
-                    provinsi: Alamat.provinsi_id,
-                    kota: Alamat.kota_id,
-                    kecamatan: Alamat.kecamatan_id,
-                    desa: Alamat.desa_id,
-                    tanggal_lahir: Umur,
-                };
-                formData.latitude = Latitude;
-                formData.longitude = Longitude;
+                SetLoadingUp(true);
+                const formData = new FormData();
+                formData.append("nama", data.nama);
+                formData.append("alamat", data.alamat);
+                formData.append("provinsi", Alamat.provinsi_id);
+                formData.append("kota", Alamat.kota_id);
+                formData.append("desa", Alamat.desa_id);
+                formData.append("kecamatan", Alamat.kecamatan_id);
+                formData.append("tanggal_lahir", Umur);
+                formData.append("latitude", Latitude);
+                formData.append("longitude", Longitude);
+                formData.append("foto_ktp", FotoKTP);
+
+                // let formData = {
+                //     nama: data.nama,
+                //     alamat: data.alamat,
+                //     : ,
+                //     kota: Alamat.kota_id,
+                //     kecamatan: Alamat.kecamatan_id,
+                //     desa: Alamat.desa_id,
+                //     tanggal_lahir: Umur,
+                // };
 
                 // return;
                 router.post("/addRelawan", formData);
+                // SetLoadingUp(false);
             }
         }
     };
@@ -197,6 +244,7 @@ export default function TambahRelawan({ session, provinsi, calon }) {
         <>
             <Head title="Relawan" />
             <div className="md:w-1/3  mx-auto w-full relative">
+                {LoadingUp && <LoadingPage />}
                 <div className="bg-yellow-600 h-36 w-full rounded-b-3xl p-3 font-semibold text-white">
                     Daftar Relawan
                 </div>
@@ -327,6 +375,42 @@ export default function TambahRelawan({ session, provinsi, calon }) {
                             );
                         })}
                     </select>
+
+                    <label
+                        htmlFor="KTP"
+                        className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
+                    >
+                        Upload KTP
+                    </label>
+
+                    <div className="text-center" onClick={handleClickFile}>
+                        {PreviewImage ? (
+                            <img
+                                src={PreviewImage}
+                                className="w-1/2 h-auto mx-auto rounded-lg"
+                                alt=""
+                            />
+                        ) : (
+                            <img
+                                src={KTP}
+                                className="w-1/2 h-auto mx-auto"
+                                alt=""
+                            />
+                        )}
+                        <div className="mt-2 text-sm">
+                            Klik untuk upload KTP
+                        </div>
+
+                        <input
+                            type="file"
+                            ref={inputRef}
+                            className=""
+                            hidden
+                            accept="image/*"
+                            capture="camera"
+                            onChange={handleChangeImage}
+                        />
+                    </div>
 
                     <div className=" text-center w-full mt-3">
                         <div

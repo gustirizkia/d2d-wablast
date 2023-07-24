@@ -66,7 +66,13 @@
                         @forelse ($items as $dataItem)
                             <tr>
                                 <td>{{$dataItem->soal->title}}</td>
-                                <td>{{$dataItem->yes_no ? $dataItem->yes_no : $dataItem->pilihan->title }}</td>
+                                <td>
+                                    @if ($dataItem->yes_no)
+                                        {{$dataItem->yes_no}}
+                                    @else
+                                        {{$dataItem->pilihan ? $dataItem->pilihan->title : '-' }}
+                                    @endif
+                                </td>
                                 <td>{{$dataItem->created_at }}</td>
                             </tr>
                         @empty

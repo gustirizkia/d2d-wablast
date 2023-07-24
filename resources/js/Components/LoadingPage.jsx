@@ -5,7 +5,7 @@ export default function LoadingPage() {
         <div className="bg-gray-300 bg-opacity-30 z-50 min-h-screen fixed w-full flex items-center justify-center">
             <div className="text-center">
                 <svg
-                    className="animate-spin -ml-1 mr-3 h-10 w-10 mx-auto text-green-600"
+                    className="animate-spin -ml-1 mr-3 h-10 w-10 mx-auto text-yellow-600"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"

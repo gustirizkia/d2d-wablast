@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Models\DataTarget;
+use App\Models\Kecamatan;
 use App\Models\PilihanGanda;
 use App\Models\PilihanTarget;
 use App\Models\Soal;
@@ -22,8 +23,8 @@ class BankSoalController extends Controller
     public function index(Request $request)
     {
 
-        $data['soal'] = Soal::orderBy('id', 'desc')->get();
-
+        $data['soal'] = Soal::orderBy('id', 'desc')->paginate(12);
+        // return response()->json($data);
         return view('pages.banksoal.banksoal', compact('data'));
     }
 
@@ -213,5 +214,12 @@ class BankSoalController extends Controller
 
     public function exportDataSoal(){
         return Excel::download(new UsersExport, 'data.xlsx');
+    }
+
+    public function getKecamatanById($kecamatan_id){
+        $data = Kecamatan::where("id_kecamatan", $kecamatan_id)->with("kota")->first();
+
+        return response()->json($data);
+
     }
 }

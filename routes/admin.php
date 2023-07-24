@@ -43,3 +43,5 @@ Route::middleware('admin')->group(function(){
     Route::get('quick-qount', [QuickCountController::class, 'index'])->name("quick-qount");
 
 });
+Route::get("getKecamatanById/{kecamatan_id}", [BankSoalController::class, 'getKecamatanById'])->name("getKecamatanById");
+
