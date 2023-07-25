@@ -32,7 +32,6 @@ class AdminRelawanController extends Controller
         $provinsi = DB::table('provinsis')->whereIn('id', [11, 16])->orderBy('nama', 'asc')->get();
 
 
-
         return view('pages.relawan.index', [
             'items' => $data,
             'provinsi' => $provinsi

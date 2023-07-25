@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Relawan extends Model
 {
     use HasFactory;
+
+    protected $appends = ['age'];
+
+    public function getAgeAttribute(){
+        return Carbon::parse($this->tanggal_lahir)->age;
+    }
 
     public function calon(){
         return $this->belongsTo(CalonLegislatif::class, 'username_calon', 'username');

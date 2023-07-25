@@ -59,16 +59,18 @@ class RelawanController extends Controller
             "tanggal_lahir" => $request->tanggal_lahir
         ];
 
-        $ktp = $request->foto_ktp->store("relawan/ktp", "public");
-        $data['foto_ktp'] = $ktp;
 
         if(!$request->latitude || !$request->longitude || $request->longitude === 'undefined' || $request->latitude === "undefined"){
+
             $location = Location::get(request()->ip());
             if($location){
                 $data['latitude'] = $location->latitude;
                 $data['longitude'] = $location->longitude;
             }
         }
+
+        $ktp = $request->foto_ktp->store("relawan/ktp", "public");
+        $data['foto_ktp'] = $ktp;
 
         // try {
         //     $latitude = $request->latitude;

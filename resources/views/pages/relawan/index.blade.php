@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
+
+     <style>
+        .img_ktp{
+            width: 44px;
+            height: 44px;
+            object-fit: cover;
+        }
+     </style>
 @endpush
 
 @section('content')
@@ -52,23 +60,40 @@
                     <thead>
                         <tr>
                         <th scope="col">Nama</th>
+                        <th scope="col">Umur</th>
                         <th scope="col">Alamat</th>
                         <th scope="col">Provinsi</th>
                         <th scope="col">Kota</th>
                         <th scope="col">Kecamatan</th>
                         <th scope="col">Desa</th>
-                        <th scope="col">Tanggal</th>
+                        <th scope="col">Foto ktp</th>
+                        <th scope="col">Tanggal Submit</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($items as $dataItem)
                             <tr>
                                 <td>{{$dataItem->nama}}</td>
+                                <td>{{$dataItem->age}} Tahun</td>
                                 <td>{{$dataItem->alamat}}</td>
                                 <td>{{$dataItem->rel_provinsi->nama}}</td>
                                 <td>{{$dataItem->rel_kota->nama}}</td>
                                 <td>{{$dataItem->rel_kecamatan->nama}}</td>
                                 <td>{{$dataItem->rel_desa->nama}}</td>
+                                <td>
+                                    @if ($dataItem->foto_ktp)
+                                        {{-- <a href="{{url("storage/$dataItem->foto_ktp")}}" data-lightbox="image-1" data-title="KTP">
+                                            <img src="{{url("storage/$dataItem->foto_ktp")}}" class="img_ktp">
+                                        </a> --}}
+
+                                        <a data-fslightbox="gallery" href="{{url("storage/$dataItem->foto_ktp")}}">
+                                            <!-- Photo -->
+                                            <div class="img-responsive img-responsive-1x1 rounded border" style="background-image: url({{url("storage/$dataItem->foto_ktp")}})"></div>
+                                        </a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 <td>{{$dataItem->created_at}}</td>
                             </tr>
                         @empty
@@ -198,4 +223,6 @@
             })
         })
     </script>
+
+
 @endpush

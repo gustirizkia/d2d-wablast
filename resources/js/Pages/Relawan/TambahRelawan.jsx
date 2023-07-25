@@ -66,7 +66,6 @@ export default function TambahRelawan({ session, provinsi, calon }) {
             if (ress.state === "denied") {
                 // report(result.state);
                 SetAllowLocation(false);
-                window.location.href = "app-settings:location";
             }
         });
     }, []);
@@ -184,7 +183,7 @@ export default function TambahRelawan({ session, provinsi, calon }) {
 
                 // return;
                 router.post("/addRelawan", formData);
-                // SetLoadingUp(false);
+                SetLoadingUp(false);
             }
         }
     };
@@ -408,7 +407,6 @@ export default function TambahRelawan({ session, provinsi, calon }) {
                             className=""
                             hidden
                             accept="image/*"
-                            capture="camera"
                             onChange={handleChangeImage}
                         />
                     </div>

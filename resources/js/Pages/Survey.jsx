@@ -60,7 +60,6 @@ export default function Survey({ data_soal, session, provinsi, k }) {
             if (ress.state === "denied") {
                 // report(result.state);
                 SetAllowLocation(false);
-                window.location.href = "app-settings:location";
             }
         });
     }, []);
