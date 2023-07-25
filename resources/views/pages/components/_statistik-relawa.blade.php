@@ -57,7 +57,14 @@
 </div>
 
 <div class="mt-5 statistik" >
-    <div id="mapid2" style="width: 100%; height: 500px;"></div>
+    <div class="card">
+        <div class="card-header">
+            Peta Sebaran Relawan
+        </div>
+        <div class="card-body">
+            <div id="mapid2" style="width: 100%; height: 500px;"></div>
+        </div>
+    </div>
 </div>
 
 @push('addScript')

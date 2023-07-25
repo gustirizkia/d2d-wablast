@@ -62,7 +62,7 @@ class RelawanController extends Controller
         $ktp = $request->foto_ktp->store("relawan/ktp", "public");
         $data['foto_ktp'] = $ktp;
 
-        if(!$request->latitude || !$request->longitude){
+        if(!$request->latitude || !$request->longitude || $request->longitude === 'undefined' || $request->latitude === "undefined"){
             $location = Location::get(request()->getClientIp());
             if($location){
                 $data['latitude'] = $location->latitude;
