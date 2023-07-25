@@ -66,6 +66,7 @@ export default function TambahRelawan({ session, provinsi, calon }) {
             if (ress.state === "denied") {
                 // report(result.state);
                 SetAllowLocation(false);
+                window.location.href = "app-settings:location";
             }
         });
     }, []);
