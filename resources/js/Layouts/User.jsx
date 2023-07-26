@@ -11,7 +11,7 @@ export default function User({ children }) {
                     }`}
                 >
                     <Link
-                        href="/"
+                        href="/home"
                         className={`text-center ${
                             route().current("home") ? "text-yellow-600" : ""
                         }`}

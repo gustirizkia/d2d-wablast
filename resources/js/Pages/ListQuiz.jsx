@@ -7,7 +7,7 @@ export default function ListQuiz({ data_target, count_soal, auth }) {
     return (
         <Layout>
             <Head title="Survey Saya" />
-            <div className="bg-yellow-50 min-h-screen">
+            <div className="bg-blue-50 min-h-screen">
                 <div className="bg-yellow-600 h-32 w-full rounded-b-3xl">
                     <TopUser auth={auth} />
                 </div>
@@ -42,7 +42,7 @@ export default function ListQuiz({ data_target, count_soal, auth }) {
                             </div>
                             <div className="flex justify-between mt-4">
                                 <div className="flex">
-                                    <div className="text-white bg-yellow-600 inline-block py-1 px-5 rounded text-xs z-40">
+                                    <div className="text-white bg-yellow-600 inline-block py-1 px-5 rounded text-xs ">
                                         Edit
                                     </div>
                                 </div>

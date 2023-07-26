@@ -42,7 +42,7 @@ Route::get('page-login', function(){
 
 Route::get('/', [HomeController::class, 'welcome'])->name("home");
 Route::middleware('auth')->group(function () {
-
+    Route::get("home", [HomeController::class, 'index'])->name('home');
 
     Route::get('/list-survey', [SurveyController::class, 'riwayat'])->name('list-survey');
     Route::get('/survey', [SurveyController::class, 'index'])->name('survey');

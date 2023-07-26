@@ -9,6 +9,10 @@ class DataTarget extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+    'created_at' => "datetime:Y-m-d H:i",
+];
+
     public function pilihanTarget(){
         return $this->hasMany(PilihanTarget::class);
     }
