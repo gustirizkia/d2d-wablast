@@ -72,25 +72,10 @@ class RelawanController extends Controller
         $ktp = $request->foto_ktp->store("relawan/ktp", "public");
         $data['foto_ktp'] = $ktp;
 
-        // try {
-        //     $latitude = $request->latitude;
-        //     $longitude = $request->longitude;
+        $foto_diri = $request->foto_diri->store("relawan/foto-diri", "public");
+        $data['foto_bersama'] = $foto_diri;
 
-        //     $client = new Client();
-        //     $response = $client->get("https://geocode.maps.co/reverse?lat=$latitude&lon=$longitude")->getBody()->getContents();
-
-        //     $result = json_decode($response);
-
-        //     if($result->address){
-        //         $data['provinsi'] = isset($result->address->state) ? $result->address->state : null;
-        //         $data['kota'] = isset($result->address->city) ? $result->address->city : null;
-        //         $data['kecamatan'] = isset($result->address->city_district) ? $result->address->city_district : null;
-        //         $data['desa'] = isset($result->address->village) ? $result->address->village : null;
-        //     }
-
-        // } catch (BadResponseException $e) {
-
-        // }
+        $data['jk'] = $request->jenis_kelamin;
 
         $insert = DB::table('relawans')->insertGetId($data);
 

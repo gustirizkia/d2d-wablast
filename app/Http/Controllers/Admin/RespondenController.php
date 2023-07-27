@@ -134,8 +134,9 @@ class RespondenController extends Controller
 
     public function export(Request $request)
     {
+        // dd("CEK");
         try {
-            return Excel::download(new DataTargetExport, 'responden-'.Carbon::now()->format("d-M-Y").'.xlsx');
+            return Excel::download(new DataTargetExport, 'responden-'.Carbon::now()->format("d-M-Y H:i").'.xlsx');
         } catch (Exception $th) {
             return redirect()->back()->with('error', "Failed export data");
         }

@@ -3,15 +3,20 @@
 namespace App\Exports;
 
 use App\Models\DataTarget;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class DataTargetExport implements FromCollection
+class DataTargetExport implements FromView
 {
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    public function view(): View
     {
-        return DataTarget::select('nama', 'alamat', 'provinsi', 'kota', 'kecamatan', 'desa', 'created_at as tanggal')->orderBy('id', 'desc')->get();
+        $data = DataTarget::get();
+
+        return view('pages.report.responden-all', [
+            'items' => $data
+        ]);
     }
 }

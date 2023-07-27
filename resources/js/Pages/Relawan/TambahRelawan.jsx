@@ -5,10 +5,14 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import KTP from "../../src/ktp.png";
 import LoadingPage from "@/Components/LoadingPage";
+import Boy from "../../src/foto-diri-boy.png";
+import Girl from "../../src/foto-diri-girl.jpg";
 
 export default function TambahRelawan({ session, provinsi, calon }) {
     const { errors } = usePage().props;
     const inputRef = useRef(null);
+    const foto_diri_ref = useRef(null);
+    const checkbox = useRef(null);
 
     useEffect(() => {
         console.log("errors", errors);
@@ -30,8 +34,11 @@ export default function TambahRelawan({ session, provinsi, calon }) {
     });
     const [Umur, SetUmur] = useState(null);
     const [FotoKTP, SetFotoKTP] = useState(null);
+    const [FotoDiri, SetFotoDiri] = useState(null);
+    const [PreviewFotoDiri, SetPreviewFotoDiri] = useState(null);
     const [PreviewImage, SetPreviewImage] = useState(null);
     const [LoadingUp, SetLoadingUp] = useState(false);
+    const [JenisKelamin, SetJenisKelamin] = useState(0);
 
     const { coords, isGeolocationAvailable, isGeolocationEnabled } =
         useGeolocated({
@@ -98,6 +105,19 @@ export default function TambahRelawan({ session, provinsi, calon }) {
             };
         }
     };
+    const handleChangeFotoDiri = (e) => {
+        if (e.target.files.length) {
+            SetFotoDiri(e.target.files[0]);
+
+            const oFReader = new FileReader();
+            oFReader.readAsDataURL(e.target.files[0]);
+
+            oFReader.onload = function (oFREvent) {
+                let imageSrc = oFREvent.target.result;
+                SetPreviewFotoDiri(imageSrc);
+            };
+        }
+    };
 
     const handleSubmit = () => {
         SetLoadingUp(true);
@@ -157,6 +177,26 @@ export default function TambahRelawan({ session, provinsi, calon }) {
                     text: `Data Anda Belum Lengkap`,
                 });
                 SetLoadingUp(false);
+            } else if (JenisKelamin === 0) {
+                Swal.fire({
+                    icon: "info",
+                    title: `Silahkan Pilih Jenis Kelamin`,
+                    text: `Data Anda Belum Lengkap`,
+                });
+                SetLoadingUp(false);
+            } else if (!FotoDiri) {
+                Swal.fire({
+                    icon: "info",
+                    title: `Silahkan Upload Foto Diri Anda`,
+                    text: `Data Anda Belum Lengkap`,
+                });
+                SetLoadingUp(false);
+            } else if (!checkbox.current.checked) {
+                Swal.fire({
+                    icon: "info",
+                    title: `Silahkan setujui pernyataan anda sebagai relawan`,
+                });
+                SetLoadingUp(false);
             } else {
                 SetLoadingUp(true);
                 const formData = new FormData();
@@ -170,20 +210,12 @@ export default function TambahRelawan({ session, provinsi, calon }) {
                 formData.append("latitude", Latitude);
                 formData.append("longitude", Longitude);
                 formData.append("foto_ktp", FotoKTP);
-
-                // let formData = {
-                //     nama: data.nama,
-                //     alamat: data.alamat,
-                //     : ,
-                //     kota: Alamat.kota_id,
-                //     kecamatan: Alamat.kecamatan_id,
-                //     desa: Alamat.desa_id,
-                //     tanggal_lahir: Umur,
-                // };
+                formData.append("foto_diri", FotoDiri);
+                formData.append("jenis_kelamin", JenisKelamin);
 
                 // return;
                 router.post("/addRelawan", formData);
-                SetLoadingUp(false);
+                // SetLoadingUp(false);
             }
         }
     };
@@ -281,6 +313,23 @@ export default function TambahRelawan({ session, provinsi, calon }) {
                             placeholder="masukan nama"
                         />
                     </label>
+
+                    <label
+                        htmlFor="provinsi"
+                        className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
+                    >
+                        Jenis Kelamin
+                    </label>
+                    <select
+                        id="provinsi"
+                        onChange={(e) => SetJenisKelamin(e.target.value)}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
+                    >
+                        <option value={0}>Pilih jenis kelamin</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+
                     <label className="block w-full mt-6">
                         <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
                             Alamat
@@ -409,6 +458,84 @@ export default function TambahRelawan({ session, provinsi, calon }) {
                             accept="image/*"
                             onChange={handleChangeImage}
                         />
+                    </div>
+
+                    <label
+                        htmlFor="KTP"
+                        className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
+                    >
+                        Upload Foto Diri
+                    </label>
+                    <div
+                        className="text-center"
+                        onClick={() => foto_diri_ref.current.click()}
+                    >
+                        {PreviewFotoDiri ? (
+                            <>
+                                <img
+                                    src={PreviewFotoDiri}
+                                    className="w-1/2 h-auto mx-auto"
+                                    alt=""
+                                />
+                            </>
+                        ) : (
+                            <>
+                                {JenisKelamin === "Laki-laki" ? (
+                                    <>
+                                        <img
+                                            src={Boy}
+                                            className="w-1/2 h-auto mx-auto"
+                                            alt=""
+                                        />
+                                    </>
+                                ) : (
+                                    <>
+                                        <img
+                                            src={Girl}
+                                            className="w-1/2 h-auto mx-auto"
+                                            alt=""
+                                        />
+                                    </>
+                                )}
+                            </>
+                        )}
+                        <div className="mt-2 text-sm">
+                            Klik untuk upload Foto Diri
+                        </div>
+
+                        <input
+                            type="file"
+                            ref={foto_diri_ref}
+                            className=""
+                            hidden
+                            accept="image/*"
+                            onChange={handleChangeFotoDiri}
+                        />
+                    </div>
+
+                    <div className="mt-4">
+                        <div className="bg-yellow-50 p-3 rounded-lg">
+                            <div className="">
+                                Dengan menyetujui ini anda telah bersedia dan
+                                terdaftar sebagai relawan Prayudha
+                                Septiadi Wijaya.
+                            </div>
+
+                            <div className="flex items-center mt-2">
+                                <input
+                                    id="checked-checkbox"
+                                    type="checkbox"
+                                    ref={checkbox}
+                                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 "
+                                />
+                                <label
+                                    for="checked-checkbox"
+                                    className="ml-2 text-sm font-medium text-gray-900 "
+                                >
+                                    Saya Setuju
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
                     <div className=" text-center w-full mt-3">
