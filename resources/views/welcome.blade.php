@@ -25,6 +25,15 @@
     />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{{ asset('/css/styles.css') }}" rel="stylesheet" />
+
+    <style>
+        .img_nav_profile{
+            height: 36px;
+            width: 36px;
+            object-fit: cover;
+            border-radius: 100px;
+        }
+    </style>
   </head>
   <body class="d-flex flex-column h-100">
     <main class="flex-shrink-0">
@@ -62,6 +71,17 @@
                 <li class="nav-item">
                     <a class="nav-link btn btn-primary text-light px-4 py-2" href="/login">Login</a>
                 </li>
+              @else
+                <a href="{{auth()->user()->roles === 'user' ? '/home' : '/admin' }}" class="d-flex align-items-center">
+                    <img
+                        src="https://ui-avatars.com/api/?name={{auth()->user()->name}}"
+                        alt=""
+                        class="img_nav_profile"
+                    />
+                    <div class="fw-bold text-sm  ms-2">
+                        {{auth()->user()->name}}
+                    </div>
+                </a>
               @endif
             </ul>
           </div>

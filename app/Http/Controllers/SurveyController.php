@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\DataTarget;
 use App\Models\Kecamatan;
+use App\Models\Kota;
 use App\Models\PilihanTarget;
 use App\Models\Provinsi;
 use App\Models\Soal;
 use App\Models\SoalHasKecamatan;
+use App\Models\UserHasKota;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
@@ -20,23 +22,27 @@ class SurveyController extends Controller
 {
     public function riwayat(Request $request){
         $data = DataTarget::withCount('pilihanTarget')->where("user_survey_id", auth()->user()->id)->orderBy('id', 'desc')->get();
-        $countSoal = Soal::count();
+
+        $listKota = UserHasKota::with("kota")->where("user_id", auth()->user()->id)->where('status', 0)->get();
+        // dd($listKota);
+
         return Inertia::render("ListQuiz", [
             'data_target' => $data,
-            'count_soal' => $countSoal
+            'listKota' => $listKota
         ]);
     }
     public function index(Request $request){
         $data = Soal::with('pilihan')->get();
+        $kota = $request->kota;
 
-        $provinsi = Provinsi::whereIn('id', [11, 16])->orderBy('nama', 'asc')->get();
-
-        $k = $request->k;
+        $getKota = Kota::where("id_kota", $kota)->first();
+        $provinsi = Provinsi::where("id_provinsi", $getKota->provinsi_id)->first();
 
         return Inertia::render("Survey", [
             'data_soal' => $data,
             'provinsi' => $provinsi,
-            'k' => $k
+            'kota_id' => $kota,
+            'getKota' => $getKota
         ]);
     }
 
@@ -66,9 +72,27 @@ class SurveyController extends Controller
         $data['desa_id'] = $request->desa;
 
 
-        $insertData = DB::table('data_targets')->insertGetId($data);
+        DB::beginTransaction();
 
-        return redirect()->route('quiz', $insertData)->with('success', "Berhasil simpan data");
+        try {
+            $userHasKota = DB::table('user_has_kotas')->where('status', 0)->where("kota_id", $request->kota)->first();
+
+            $updateHasKota = DB::table('user_has_kotas')->where("id", $userHasKota->id)->update([
+                'status' => 1
+            ]);
+
+            $insertData = DB::table('data_targets')->insertGetId($data);
+
+            DB::commit();
+            return redirect()->route('quiz', $insertData)->with('success', "Berhasil simpan data");
+        } catch (Exception $th) {
+            // dd($th, $request->all());
+            DB::rollBack();
+
+            return redirect()->back()->with('error', "Gagal Input Data");
+        }
+
+
     }
 
     public function quiz(Request $request, $id){
@@ -141,6 +165,8 @@ class SurveyController extends Controller
                     $is_last_soal = true;
                 }
             }
+
+            if($lastSoalGeneral->id === $soal->id) $is_last_soal = true;
         }
 
 
@@ -232,10 +258,11 @@ class SurveyController extends Controller
 
             $soalHasKecamatan = SoalHasKecamatan::where("kecamatan_id", $dataTarget->kecamatan_id)->get()->pluck("soal_id");
 
+            $nextSoal = 1;
+            // next soal kecamatan
             if($request->soal_id === $lastSoalGeneral->id){
                 // next soal kecamatan
                 $nextSoal = Soal::whereIn("id", $soalHasKecamatan)->with('pilihan')->first();
-
             }elseif($nextSoalGeneral){
                 $nextSoal = $nextSoalGeneral;
 
@@ -271,6 +298,14 @@ class SurveyController extends Controller
                 }
             }
 
+            return response()->json([
+                    'status' => 'error',
+                    'message' => 'terjadi kesalahan server',
+                    'line' => 306,
+                    'data' => $nextSoal,
+                    'next_soal'
+                    ], 422);
+
             $riwayatPilihan = DB::table('pilihan_targets')
                         ->where('soal_id', $nextSoal->id)
                         ->where('data_target_id', $request->target_id)
@@ -289,7 +324,8 @@ class SurveyController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'terjadi kesalahan server'
+                'message' => 'terjadi kesalahan server',
+                'th' => $th->getMessage()
             ], 422);
         }
     }

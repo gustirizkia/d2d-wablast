@@ -30,6 +30,7 @@
                         <th scope="col">No</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Username</th>
                         <th scope="col">Phone</th>
                         <th scope="col">Target</th>
                         <th scope="col">Aksi</th>
@@ -41,6 +42,7 @@
                                 <td>{{ $data['user']->firstItem() + $key }}</td>
                                 <td>{{$item->name}}</td>
                                 <td>{{$item->email}}</td>
+                                <td>{{$item->username}}</td>
                                 <td>{{$item->phone}}</td>
                                 <td>{{$item->target}}</td>
                                 <td>
@@ -53,7 +55,7 @@
                                             <i class="bi bi-eye"></i>
                                             <span class="ms-1">Detail</span>
                                         </a>
-                                        <form action="{{ route('admin.data.bank-soal.destroy', $item->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.data.user.destroy', $item->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method("DELETE")
                                             <span class="btn btn-danger   ms-2 delete_confirm cursor-pointer">

@@ -5,7 +5,13 @@ import Swal from "sweetalert2";
 import Layout from "../Layouts/User";
 import axios from "axios";
 
-export default function Survey({ data_soal, session, provinsi, k }) {
+export default function Survey({
+    data_soal,
+    session,
+    provinsi,
+    getKota,
+    kota,
+}) {
     const { errors } = usePage().props;
 
     useEffect(() => {
@@ -21,7 +27,7 @@ export default function Survey({ data_soal, session, provinsi, k }) {
     const [Kecamatan, SetKecamatan] = useState([]);
     const [Desa, SetDesa] = useState([]);
     const [Alamat, SetAlamat] = useState({
-        provinsi_id: 0,
+        provinsi_id: provinsi.id_provinsi,
         kota_id: 0,
         kecamatan_id: 0,
         desa_id: 0,
@@ -134,35 +140,18 @@ export default function Survey({ data_soal, session, provinsi, k }) {
                 formData.latitude = Latitude;
                 formData.longitude = Longitude;
 
-                if (k) {
-                    formData.k = k;
-                }
-
-                console.log("formData", formData);
-
                 // return;
                 router.post("/inputDataTarget", formData);
             }
         }
     };
 
-    const changeProvinsi = (e) => {
-        let value = e.target.value;
+    useEffect(() => {
+        changeKota(getKota.id_kota);
+    }, []);
 
-        SetAlamat({ ...Alamat, provinsi_id: value });
-        if (value > 0) {
-            axios
-                .get(`/listKota?provinsi=${value}`)
-                .then((ress) => {
-                    SetKota(ress.data.data);
-                })
-                .catch((err) => {
-                    console.log("err", err);
-                });
-        }
-    };
     const changeKota = (e) => {
-        let value = e.target.value;
+        let value = e;
         SetAlamat({ ...Alamat, kota_id: value });
         if (value > 0) {
             axios
@@ -235,46 +224,33 @@ export default function Survey({ data_soal, session, provinsi, k }) {
                     />
                 </label>
 
-                <label
-                    htmlFor="provinsi"
-                    className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
-                >
-                    Pilih Provinsi
+                <label className="block w-full mt-6">
+                    <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
+                        Provinsi
+                    </span>
+                    <input
+                        type="text"
+                        readOnly
+                        name="nama"
+                        value={provinsi.nama}
+                        className="mt-1 px-3 py-2 bg-gray-100 border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+                        placeholder="masukan nama"
+                    />
                 </label>
-                <select
-                    id="provinsi"
-                    onChange={changeProvinsi}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
-                >
-                    <option value={0}>Pilih provinsi</option>
-                    {provinsi.map((item) => {
-                        return (
-                            <option value={item.id_provinsi} key={item.id}>
-                                {item.nama}
-                            </option>
-                        );
-                    })}
-                </select>
-                <label
-                    htmlFor="kota"
-                    className="block w-full mb-2 text-sm font-medium text-gray-900 text-left mt-6"
-                >
-                    Pilih Kota/Kabupaten
+
+                <label className="block w-full mt-6">
+                    <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
+                        Kota
+                    </span>
+                    <input
+                        type="text"
+                        readOnly
+                        name="nama"
+                        value={getKota.nama}
+                        className="mt-1 px-3 py-2 bg-gray-100 border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+                        placeholder="masukan nama"
+                    />
                 </label>
-                <select
-                    id="kota"
-                    onChange={changeKota}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    "
-                >
-                    <option value={0}>Pilih kota</option>
-                    {Kota.map((item) => {
-                        return (
-                            <option value={item.id_kota} key={item.id}>
-                                {item.nama}
-                            </option>
-                        );
-                    })}
-                </select>
 
                 <label
                     htmlFor="kecamatan"

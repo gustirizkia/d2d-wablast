@@ -648,6 +648,16 @@
                                     <span class="nav-link-title"> Realcount </span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/logoutData">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block"
+                                        >
+                                        <i class="bi bi-box-arrow-left"></i>
+                                    </span>
+                                    <span class="nav-link-title"> Logout </span>
+                                </a>
+                            </li>
 
                         </ul>
                     </div>

@@ -67,6 +67,16 @@
         </div>
     </div>
 </div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="fw-bold">Lokasi Tugas di Kecamatan</div>
+        @foreach ($targetkota as $index => $item)
+            {{$item->kota->nama}}{{$index !== count($targetkota)-1 ? "," : ""}} {{" "}}
+        @endforeach
+    </div>
+</div>
+
     <div class="card">
         <div class="card-body">
             <a href="{{route('admin.responden-export')}}" class="btn btn-success"><i class="bi bi-file-earmark-spreadsheet-fill"></i><span class="ms-2">Export</span></a>

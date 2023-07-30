@@ -4,9 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\DataTarget;
+use App\Models\Kecamatan;
+use App\Models\Kota;
 use App\Models\Provinsi;
 use App\Models\User;
+use App\Models\UserHasKecamatan;
+use App\Models\UserHasKota;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -34,7 +40,11 @@ class UserController extends Controller
     public function create()
     {
         $provinsi = Provinsi::whereIn('id', [11, 16])->orderBy('nama', 'asc')->get();
-        return view('pages.user.user-create', compact('provinsi'));
+        $listKota = Kota::orderBy('nama', 'asc')->whereIn('provinsi_id', $provinsi->pluck("id_provinsi"))->get();
+        $listKecamatan = Kecamatan::orderBy('nama', 'asc')->whereIn('kota_id', $listKota->pluck("id_kota"))->get();
+        // dd($listKecamatan);
+
+        return view('pages.user.user-create', compact('provinsi', 'listKecamatan', 'listKota'));
     }
 
     /**
@@ -43,31 +53,55 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
+
         $request->validate([
-            'email' => 'required|unique:users,email|email',
-            'phone' => 'required|unique:users,phone',
-            'password' => 'required|string',
-            'name' => 'required|string',
-            'desa' => 'required|exists:desas,id',
-            'provinsi' => 'required|exists:provinsis,id_provinsi'
+                'email' => 'required|unique:users,email|email',
+                'username' => 'required|unique:users,username',
+                'phone' => 'required|unique:users,phone',
+                'password' => 'required|string',
+                'name' => 'required|string',
+                'desa' => 'required|exists:desas,id',
+                'provinsi' => 'required|exists:provinsis,id_provinsi',
         ]);
 
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone' => $request->phone,
-            'alamat' => $request->alamat,
-            'provinsi_id' => $request->provinsi,
-            'kota_id' => $request->kota,
-            'kecamatan_id' => $request->kecamatan,
-            'desa_id' => $request->desa,
-            'target' => $request->target,
-        ];
+        DB::beginTransaction();
 
-        $user = User::create($data);
+        try {
 
-        return redirect()->route('admin.data.user.index')->with('success', "Berhasil tambah user");
+
+            $data = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone' => $request->phone,
+                'alamat' => $request->alamat,
+                'provinsi_id' => $request->provinsi,
+                'kota_id' => $request->kota,
+                'kecamatan_id' => $request->kecamatan,
+                'desa_id' => $request->desa,
+                'target' => $request->target,
+                'username' => $request->username
+            ];
+
+            $user = User::create($data);
+
+            foreach($request->target_kota as $target){
+                DB::table('user_has_kotas')->insertGetId([
+                    'user_id' => $user->id,
+                    'kota_id' => $target,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            DB::commit();
+            return redirect()->route('admin.data.user.index')->with('success', "Berhasil tambah user");
+        } catch (Exception $th) {
+            DB::rollBack();
+            dd($th);
+            return redirect()->back()->with("error", "Gagal tambah data");
+        }
+
 
     }
 
@@ -84,11 +118,14 @@ class UserController extends Controller
         $count['responden_provinsi'] = count(DataTarget::where("user_survey_id", $id)->groupBy("provinsi_id")->get());
         $count['responden_kota'] = count(DataTarget::where("user_survey_id", $id)->groupBy("kota_id")->get());
 
+        $targetkota = UserHasKota::where("user_id", $item->id)->with('kota')->get();
+        // dd($targetkota);
 
         return view('pages.user.detail', [
             'item' => $item,
             'responden' => $responden,
-            'count' => $count
+            'count' => $count,
+            'targetkota' => $targetkota
         ]);
     }
 
@@ -156,6 +193,10 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = User::findOrFail($id);
+
+        $data->delete();
+
+        return redirect()->back();
     }
 }

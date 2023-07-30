@@ -27,7 +27,9 @@ class User extends Authenticatable
         'kecamatan_id',
         'desa_id',
         'alamat',
-        'target'
+        'target',
+        'nct',
+        'username'
     ];
 
     /**
