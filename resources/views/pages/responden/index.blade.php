@@ -14,8 +14,11 @@
     <div class="card">
         <div class="card-body">
             <div class="row justify-content-between mb-4">
-                <div class="col-md-2 mb-3">
-                    <a href="{{route('admin.responden-export')}}" class="btn btn-success"><i class="bi bi-file-earmark-spreadsheet-fill"></i><span class="ms-2">Export</span></a>
+                <div class="col-md-3 mb-3">
+                    <div class="d-flex">
+                        <a href="{{route('admin.responden-export')}}" class="btn btn-success"><i class="bi bi-file-earmark-spreadsheet-fill"></i><span class="ms-2">Export</span></a>
+                        <a href="{{route('admin.responden-exportAll')}}" class="btn btn-success ms-3"><i class="bi bi-file-earmark-spreadsheet-fill"></i><span class="ms-2">Export beserta jawaban</span></a>
+                    </div>
                 </div>
                 <div class="col-md-12">
                     <form action="">

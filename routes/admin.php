@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdministatorController;
 use App\Http\Controllers\Admin\AdminRelawanController;
 use App\Http\Controllers\Admin\BankSoalController;
 use App\Http\Controllers\Admin\CalonController;
@@ -38,9 +39,12 @@ Route::middleware('admin')->group(function(){
         Route::resource('kuisioner-kecamatan', KuisionerKecamatanController::class);
     });
     Route::get('responden/export', [RespondenController::class, 'export'])->name('responden-export');
+    Route::get('responden/exportAll', [RespondenController::class, 'exportAll'])->name('responden-exportAll');
     Route::get('responden/exportDetail/{id}', [RespondenController::class, 'exportDetail'])->name('responden-exportDetail');
 
     Route::get('quick-qount', [QuickCountController::class, 'index'])->name("quick-qount");
+
+    Route::resource('administator', AdministatorController::class);
 
 });
 Route::get("getKecamatanById/{kecamatan_id}", [BankSoalController::class, 'getKecamatanById'])->name("getKecamatanById");

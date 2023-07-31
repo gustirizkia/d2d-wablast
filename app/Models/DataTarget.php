@@ -32,6 +32,6 @@ class DataTarget extends Model
     }
 
     public function user(){
-        return $this->belongsTo(User::class, 'user_survey_id', 'id');
+        return $this->belongsTo(User::class, 'user_survey_id', 'id')->withTrashed();
     }
 }

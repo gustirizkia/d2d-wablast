@@ -648,6 +648,16 @@
                                     <span class="nav-link-title"> Realcount </span>
                                 </a>
                             </li>
+                            <li class="nav-item {{request()->is('admin/administator*') ? 'active' : ''}}">
+                                <a class="nav-link" href="{{route('admin.administator.index')}}">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block"
+                                        >
+                                        <i class="bi bi-person-gear"></i>
+                                    </span>
+                                    <span class="nav-link-title"> Administator </span>
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/logoutData">
                                     <span

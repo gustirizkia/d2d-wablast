@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DataTarget;
 use App\Models\PilihanGanda;
 use App\Models\Soal;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -31,16 +32,21 @@ class LokasiController extends Controller
                             ->get();
         $soal = Soal::get();
 
-        return view('pages.lokasi.lokasi', compact('data', 'dataUser', "pilihanTarget", 'soal'));
+        $user = User::where("roles", "user")->withTrashed()->get();
+        // dd($user);
+
+        return view('pages.lokasi.lokasi', compact('data', 'dataUser', "pilihanTarget", 'soal', 'user'));
     }
 
-    public function detailSoal($soal_id)
+    public function detailSoal($soal_id, Request $request)
     {
+
         $data = PilihanGanda::where("soal_id", $soal_id)
                         ->with("pilihanTarget.dataTarget")
                         ->with('soal')
                         ->withCount("pilihanTarget")
                         ->get();
+
 
         return response()->json($data);
     }

@@ -30,7 +30,19 @@
             </div>
 
             <div class="row mt-4">
-                <div class="col-md-6">
+                <div class="col-md-4">
+
+                    <div class="form-floating">
+                        <select class="form-select" id="user" aria-label="Floating label select example" fdprocessedid="srkiig">
+                            <option >Pilih </option>
+                            @foreach ($user as $item)
+                                <option value="{{$item->id}}" class="circle_soal" >{{$item->name}}</option>
+                            @endforeach
+                        </select>
+                        <label for="soal">Surveyor</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
 
                     <div class="form-floating">
                         <select class="form-select" id="soal" aria-label="Floating label select example" fdprocessedid="srkiig">
@@ -42,7 +54,8 @@
                         <label for="soal">Pertanyaan</label>
                     </div>
                 </div>
-                <div class="col-md-6">
+
+                <div class="col-md-4">
 
                     <div class="form-floating">
                         <select class="form-select" id="jawaban" aria-label="Floating label select example" fdprocessedid="srkiig">
@@ -136,9 +149,10 @@
         let itemPilihan = null;
         $("#soal").on("change", function(){
             let value = $(this).val();
+            let userId = $("#user").val();
 
             $.ajax({
-                url : `/admin/detailSoal/${value}`,
+                url : `/admin/detailSoal/${value}?user_id=${userId}`,
                 type: "GET",
                 success: function(data)
                 {

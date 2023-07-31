@@ -75,7 +75,7 @@ class SurveyController extends Controller
         DB::beginTransaction();
 
         try {
-            $userHasKota = DB::table('user_has_kotas')->where('status', 0)->where("kota_id", $request->kota)->first();
+            $userHasKota = DB::table('user_has_kotas')->where('user_id', auth()->user()->id)->where('status', 0)->where("kota_id", $request->kota)->first();
 
             $updateHasKota = DB::table('user_has_kotas')->where("id", $userHasKota->id)->update([
                 'status' => 1
@@ -155,12 +155,14 @@ class SurveyController extends Controller
 
         }else{
             // $soal = Soal::with('pilihan')->whereIn("id", $soalHasKecamatan)->first();
-            $soal = Soal::doesntHave("hasKecamatan")->first();
+            $soal = Soal::doesntHave("hasKecamatan")->with('pilihan')->first();
 
             if(!$soal){
                 $soal = Soal::with('pilihan')->whereIn("id", $soalHasKecamatan)->first();
                 $cekLastSoal = Soal::orderBy('id', 'desc')->whereIn("id", $soalHasKecamatan)->first();
-
+                if(!$soal){
+                    return Inertia::render('NoQuiz');
+                }
                 if($soal->id >= $cekLastSoal->id){
                     $is_last_soal = true;
                 }
@@ -172,7 +174,7 @@ class SurveyController extends Controller
 
 
         $kecamatan = Kecamatan::where("id_kecamatan", $target->kecamatan_id)->first();
-
+        // dd($soal);
         return Inertia::render("Quiz", [
             'target' => $target,
             'soal' => $soal,
@@ -247,6 +249,7 @@ class SurveyController extends Controller
 
             $is_last_soal = false;
 
+
             // cek last General soal
             $lastSoalGeneral = Soal::doesntHave("hasKecamatan")->orderBy('id', 'desc')->first();
             $isGeneral = Soal::doesntHave("hasKecamatan")->with("pilihan")->where("id", $request->soal_id)->first();
@@ -298,13 +301,15 @@ class SurveyController extends Controller
                 }
             }
 
-            return response()->json([
-                    'status' => 'error',
-                    'message' => 'terjadi kesalahan server',
-                    'line' => 306,
-                    'data' => $nextSoal,
-                    'next_soal'
-                    ], 422);
+            // DB::rollBack();
+            // return response()->json([
+            //         'status' => 'error',
+            //         'message' => 'terjadi kesalahan server',
+            //         'line' => 306,
+            //         'data' => $nextSoal,
+            //         'next_soal',
+            //         'is_last_soal' => $is_last_soal,
+            //         ], 422);
 
             $riwayatPilihan = DB::table('pilihan_targets')
                         ->where('soal_id', $nextSoal->id)

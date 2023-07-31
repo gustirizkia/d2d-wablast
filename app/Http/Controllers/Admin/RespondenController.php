@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exports\DataTargetExport;
+use App\Exports\ExporAllKuisionerWithResponden;
 use App\Exports\RespondenDetailExport;
 use App\Http\Controllers\Controller;
 use App\Models\DataTarget;
 use App\Models\PilihanTarget;
+use App\Models\Soal;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -141,7 +143,20 @@ class RespondenController extends Controller
             return redirect()->back()->with('error', "Failed export data");
         }
 
+    }
+    public function exportAll(Request $request)
+    {
+        // dd("cek");
+        // $soal = Soal::get();
+        // $dataTarget = DataTarget::get();
+        // return view('pages.responden.export-all', compact('soal', 'dataTarget'));
 
+        try {
+
+            return Excel::download(new ExporAllKuisionerWithResponden, 'hasil-survey-'.Carbon::now()->format("d-M-Y H:i").'.xlsx');
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', "Failed export data");
+        }
 
     }
 
