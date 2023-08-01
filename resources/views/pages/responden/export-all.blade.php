@@ -17,7 +17,7 @@
                         <td>{{$responden->pilihanTarget->where('soal_id', $itemSoal->id)->first()->yes_no}}</td>
                     @elseif ($responden->pilihanTarget->where('soal_id', $itemSoal->id)->first())
 
-                        <td>{{$responden->pilihanTarget->first()->pilihan->title}}</td>
+                        <td>{{$responden->pilihanTarget->first()->pilihan ? $responden->pilihanTarget->first()->pilihan->title : "-"}}</td>
                     @else
                         <td>-</td>
                     @endif
