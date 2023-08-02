@@ -1,3 +1,11 @@
+{{-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body> --}}
 
 <table class="table">
     <thead>
@@ -17,7 +25,7 @@
                         <td>{{$responden->pilihanTarget->where('soal_id', $itemSoal->id)->first()->yes_no}}</td>
                     @elseif ($responden->pilihanTarget->where('soal_id', $itemSoal->id)->first())
 
-                        <td>{{$responden->pilihanTarget->first()->pilihan ? $responden->pilihanTarget->first()->pilihan->title : "-"}}</td>
+                        <td>{{$responden->pilihanTarget->where('soal_id', $itemSoal->id)->first() ? $responden->pilihanTarget->where('soal_id', $itemSoal->id)->first()->pilihan->title : "-"}}</td>
                     @else
                         <td>-</td>
                     @endif
@@ -26,3 +34,6 @@
         @endforeach
     </tbody>
 </table>
+{{--
+</body>
+</html> --}}
