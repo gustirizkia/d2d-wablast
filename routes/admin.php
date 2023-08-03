@@ -49,7 +49,7 @@ Route::middleware('admin')->group(function(){
 
     // statistik
     Route::name("statistik.")->prefix('statistik')->group(function(){
-        Route::get('soal', [StatistikController::class, 'soal']);
+        Route::get('soal', [StatistikController::class, 'soal'])->name("soal");
     });
 
 });

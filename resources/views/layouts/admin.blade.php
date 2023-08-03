@@ -658,6 +658,16 @@
                                     <span class="nav-link-title"> Administator </span>
                                 </a>
                             </li>
+                            <li class="nav-item {{request()->is('admin/statistik/soal*') ? 'active' : ''}}">
+                                <a class="nav-link" href="{{route('admin.statistik.soal')}}">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block"
+                                        >
+                                        <i class="bi bi-bar-chart-line"></i>
+                                    </span>
+                                    <span class="nav-link-title">Grafik Hasil Kuisioner </span>
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/logoutData">
                                     <span
