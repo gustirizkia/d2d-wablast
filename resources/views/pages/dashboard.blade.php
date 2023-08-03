@@ -7,7 +7,7 @@
 @section('content')
 <div class="mb-4">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 mb-3">
             <div class="card">
                 <div class="card-body">
                     <img src="{{asset('icon/archive.png')}}" alt="" class="img-fluid" style="width: 50px">
@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mb-3">
             <div class="card">
                 <div class="card-body">
                     <img src="{{asset('icon/online-survey.png')}}" alt="" class="img-fluid" style="width: 50px">
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mb-3">
             <div class="card">
                 <div class="card-body">
                     <img src="{{asset('icon/support.png')}}" alt="" class="img-fluid" style="width: 50px">
@@ -40,7 +40,7 @@
     </div>
 </div>
     <div class="row">
-        <div class="col-md-3 col-6">
+        <div class="col-md-3 mb-3 col-6">
             <div class="card">
                 <div class="card-body">
                     <div class="h3 mb-0">Relawan</div>
@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-6">
+        <div class="col-md-3 mb-3 col-6">
             <div class="card">
                 <div class="card-body">
                     <div class="h3 mb-0">Surveyor</div>
@@ -56,7 +56,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-6">
+        <div class="col-md-3 mb-3 col-6">
             <div class="card">
                 <div class="card-body">
                     <div class="h3 mb-0">Responden</div>

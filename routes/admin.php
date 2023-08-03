@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\LokasiController;
 use App\Http\Controllers\Admin\QuickCountController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RespondenController;
+use App\Http\Controllers\Admin\StatistikController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +46,11 @@ Route::middleware('admin')->group(function(){
     Route::get('quick-qount', [QuickCountController::class, 'index'])->name("quick-qount");
 
     Route::resource('administator', AdministatorController::class);
+
+    // statistik
+    Route::name("statistik.")->prefix('statistik')->group(function(){
+        Route::get('soal', [StatistikController::class, 'soal']);
+    });
 
 });
 Route::get("getKecamatanById/{kecamatan_id}", [BankSoalController::class, 'getKecamatanById'])->name("getKecamatanById");
