@@ -50,6 +50,12 @@ class BankSoalController extends Controller
             'soal' => 'required|string',
         ]);
 
+        if($request->skip_soal){
+            $request->validate([
+                'skip_if_pilihan_id' => 'required'
+            ]);
+        }
+
         DB::beginTransaction();
 
         try {
@@ -60,6 +66,20 @@ class BankSoalController extends Controller
                 'updated_at' => now(),
                 'color' => $this->generateColor()
             ];
+
+            if($request->skip_soal)
+            {
+                $soal = DB::table('soals')->find($request->skip_soal);
+                if($soal){
+                    $dataSoal['skip_soal_id'] = $request->skip_soal;
+                    if($soal->yes_no){
+                        $dataSoal['skip_if_yes_no'] = $request->skip_if_pilihan_id;
+                    }else{
+                        $dataSoal['skip_if_pilihan_id'] = $request->skip_if_pilihan_id;
+                    }
+                }
+
+            }
 
             if($request->tipe_pilihan === 'ya_tidak'){
                 $dataSoal['yes_no'] = 1;

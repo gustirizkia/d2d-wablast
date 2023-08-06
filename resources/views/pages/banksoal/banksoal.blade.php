@@ -9,48 +9,51 @@
 <a href="{{route('admin.data.bank-soal.create')}}" class="mb-4 btn btn-warning">Tambah Data</a>
     <div class="card">
         <div class="card-body">
-            <table class="table">
-            <thead>
-                <tr>
-                <th scope="col">#</th>
-                <th scope="col">Pertanyaan</th>
-                <th scope="col">Notes/Deskripsi</th>
-                <th scope="col">Jenis Pilihan</th>
-                <th scope="col">Kecamatan</th>
-                <th scope="col">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($data['soal'] as $index => $item)
-                    <tr>
-                        <th scope="row">{{$index+1}}</th>
-                        <td>{{$item->title}}</td>
-                        <td>{{$item->subtitle}}</td>
-                        <td>{{$item->yes_no ? "Hanya iya atau tidak" : "Form Custom"}}</td>
-                        <td>
-                            @if ($item->soal_kecamatan)
-                                <span class="soal_kecamatan{{$item->id}}">loading</span>
-                            @else
-                                <span class="text-warning">
-                                    General
-                                </span>
-                            @endif
-                        </td>
-                        <td>
-                            <div class="d-flex">
-                                <a href="{{route('admin.data.bank-soal.edit', $item->id)}}" class="btn btn-warning">Edit</a>
-                                <form action="{{route('admin.data.bank-soal.destroy', $item->id)}}" method="post">
-                                    @csrf
-                                    @method("DELETE")
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Pertanyaan</th>
+                        <th scope="col">Notes/Deskripsi</th>
+                        <th scope="col">Jenis Pilihan</th>
+                        <th scope="col">Kecamatan</th>
+                        <th scope="col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data['soal'] as $index => $item)
+                            <tr>
+                                <th scope="row">{{$index+1}}</th>
+                                <td>{{$item->title}}</td>
+                                <td>{{$item->subtitle}}</td>
+                                <td>{{$item->yes_no ? "Hanya iya atau tidak" : "Form Custom"}}</td>
+                                <td>
+                                    @if ($item->soal_kecamatan)
+                                        <span class="soal_kecamatan{{$item->id}}">loading</span>
+                                    @else
+                                        <span class="text-warning">
+                                            General
+                                        </span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a href="{{route('admin.data.bank-soal.edit', $item->id)}}" class="btn btn-warning">Edit</a>
+                                        <a href="{{ route('admin.data.tambahData-skip', $item->id) }}" class="btn btn-info ms-2">Skip Logic</a>
+                                        <form action="{{route('admin.data.bank-soal.destroy', $item->id)}}" method="post">
+                                            @csrf
+                                            @method("DELETE")
 
-                                    <span class="btn btn-outline-danger ms-2 delete_confirm">Delete</span>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-            </table>
+                                            <span class="btn btn-outline-danger ms-2 delete_confirm">Delete</span>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
             {{$data['soal']->links("pagination::bootstrap-5")}}
         </div>

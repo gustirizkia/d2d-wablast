@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\LokasiController;
 use App\Http\Controllers\Admin\QuickCountController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RespondenController;
+use App\Http\Controllers\Admin\SkipLogikController;
 use App\Http\Controllers\Admin\StatistikController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -36,7 +37,11 @@ Route::middleware('admin')->group(function(){
         Route::resource('responden', RespondenController::class);
         Route::get('responden-data/statistik', [RespondenController::class, 'statistik'])->name('responden-statistik');
         Route::get('report', [ReportController::class, 'index'])->name("report");
+
         Route::resource('bank-soal', BankSoalController::class);
+        Route::get('bank-soal/tambah-skiplogik/{soal_id}', [SkipLogikController::class, 'tambahData'])->name("tambahData-skip");
+        Route::get('bank-soal/storeData-skiplogik', [SkipLogikController::class, 'storeData'])->name("storeData-skip");
+
         Route::resource('kuisioner-kecamatan', KuisionerKecamatanController::class);
     });
     Route::get('responden/export', [RespondenController::class, 'export'])->name('responden-export');
