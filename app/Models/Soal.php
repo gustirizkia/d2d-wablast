@@ -12,8 +12,6 @@ class Soal extends Model
 
     protected $appends = ['soal_kecamatan'];
 
-    // public static function general()
-
     public function getSoalKecamatanAttribute(){
         $cek = DB::table('soal_has_kecamatans')->where("soal_id", $this->id)->first();
         if($cek){
@@ -21,6 +19,10 @@ class Soal extends Model
         }else{
             return false;
         }
+    }
+
+    public function skipSoal(){
+       return $this->belongsTo(Soal::class, 'id', 'skip_soal_id');
     }
 
     public function pilihan(){

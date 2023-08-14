@@ -7,7 +7,7 @@ export default function User({ children }) {
                 {/* bottombar */}
                 <div
                     className={`fixed bottom-0 bg-white flex justify-around md:w-1/3 w-full border-t py-2 text-gray-700 rounded-t-xl shadow ${
-                        route().current("quiz") ? "hidden" : ""
+                        route().current("quiz-index") ? "hidden" : ""
                     }`}
                 >
                     <Link
@@ -139,7 +139,7 @@ export default function User({ children }) {
                     </div>
                 </div>
                 {/* bottombar end */}
-                <div className="pb-16">{children}</div>
+                <div className="">{children}</div>
             </div>
         </div>
     );

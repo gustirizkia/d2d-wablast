@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\SurveyController;
 use Illuminate\Foundation\Application;
@@ -48,8 +49,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/survey', [SurveyController::class, 'index'])->name('survey');
     Route::post('/inputDataTarget', [SurveyController::class, 'inputDataTarget'])->name('inputDataTarget');
     Route::post('/nextSoal', [SurveyController::class, 'nextSoal'])->name('nextSoal');
+    Route::post('/selesaiQuiz', [SurveyController::class, 'selesaiQuiz'])->name('selesaiQuiz');
     Route::get('/backSoal', [SurveyController::class, 'backSoal'])->name('backSoal');
     Route::get('/quiz/{id}', [SurveyController::class, 'quiz'])->name('quiz');
+    Route::get('/quiz/data/{id_target}', [QuizController::class, 'index'])->name('quiz-index');
 });
 
 Route::get('/dashboard', function () {

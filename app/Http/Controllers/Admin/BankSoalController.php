@@ -23,7 +23,7 @@ class BankSoalController extends Controller
     public function index(Request $request)
     {
 
-        $data['soal'] = Soal::orderBy('id', 'desc')->paginate(12);
+        $data['soal'] = Soal::orderBy('id', 'desc')->with('skipSoal')->where('skip_soal_id', null)->paginate(12);
         // return response()->json($data);
         return view('pages.banksoal.banksoal', compact('data'));
     }

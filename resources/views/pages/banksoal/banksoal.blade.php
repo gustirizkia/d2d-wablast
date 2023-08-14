@@ -50,6 +50,34 @@
                                     </div>
                                 </td>
                             </tr>
+                            @if ($item->skipSoal)
+                                <tr>
+                                    <th scope="row">{{$index+2}}</th>
+                                    <td>{{$item->skipSoal->title}}</td>
+                                    <td>{{$item->skipSoal->subtitle}}</td>
+                                    <td>{{$item->skipSoal->yes_no ? "Hanya iya atau tidak" : "Form Custom"}}</td>
+                                    <td>
+                                        @if ($item->soal_kecamatan)
+                                        <span class="soal_kecamatan{{$item->id}}">loading</span>
+                                        @else
+                                            <span class="text-warning">
+                                                General
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <a href="{{ route('admin.data.tambahData-skip', $item->skipSoal->id) }}" class="btn btn-info ms-2">Skip Logic</a>
+                                            <form action="{{route('admin.data.bank-soal.destroy', $item->skipSoal->id)}}" method="post">
+                                                @csrf
+                                                @method("DELETE")
+
+                                                <span class="btn btn-outline-danger ms-2 delete_confirm">Delete</span>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>

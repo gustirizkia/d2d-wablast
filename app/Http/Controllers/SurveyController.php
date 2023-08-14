@@ -354,7 +354,52 @@ class SurveyController extends Controller
 
     public function selesaiQuiz(Request $request)
     {
+        $pilihan = json_decode($request->pilihan);
 
+        DB::beginTransaction();
+
+        try {
+            $target = DB::table("data_targets")->find($request->target_id);
+            if($target->foto_bersama){
+                return response()->json("Image ", 422);
+            }
+
+            foreach($pilihan as $item)
+            {
+                $formData = [
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                        'data_target_id' => $target->id,
+                        'data_target_id' => $item->soal_id,
+                        'kecamatan_id' => $target->kecamatan_id
+                ];
+
+                if($item->yes_no){
+                    $formData['yes_no'] = $item->yes_no;
+                    DB::table("pilihan_targets")->insertGetId($formData);
+                }else{
+                    $formData['pilihan_ganda_id'] = $item->pilihan_id;
+                    DB::table("pilihan_targets")->insertGetId($formData);
+                }
+            }
+
+            $image = $request->image->store("foto-bersama", 'public');
+            $inserTarget = DB::table("data_targets")->where('id', $target->id)->update([
+                'foto_bersama' => $image
+            ]);
+
+            $target = DB::table("data_targets")->find($target->id);
+
+            Db::commit();
+            return response()->json($target);
+        } catch (Exception $th) {
+            DB::rollBack();
+
+            return response()->json(["error server", $th->getMessage()], 422);
+
+        }
+
+        return response()->json($pilihan);
     }
 
     public function logoutData(Request $request){
