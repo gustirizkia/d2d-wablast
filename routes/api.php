@@ -32,4 +32,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('survey-index', [SurveyApiController::class, 'index']);
     Route::post('inputTarget', [SurveyApiController::class, 'inputTarget']);
     Route::post('selesaiQuiz', [SurveyApiController::class, 'selesaiQuiz']);
+    Route::post('updateProfile', [AuthController::class, 'updateProfile']);
+    Route::get('logout', [AuthController::class, 'logout']);
 });

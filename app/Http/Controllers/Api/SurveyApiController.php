@@ -119,13 +119,16 @@ class SurveyApiController extends Controller
 
             foreach($pilihan as $item)
             {
+
                 $formData = [
                         'created_at' => now(),
                         'updated_at' => now(),
                         'data_target_id' => $target->id,
-                        'data_target_id' => $item->soal_id,
-                        'kecamatan_id' => $target->kecamatan_id
+                        'kecamatan_id' => $target->kecamatan_id,
+                        'soal_id' => $item->soal_id
                 ];
+
+                // return response()->json($formData, 422);
 
                 if($item->yes_no){
                     $formData['yes_no'] = $item->yes_no;
@@ -141,11 +144,9 @@ class SurveyApiController extends Controller
                 'foto_bersama' => $image
             ]);
 
-            $target['item'] = DB::table("data_targets")->find($target->id);
-            $target['pilihan_request'] = $pilihan;
 
             Db::commit();
-            return response()->json($target);
+            return response()->json([$target]);
         } catch (Exception $th) {
             DB::rollBack();
 
