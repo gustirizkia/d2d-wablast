@@ -10,7 +10,8 @@ class Soal extends Model
 {
     use HasFactory;
 
-    protected $appends = ['soal_kecamatan'];
+    protected $appends = ['soal_kecamatan', 'check_pilihan_target'];
+    public $idTarget = null;
 
     public function getSoalKecamatanAttribute(){
         $cek = DB::table('soal_has_kecamatans')->where("soal_id", $this->id)->first();
@@ -36,4 +37,16 @@ class Soal extends Model
     public function hasKecamatan(){
         return $this->hasMany(SoalHasKecamatan::class, 'soal_id', 'id');
     }
+
+    public function getCheckPilihanTargetAttribute(){
+        if($this->idTarget){
+            $data = DB::table("pilihan_targets")->where("data_target_id", $this->idTarget)->where('soal_id', $this->id)->first();
+            if($data){
+                return $data;
+            }
+        }
+        return 0;
+    }
+
+
 }

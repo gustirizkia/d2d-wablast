@@ -4,12 +4,15 @@ use App\Http\Controllers\Admin\AdministatorController;
 use App\Http\Controllers\Admin\AdminRelawanController;
 use App\Http\Controllers\Admin\BankSoalController;
 use App\Http\Controllers\Admin\CalonController;
+use App\Http\Controllers\Admin\DapilController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\KuisionerKecamatanController;
 use App\Http\Controllers\Admin\LokasiController;
 use App\Http\Controllers\Admin\QuickCountController;
+use App\Http\Controllers\Admin\RealCountController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RespondenController;
+use App\Http\Controllers\Admin\SaksiController;
 use App\Http\Controllers\Admin\SkipLogikController;
 use App\Http\Controllers\Admin\StatistikController;
 use App\Http\Controllers\Admin\UserController;
@@ -48,7 +51,14 @@ Route::middleware('admin')->group(function(){
     Route::get('responden/exportAll', [RespondenController::class, 'exportAll'])->name('responden-exportAll');
     Route::get('responden/exportDetail/{id}', [RespondenController::class, 'exportDetail'])->name('responden-exportDetail');
 
-    Route::get('quick-qount', [QuickCountController::class, 'index'])->name("quick-qount");
+    Route::name('real-count.')->prefix('real-count')->group(function(){
+        Route::get('quick-qount', [QuickCountController::class, 'index'])->name("quick-qount");
+
+        Route::resource('/dapil', DapilController::class);
+        Route::resource('saksi', SaksiController::class);
+        Route::get('saksi-getSurveyor', [SaksiController::class, 'getSurveyor'])->name('getSurveyor');
+    });
+
 
     Route::resource('administator', AdministatorController::class);
 

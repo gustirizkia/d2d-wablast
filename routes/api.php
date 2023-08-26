@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('login', [AuthController::class, 'login']);
 Route::get("all-quiz/{id_target}", [QuizController::class, 'getAllSoal']);
+Route::post("saveOne", [QuizController::class, 'saveOne']);
 Route::get("detailKecamatan/{kota_id}", [SurveyApiController::class, "detailKecamatan"]);
 Route::get("listDesa", [AlamatController::class, "listDesa"]);
 
