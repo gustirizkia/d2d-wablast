@@ -1,11 +1,11 @@
-{{-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body> --}}
+<body>
 
 <table class="table">
     <thead>
@@ -22,10 +22,30 @@
                 <th scope="row">{{$responden->nama}}</th>
                 @foreach ($soal as $itemSoal)
                     @if ($itemSoal->yes_no && $responden->pilihanTarget->where('soal_id', $itemSoal->id)->first())
-                        <td>{{$responden->pilihanTarget->where('soal_id', $itemSoal->id)->first()->yes_no}}</td>
+                        <td>{{$responden->pilihanTarget->where('soal_id', $itemSoal->id)->first()->yes_no === 'iya' ? 'A. Iya' : "B. Tidak"}}</td>
                     @elseif ($responden->pilihanTarget->where('soal_id', $itemSoal->id)->first())
 
-                        <td>{{$responden->pilihanTarget->where('soal_id', $itemSoal->id)->first() ? $responden->pilihanTarget->where('soal_id', $itemSoal->id)->first()->pilihan->title : "-"}}</td>
+                        @php
+                            $temp_indexAbjad = null
+                        @endphp
+                        @if ($responden->pilihanTarget->where('soal_id', $itemSoal->id)->first())
+                            @foreach ($itemSoal->pilihan as $indexAbjad => $findAbjad)
+                                @if ($responden->pilihanTarget->where('soal_id', $itemSoal->id)->first()->pilihan->id === $findAbjad->id)
+                                    @php
+                                        $temp_indexAbjad = $indexAbjad;
+                                    @endphp
+                                @endif
+                            @endforeach
+                            <td>{{$abjad[$temp_indexAbjad]}}. {{$responden->pilihanTarget->where('soal_id', $itemSoal->id)->first()->pilihan->title}}</td>
+                        @else
+                            <td>-</td>
+                        @endif
+
+                        @php
+                            $indexAbjad = null
+                        @endphp
+
+                        {{-- <td>{{$responden->pilihanTarget->where('soal_id', $itemSoal->id)->first() ? $responden->pilihanTarget->where('soal_id', $itemSoal->id)->first()->pilihan->title : "-"}}</td> --}}
                     @else
                         <td>-</td>
                     @endif
@@ -34,6 +54,6 @@
         @endforeach
     </tbody>
 </table>
-{{--
+
 </body>
-</html> --}}
+</html>

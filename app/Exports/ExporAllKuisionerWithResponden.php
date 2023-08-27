@@ -14,6 +14,7 @@ class ExporAllKuisionerWithResponden implements FromView
     {
         $soal = Soal::get();
         $dataTarget = DataTarget::get();
-        return view('pages.responden.export-all', compact('soal', 'dataTarget'));
+        $abjad = ['A', 'B', 'C', 'D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+        return view('pages.responden.export-all', compact('soal', 'dataTarget', 'abjad'));
     }
 }

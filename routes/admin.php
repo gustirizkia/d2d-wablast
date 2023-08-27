@@ -43,6 +43,7 @@ Route::middleware('admin')->group(function(){
 
         Route::resource('bank-soal', BankSoalController::class);
         Route::get('bank-soal/tambah-skiplogik/{soal_id}', [SkipLogikController::class, 'tambahData'])->name("tambahData-skip");
+        Route::get('bank-soal/skiplogik/{soal_id}', [SkipLogikController::class, 'index'])->name("skiplogik");
         Route::get('bank-soal/storeData-skiplogik', [SkipLogikController::class, 'storeData'])->name("storeData-skip");
 
         Route::resource('kuisioner-kecamatan', KuisionerKecamatanController::class);

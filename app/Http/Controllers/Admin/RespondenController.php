@@ -146,10 +146,11 @@ class RespondenController extends Controller
     }
     public function exportAll(Request $request)
     {
+        $abjad = ['A', 'B', 'C', 'D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
         // dd("cek");
         // $soal = Soal::get();
         // $dataTarget = DataTarget::get();
-        // return view('pages.responden.export-all', compact('soal', 'dataTarget'));
+        // return view('pages.responden.export-all', compact('soal', 'dataTarget', 'abjad'));
 
         try {
 
