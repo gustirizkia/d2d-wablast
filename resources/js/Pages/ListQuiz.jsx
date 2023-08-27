@@ -16,7 +16,7 @@ export default function ListQuiz({ data_target, auth, listKota }) {
     return (
         <Layout>
             <Head title="Survey Saya" />
-            <div className="bg-blue-50 min-h-screen">
+            <div className="bg-blue-50 min-h-screen pb-32">
                 <div className="bg-yellow-600 h-32 w-full rounded-b-3xl">
                     <TopUser auth={auth} />
                 </div>
@@ -59,7 +59,7 @@ export default function ListQuiz({ data_target, auth, listKota }) {
                                 </div>
                                 {item.foto_bersama === null ? (
                                     <Link
-                                        href={`quiz/${item.id}`}
+                                        href={`/quiz/data/${item.id}`}
                                         className="text-gray-500 bg-yellow-200 inline-block py-1 px-5 rounded text-xs text-right"
                                     >
                                         Lanjut

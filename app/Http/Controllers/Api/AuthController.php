@@ -81,4 +81,8 @@ class AuthController extends Controller
             'message' => 'Unauthorized'
         ], 401);
     }
+
+    public function getUser(){
+        return response()->json(auth()->user());
+    }
 }

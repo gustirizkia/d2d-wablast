@@ -1,20 +1,56 @@
+
+<div class="card">
+    <div class="card-body">
+        <div class="h3">{{$soal->title}}</div>
+
+        <label for="" class="form-label">Pilih jawaban untuk di skip</label>
+        @if ($soal->yes_no)
+            <div class="form-check">
+                <input class="form-check-input skip_input" value="iya" type="radio" name="skip" id="flexRadioDefault_iya">
+                <label class="form-check-label" for="flexRadioDefault_iya">
+                    Iya
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input skip_input" value="tidak" type="radio" name="skip" id="flexRadioDefault_tidak">
+                <label class="form-check-label" for="flexRadioDefault_tidak">
+                    Tidak
+                </label>
+            </div>
+        @else
+            @foreach ($pilihan as $item)
+            <div class="form-check">
+                <input class="form-check-input skip_input" value="{{$item->id}}" type="radio" name="skip" id="flexRadioDefault{{$item->id}}" {{$item->id === $skip_soal->skip_if_pilihan_id ? "checked" : '' }}>
+                <label class="form-check-label" for="flexRadioDefault{{$item->id}}">
+                    {{$item->title}}
+                </label>
+            </div>
+            @endforeach
+
+        @endif
+    </div>
+</div>
+
+
 <div class="card mb-3 mt-4">
     <div class="card-body">
-        <form action="{{route('admin.data.bank-soal.update', $soal->id)}}" method="post">
+        <form action="{{route('admin.data.bank-soal.update', $skip_soal->id)}}" method="post">
         @csrf
         @method("PUT")
-            <input type="text" class="input_tipe_pilihan" value="{{$soal->yes_no ? "ya_tidak" : 'mulitple'}}" name="tipe_pilihan" hidden>
+            <input type="number" hidden value="{{$soal->id}}" name="skip_soal">
+            <input type="{{$skip_soal->skip_if_yes_no ? 'text' :'number'}}" hidden value="{{$skip_soal->skip_if_pilihan_id}}" class="skip_if_pilihan_id" name="skip_if_pilihan_id">
+            <input type="text" class="input_tipe_pilihan" value="{{$skip_soal->yes_no ? "ya_tidak" : 'mulitple'}}" name="tipe_pilihan" hidden>
             <div class="row">
             <div class="col-md-6 mb-3">
                 <div class="">
                     <label class="form-label">Soal</label>
-                    <textarea class="form-control" required name="soal" data-bs-toggle="autosize" placeholder="Type something…" style="overflow: hidden; overflow-wrap: break-word; resize: none; text-align: start; height: 55.6px;">{{$soal->title}}</textarea>
+                    <textarea class="form-control" required name="soal" data-bs-toggle="autosize" placeholder="Type something…" style="overflow: hidden; overflow-wrap: break-word; resize: none; text-align: start; height: 55.6px;">{{$skip_soal->title}}</textarea>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
                 <div class="">
                     <label class="form-label">Deskripsi/Notes  <i>(optional)</i></label>
-                    <textarea class="form-control" name="deskripsi" data-bs-toggle="autosize" placeholder="Type something…" style="overflow: hidden; overflow-wrap: break-word; resize: none; text-align: start; height: 55.6px;">{{$soal->subtitle}}</textarea>
+                    <textarea class="form-control" name="deskripsi" data-bs-toggle="autosize" placeholder="Type something…" style="overflow: hidden; overflow-wrap: break-word; resize: none; text-align: start; height: 55.6px;">{{$skip_soal->subtitle}}</textarea>
                 </div>
             </div>
             </div>
@@ -28,20 +64,20 @@
                 <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                    <a href="#tabs-home-1" class="nav-link {{$soal->yes_no === 0 ? "active" : ""}}" tipe-pilihan="mulitple" data-bs-toggle="tab" aria-selected="{{$soal->yes_no === 0 ? "true" : "false"}}" role="tab">Multiple Choice</a>
+                    <a href="#tabs-home-1" class="nav-link {{$skip_soal->yes_no === 0 ? "active" : ""}}" tipe-pilihan="mulitple" data-bs-toggle="tab" aria-selected="{{$skip_soal->yes_no === 0 ? "true" : "false"}}" role="tab">Multiple Choice</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                    <a href="#tabs-profile-1" class="nav-link {{$soal->yes_no === 1 ? "active" : ""}}" tipe-pilihan="ya_tidak" data-bs-toggle="tab" aria-selected="{{$soal->yes_no === 1 ? "true" : "false"}}" role="tab" tabindex="-1">Hanya Ya atau Tidak</a>
+                    <a href="#tabs-profile-1" class="nav-link {{$skip_soal->yes_no === 1 ? "active" : ""}}" tipe-pilihan="ya_tidak" data-bs-toggle="tab" aria-selected="{{$skip_soal->yes_no === 1 ? "true" : "false"}}" role="tab" tabindex="-1">Hanya Ya atau Tidak</a>
                     </li>
                 </ul>
                 </div>
                 <div class="card-body">
                 <div class="tab-content">
-                    <div class="tab-pane {{$soal->yes_no === 0 ? "active show" : ''}}" id="tabs-home-1" role="tabpanel">
+                    <div class="tab-pane {{$skip_soal->yes_no === 0 ? "active show" : ''}}" id="tabs-home-1" role="tabpanel">
                     {{-- data pilihan ganda --}}
-                        @if (count($pilihan))
+                        @if (count($pilihanSkip))
                             <div class="pilihan">
-                                @foreach ($pilihan as $key => $itemPilihan)
+                                @foreach ($pilihanSkip as $key => $itemPilihan)
                                     <div class="mb-3" id="pilihan_id_{{$key}}">
                                         <label for="" class="form-label">Pilihan {{$key+1}} <span class="text-danger remove_pilihan" data-id="{{$key}}"><i class="bi bi-x-circle-fill"></i></span></label>
                                         <input type="text" placeholder="" name="pilihan[{{$key}}][title]" value="{{$itemPilihan->title}}"  class="form-control">
@@ -65,7 +101,7 @@
                     </div>
                     {{-- end data pilihan ganda --}}
                     </div>
-                    <div class="tab-pane {{$soal->yes_no === 1 ? "active show" : ''}}" id="tabs-profile-1" role="tabpanel">
+                    <div class="tab-pane {{$skip_soal->yes_no === 1 ? "active show" : ''}}" id="tabs-profile-1" role="tabpanel">
                     <h4>Hanya Iya atau Tidak</h4>
                     </div>
                 </div>
@@ -83,8 +119,8 @@
 
 @push('addScript')
     <script>
-        @if(count($pilihan))
-            let i = {{ count($pilihan) ? count($pilihan) : 0}};
+        @if(count($pilihanSkip))
+            let i = {{ count($pilihanSkip) ? count($pilihanSkip) : 0}};
             $(".add_pilihan").on("click", function(){
             i++;
 
@@ -120,6 +156,19 @@
             let tipe = $(this).attr("tipe-pilihan")
 
             $(".input_tipe_pilihan").val(tipe);
+        })
+    </script>
+
+    @if ($soal->yes_no)
+        <script>
+            $(".skip_if_pilihan_id").attr("type", "text");
+        </script>
+    @endif
+
+    <script>
+        $(".skip_input").on("change", function(){
+            let value = $(this).val();
+            $(".skip_if_pilihan_id").val(value);
         })
     </script>
 @endpush

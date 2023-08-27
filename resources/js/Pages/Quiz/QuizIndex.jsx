@@ -117,8 +117,6 @@ export default function QuizIndex({ target, kecamatan }) {
                 }
             });
 
-            console.log("newData", newData);
-
             SetPilihanUser(newData);
         } else {
             SetPilihanUser((PilihanUser) => [...PilihanUser, formPiliihan]);
@@ -126,6 +124,41 @@ export default function QuizIndex({ target, kecamatan }) {
     };
 
     const handleSetPilihan = (pilihan, item, type) => {
+        let newData = [];
+        let filterArray = null;
+        let soal = item;
+
+        if (item.skip_soal) {
+            console.log("item.skip_soal", item.skip_soal);
+            SoalGeneral.map((el, index) => {
+                newData.push(el);
+                if (el.id === soal.id) {
+                    if (
+                        SoalGeneral[index + 1].skip_soal_id !== soal.id &&
+                        soal.skip_soal?.skip_if_pilihan_id !== pilihan
+                    ) {
+                        newData.push(el.skip_soal);
+                    } else {
+                        if (SoalGeneral[index + 1].skip_soal_id === soal.id) {
+                            if (
+                                soal.skip_soal?.skip_if_pilihan_id === pilihan
+                            ) {
+                                filterArray = SoalGeneral.filter(
+                                    (item) => item.skip_soal_id !== soal.id
+                                );
+                            }
+                        }
+                    }
+                }
+            });
+
+            if (filterArray) {
+                SetSoalGeneral(filterArray);
+            } else {
+                SetSoalGeneral(newData);
+            }
+        }
+
         let formPiliihan = {
             soal_id: item.id,
             pilihan_id: pilihan,
@@ -151,15 +184,12 @@ export default function QuizIndex({ target, kecamatan }) {
             let soal = item;
 
             newData.map((el, index) => {
-                console.log("el", el);
                 if (el.soal_id === soal.skip_soal?.skip_soal_id) {
                     if (pilihan === soal.skip_soal?.skip_if_pilihan_id) {
-                        newData = newData.filter((item) => {
-                            console.log("item", item);
-                            return item.soal_id !== soal.skip_soal?.id;
+                        newData = newData.filter((itemData) => {
+                            console.log("itemData", itemData);
+                            return itemData.soal_id !== soal.skip_soal?.id;
                         });
-
-                        console.log("newData", newData);
                     }
                 }
             });
@@ -171,10 +201,6 @@ export default function QuizIndex({ target, kecamatan }) {
 
         // end function
     };
-
-    useEffect(() => {
-        console.log("PilihanUser", PilihanUser);
-    }, [PilihanUser]);
 
     return (
         <Layout>

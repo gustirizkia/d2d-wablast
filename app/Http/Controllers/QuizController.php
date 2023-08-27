@@ -33,13 +33,9 @@ class QuizController extends Controller
         $cekExists = DB::table("pilihan_targets")->where("soal_id", $request->soal_id)
                     ->where('data_target_id', $request->data_target_id)->first();
 
-        if($cekExists)
-        {
-            return response()->json('data exists', 422);
-        }
 
         $soal = DB::table('soals')->find($request->soal_id);
-        $target = DB::table("data_targets")->find($request->soal_id);
+        $target = DB::table("data_targets")->find($request->data_target_id);
 
         $data = [
             'data_target_id' => $request->data_target_id,
@@ -55,8 +51,18 @@ class QuizController extends Controller
             $data['pilihan_ganda_id'] = $request->pilihan;
         }
 
-        $insertPiliihanTarget = DB::table('pilihan_targets')->insertGetId($data);
-        $getData = DB::table("pilihan_targets")->find($insertPiliihanTarget);
+        if($cekExists)
+        {
+            $updateData = DB::table("pilihan_targets")->where("soal_id", $request->soal_id)
+                        ->where('data_target_id', $request->data_target_id)->update($data);
+
+            $getData = DB::table("pilihan_targets")->where("soal_id", $request->soal_id)
+                    ->where('data_target_id', $request->data_target_id)->first();
+        }else{
+            $insertPiliihanTarget = DB::table('pilihan_targets')->insertGetId($data);
+            $getData = DB::table("pilihan_targets")->find($insertPiliihanTarget);
+        }
+
 
         return response()->json($getData);
 

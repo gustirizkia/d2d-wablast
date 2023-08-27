@@ -67,6 +67,8 @@ class BankSoalController extends Controller
                 'color' => $this->generateColor()
             ];
 
+            // dd($dataSoal, $request->all());
+
             if($request->skip_soal)
             {
                 $soal = DB::table('soals')->find($request->skip_soal);
@@ -147,6 +149,22 @@ class BankSoalController extends Controller
                 'subtitle' => $request->deskripsi,
                 'updated_at' => now()
             ];
+
+            if($request->skip_soal)
+            {
+                $soal = DB::table('soals')->find($request->skip_soal);
+                if($soal){
+                    $dataSoal['skip_soal_id'] = $request->skip_soal;
+                    if($soal->yes_no){
+                        $dataSoal['skip_if_yes_no'] = $request->skip_if_pilihan_id;
+                    }else{
+                        $dataSoal['skip_if_pilihan_id'] = $request->skip_if_pilihan_id;
+                    }
+                }
+
+            }
+
+            // dd($dataSoal, $request->all());
 
             if($request->tipe_pilihan === 'ya_tidak'){
                 $dataSoal['yes_no'] = 1;
