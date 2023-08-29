@@ -23,18 +23,35 @@
             <label for="" class="form-label">Pilih jawaban untuk di skip</label>
 
             @if ($soal->yes_no)
-                <div class="form-check">
-                    <input class="form-check-input skip_input" value="iya" {{$first_skip_soal->skip_if_yes_no !== 'tidak' ? "checked" : ''}} type="radio" name="pilihan" id="flexRadioDefault_iya">
-                    <label class="form-check-label" for="flexRadioDefault_iya">
-                        Iya
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input skip_input" {{$first_skip_soal->skip_if_yes_no === 'tidak' ? "checked" : ''}} value="tidak" type="radio" name="pilihan" id="flexRadioDefault_tidak">
-                    <label class="form-check-label" for="flexRadioDefault_tidak">
-                        Tidak
-                    </label>
-                </div>
+
+                @if ($first_skip_soal)
+                    <div class="form-check">
+                        <input class="form-check-input skip_input" value="iya" {{$first_skip_soal->skip_if_yes_no !== 'tidak' ? "checked" : ''}} type="radio" name="pilihan" id="flexRadioDefault_iya">
+                        <label class="form-check-label" for="flexRadioDefault_iya">
+                            Iya
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input skip_input" {{$first_skip_soal->skip_if_yes_no === 'tidak' ? "checked" : ''}} value="tidak" type="radio" name="pilihan" id="flexRadioDefault_tidak">
+                        <label class="form-check-label" for="flexRadioDefault_tidak">
+                            Tidak
+                        </label>
+                    </div>
+                @else
+                    <div class="form-check">
+                        <input class="form-check-input skip_input" value="iya" type="radio" name="pilihan" id="flexRadioDefault_iya">
+                        <label class="form-check-label" for="flexRadioDefault_iya">
+                            Iya
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input skip_input"  value="tidak" type="radio" name="pilihan" id="flexRadioDefault_tidak">
+                        <label class="form-check-label" for="flexRadioDefault_tidak">
+                            Tidak
+                        </label>
+                    </div>
+
+                @endif
             @else
                 @foreach ($pilihan as $item)
                     @if ($first_skip_soal)
