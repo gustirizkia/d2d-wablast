@@ -31,7 +31,7 @@
 </div>
 
 
-<div class="card mb-3 mt-4">
+<div class="card mb-3 mt-4" x-data="funcData">
     <div class="card-body">
         <form action="{{route('admin.data.bank-soal.store')}}" method="post">
         @csrf
@@ -127,4 +127,19 @@
             $(".skip_if_pilihan_id").val(value);
         })
     </script>
+
+
+<script>
+    function funcData(){
+        return{
+            dataSoals: [
+                {
+                    id: 1
+                    type: null,
+
+                }
+            ],
+        }
+    }
+</script>
 @endpush

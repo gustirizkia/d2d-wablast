@@ -42,7 +42,10 @@ Route::middleware('admin')->group(function(){
         Route::get('report', [ReportController::class, 'index'])->name("report");
 
         Route::resource('bank-soal', BankSoalController::class);
+
         Route::get('bank-soal/tambah-skiplogik/{soal_id}', [SkipLogikController::class, 'tambahData'])->name("tambahData-skip");
+        Route::get('bank-soal/editSkipSoal/{soal_id}/{skip_id}', [SkipLogikController::class, 'editSkipSoal'])->name("editSkipSoal");
+        Route::post('bank-soal/storePilihanSkip', [SkipLogikController::class, 'storePilihanSkip'])->name("storePilihanSkip");
         Route::get('bank-soal/skiplogik/{soal_id}', [SkipLogikController::class, 'index'])->name("skiplogik");
         Route::get('bank-soal/storeData-skiplogik', [SkipLogikController::class, 'storeData'])->name("storeData-skip");
 

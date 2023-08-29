@@ -25,6 +25,9 @@ class Soal extends Model
     public function skipSoal(){
        return $this->belongsTo(Soal::class, 'id', 'skip_soal_id');
     }
+    public function skipSoalMany(){
+       return $this->hasMany(Soal::class, 'skip_soal_id', 'id');
+    }
 
     public function pilihan(){
         return $this->hasMany(PilihanGanda::class);

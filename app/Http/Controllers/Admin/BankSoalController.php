@@ -23,8 +23,9 @@ class BankSoalController extends Controller
     public function index(Request $request)
     {
 
-        $data['soal'] = Soal::orderBy('id', 'desc')->with('skipSoal')->where('skip_soal_id', null)->paginate(12);
-        // return response()->json($data);
+        $data['soal'] = Soal::orderBy('id', 'desc')
+        ->with('skipSoal', "skipSoalMany")->where('skip_soal_id', null)->paginate(12);
+
         return view('pages.banksoal.banksoal', compact('data'));
     }
 
@@ -45,7 +46,6 @@ class BankSoalController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'soal' => 'required|string',
         ]);
@@ -102,6 +102,11 @@ class BankSoalController extends Controller
 
 
             DB::commit();
+
+            if($request->skip_soal)
+            {
+                return redirect()->route("admin.data.skiplogik", $request->skip_soal)->with('success', "Berhasil update soal");
+            }
 
             return redirect()->route('admin.data.bank-soal.index')->with('success', "Berhasil Tambah Bank Soal");
         } catch (Exception $e) {
@@ -205,6 +210,11 @@ class BankSoalController extends Controller
 
 
             DB::commit();
+
+            if($request->skip_soal)
+            {
+                return redirect()->route("admin.data.skiplogik", $request->skip_soal)->with('success', "Berhasil update soal");
+            }
 
             return redirect()->route('admin.data.bank-soal.index')->with('success', "Berhasil Update Bank Soal");
         } catch (Exception $e) {

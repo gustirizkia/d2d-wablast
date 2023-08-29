@@ -1,42 +1,20 @@
+@extends('layouts.admin')
 
-<div class="card">
-    <div class="card-body">
-        <div class="h3">{{$soal->title}}</div>
+@section('title')
+    Edit Soal
+@endsection
 
-        <label for="" class="form-label">Pilih jawaban untuk di skip</label>
-        @if ($soal->yes_no)
-            <div class="form-check">
-                <input class="form-check-input skip_input" value="iya" type="radio" name="skip" id="flexRadioDefault_iya">
-                <label class="form-check-label" for="flexRadioDefault_iya">
-                    Iya
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input skip_input" value="tidak" type="radio" name="skip" id="flexRadioDefault_tidak">
-                <label class="form-check-label" for="flexRadioDefault_tidak">
-                    Tidak
-                </label>
-            </div>
-        @else
-            @foreach ($pilihan as $item)
-            <div class="form-check">
-                <input class="form-check-input skip_input" value="{{$item->id}}" type="radio" name="skip" id="flexRadioDefault{{$item->id}}" {{$item->id === $skip_soal->skip_if_pilihan_id ? "checked" : '' }}>
-                <label class="form-check-label" for="flexRadioDefault{{$item->id}}">
-                    {{$item->title}}
-                </label>
-            </div>
-            @endforeach
-
-        @endif
-    </div>
-</div>
-
-
+@section('content')
 <div class="card mb-3 mt-4">
     <div class="card-body">
         <form action="{{route('admin.data.bank-soal.update', $skip_soal->id)}}" method="post">
         @csrf
         @method("PUT")
+            @if ($soal->yes_no)
+                <input type="text" hidden value="{{$skip_soal->skip_if_yes_no}}" name="skip_if_pilihan_id">
+            @else
+                <input type="number" hidden value="{{$skip_soal->skip_if_pilihan_id}}" name="skip_if_pilihan_id">
+            @endif
             <input type="number" hidden value="{{$soal->id}}" name="skip_soal">
             <input type="{{$skip_soal->skip_if_yes_no ? 'text' :'number'}}" hidden value="{{$skip_soal->skip_if_pilihan_id}}" class="skip_if_pilihan_id" name="skip_if_pilihan_id">
             <input type="text" class="input_tipe_pilihan" value="{{$skip_soal->yes_no ? "ya_tidak" : 'mulitple'}}" name="tipe_pilihan" hidden>
@@ -102,7 +80,7 @@
                     {{-- end data pilihan ganda --}}
                     </div>
                     <div class="tab-pane {{$skip_soal->yes_no === 1 ? "active show" : ''}}" id="tabs-profile-1" role="tabpanel">
-                    <h4>Hanya Iya atau Tidak</h4>
+                        <h4>Hanya Iya atau Tidak</h4>
                     </div>
                 </div>
                 </div>
@@ -115,7 +93,7 @@
         </form>
     </div>
 </div>
-
+@endsection
 
 @push('addScript')
     <script>

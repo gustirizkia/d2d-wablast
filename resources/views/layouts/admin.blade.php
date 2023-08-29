@@ -31,6 +31,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         @stack('addStyle')
+        @livewireStyles
         <style>
             @import url("https://rsms.me/inter/inter.css");
             :root {
@@ -844,5 +845,6 @@
         </script>
 
         @stack('addScript')
+        @livewireScripts
     </body>
 </html>

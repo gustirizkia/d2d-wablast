@@ -6,6 +6,7 @@ import axios from "axios";
 import MulitplePilihan from "./MulitplePilihan";
 import YesNo from "./YesNo";
 import SubmitData from "./SubmitData";
+import { SkipItemUtil } from "./Skip";
 
 export default function QuizIndex({ target, kecamatan }) {
     const [HideLoading, SetHideLoading] = useState(false);
@@ -22,7 +23,7 @@ export default function QuizIndex({ target, kecamatan }) {
             .get(`/api/all-quiz/${target.id}`)
             .then((ress) => {
                 let dataObj = ress.data.soal_general;
-
+                console.log("dataObj", dataObj);
                 ress.data.soal_kecamatan.forEach((element) => {
                     dataObj.push(element);
                 });
@@ -55,6 +56,7 @@ export default function QuizIndex({ target, kecamatan }) {
     };
 
     const handelPilihanYesNo = (pilihan, soal, type) => {
+        console.log("soal", soal);
         let newData = [];
         let filterArray = null;
         if (soal.skip_soal) {
@@ -65,7 +67,9 @@ export default function QuizIndex({ target, kecamatan }) {
                         SoalGeneral[index + 1].skip_soal_id !== soal.id &&
                         soal.skip_soal?.skip_if_yes_no !== pilihan
                     ) {
-                        newData.push(el.skip_soal);
+                        el.skip_soal_many.forEach((element_skip_many) => {
+                            newData.push(element_skip_many);
+                        });
                     } else {
                         if (SoalGeneral[index + 1].skip_soal_id === soal.id) {
                             if (soal.skip_soal?.skip_if_yes_no === pilihan) {
@@ -137,7 +141,10 @@ export default function QuizIndex({ target, kecamatan }) {
                         SoalGeneral[index + 1].skip_soal_id !== soal.id &&
                         soal.skip_soal?.skip_if_pilihan_id !== pilihan
                     ) {
-                        newData.push(el.skip_soal);
+                        el.skip_soal_many.forEach((element_skip_many) => {
+                            newData.push(element_skip_many);
+                        });
+                        // newData.push(el.skip_soal);
                     } else {
                         if (SoalGeneral[index + 1].skip_soal_id === soal.id) {
                             if (

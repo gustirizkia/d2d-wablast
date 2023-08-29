@@ -74,7 +74,7 @@ class QuizController extends Controller
 
         $soalGeneral = Soal::doesntHave("hasKecamatan")
                         ->where("skip_soal_id", null)
-                        ->with("skipSoal.pilihan")
+                        ->with("skipSoalMany.pilihan", "skipSoal.pilihan")
                         ->with('pilihan')
                         ->get();
 
@@ -88,8 +88,11 @@ class QuizController extends Controller
                             ->get()
                             ->pluck("soal_id");
         $soalKecamatan = Soal::whereIn("id", $soalHasKecamatan)
-                            ->where("skip_soal_id", null)->with("skipSoal")
-                            ->with('pilihan')->get();
+                            ->where("skip_soal_id", null)
+                            ->with("skipSoal")
+                            ->with("skipSoalMany.pilihan", "skipSoal.pilihan")
+                            ->with('pilihan')
+                            ->get();
 
         return response()->json([
             'soal_general' => $soalGeneral,
