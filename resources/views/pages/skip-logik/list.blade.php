@@ -99,9 +99,10 @@
                 <tbody>
                     @foreach ($skip_soal as $item)
                         <tr>
+                            {{-- {{dd($item)}} --}}
                             <td>{{$item->title}}</td>
                             <td>{{$item->subtitle}}</td>
-                            <td>{{$item->skip_if_yes_no ? "Hanya iya atau tidak" : "Form Custom"}}</td>
+                            <td>{{$item->yes_no ? "Hanya iya atau tidak" : "Form Custom"}}</td>
                             <td>
                                 <div class="d-flex">
                                     <a href="{{route("admin.data.editSkipSoal", [$soal->id, $item->id])}}" class="btn btn-primary">Edit</a>
