@@ -38,7 +38,11 @@
                                 <td>
                                     <div class="d-flex">
                                         <a href="{{route('admin.data.bank-soal.edit', $item->id)}}" class="btn btn-warning">Edit</a>
-                                        <a href="{{ route('admin.data.skiplogik', $item->id) }}" class="btn btn-info ms-2">Skip Logic</a>
+                                        @if ($item->skipSoal)
+                                            <a href="{{ route('admin.data.skiplogik', $item->id) }}" class="btn btn-info ms-2">Skip Logic</a>
+                                        @else
+                                            <a href="{{ route('admin.data.new-tambahData-skip', $item->id) }}" class="btn btn-info ms-2">Tambah Skip Logic</a>
+                                        @endif
                                         <form action="{{route('admin.data.bank-soal.destroy', $item->id)}}" method="post">
                                             @csrf
                                             @method("DELETE")
@@ -65,7 +69,14 @@
                                         </td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('admin.data.skiplogik', $itemSkip->id) }}" class="btn btn-info ms-2">Skip Logic</a>
+
+                                                @if ($itemSkip->skipSoal)
+                                                    <a href="{{ route('admin.data.skiplogik', $itemSkip->id) }}" class="btn btn-info ms-2">Skip Logic</a>
+                                                @else
+                                                    <a href="{{ route('admin.data.new-tambahData-skip', $itemSkip->id) }}" class="btn btn-info ms-2">Tambah Skip Logic</a>
+                                                @endif
+
+                                                {{-- <a href="{{ route('admin.data.skiplogik', $itemSkip->id) }}" class="btn btn-info ms-2">Skip Logic</a> --}}
                                                 <form action="{{route('admin.data.bank-soal.destroy', $itemSkip->id)}}" method="post">
                                                     @csrf
                                                     @method("DELETE")

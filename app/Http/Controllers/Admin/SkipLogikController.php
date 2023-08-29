@@ -24,6 +24,16 @@ class SkipLogikController extends Controller
        ]);
     }
 
+    public function newTambahData($soal_id){
+        $soal = DB::table('soals')->where('id', $soal_id)->first();
+        $pilihan = DB::table("pilihan_gandas")->where('soal_id', $soal_id)->get();
+
+        return view('pages.skip-logik.add-soal', [
+            'soal' => $soal,
+            'pilihan' => $pilihan,
+        ]);
+    }
+
     public function tambahData(Request $request, $soal_id)
     {
 

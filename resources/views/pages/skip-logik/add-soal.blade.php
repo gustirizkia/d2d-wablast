@@ -1,3 +1,10 @@
+@extends('layouts.admin')
+
+@section('title')
+    Skip logik {{$soal->title}}
+@endsection
+
+@section('content')
 <div class="card">
     <div class="card-body">
         <div class="h3">{{$soal->title}}</div>
@@ -29,7 +36,6 @@
         @endif
     </div>
 </div>
-
 
 <div class="card mb-3 mt-4" x-data="funcData">
     <div class="card-body">
@@ -94,6 +100,7 @@
         </form>
     </div>
 </div>
+@endsection
 
 @push('addScript')
     <script>
