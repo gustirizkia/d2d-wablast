@@ -3,8 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Dapil;
+use App\Models\Kecamatan;
+use App\Models\Kota;
+use App\Models\Provinsi;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class SaksiController extends Controller
 {
@@ -13,7 +20,9 @@ class SaksiController extends Controller
      */
     public function index()
     {
-        return view('pages.Saksi.Index');
+        $users = User::whereHas("saksi.dapil")->get();
+
+        return view('pages.Saksi.Index', compact('users'));
     }
 
     /**
@@ -21,7 +30,12 @@ class SaksiController extends Controller
      */
     public function create()
     {
-        return view('pages.Saksi.Create');
+        $provinsi = Provinsi::whereIn('id', [11, 16])->orderBy('nama', 'asc')->get();
+        $listKota = Kota::orderBy('nama', 'asc')->whereIn('provinsi_id', $provinsi->pluck("id_provinsi"))->get();
+        $listKecamatan = Kecamatan::orderBy('nama', 'asc')->whereIn('kota_id', $listKota->pluck("id_kota"))->get();
+        $dapil = Dapil::get();
+
+        return view('pages.Saksi.Create', compact('provinsi', 'listKecamatan', 'listKota', 'dapil'));
     }
 
     /**
@@ -29,7 +43,58 @@ class SaksiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'name' => 'required|string',
+            'provinsi' => 'required|exists:provinsis,id_provinsi',
+            'dapil' => 'required|exists:dapils,id',
+            'kota' => 'required|exists:kotas,id_kota',
+            'kecamatan' => 'required|exists:kecamatans,id_kecamatan',
+            'desa' => 'required|exists:desas,id',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|unique:users,phone',
+            'password' => 'required|string',
+            'alamat' => 'required|string'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+
+            $data = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone' => $request->phone,
+                'alamat' => $request->alamat,
+                'provinsi_id' => $request->provinsi,
+                'kota_id' => $request->kota,
+                'kecamatan_id' => $request->kecamatan,
+                'desa_id' => $request->desa,
+                'target' => $request->target,
+                'username' => $request->username,
+                'target' => 0
+            ];
+
+            $user = User::create($data);
+
+            $saksi = DB::table('saksis')->insertGetId([
+                'user_id' => $user->id,
+                'dapil_id' => $request->dapil,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
+            DB::commit();
+            return redirect()->route('admin.real-count.saksi.index')->with('success', "Berhasil tambah saksi");
+        } catch (Exception $th) {
+            DB::rollBack();
+
+            saveError("SaksiController->store", $th->getMessage());
+
+            return redirect()->back()->with('error', "Gagal Simpan data Server Error");
+        }
+
     }
 
     /**
@@ -61,7 +126,11 @@ class SaksiController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = User::findOrFail($id);
+
+        $data->delete();
+
+        return redirect()->back()->with('success', "Berhasil hapus saksi");
     }
 
     public function getSurveyor(Request $request)

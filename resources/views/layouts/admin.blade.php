@@ -46,6 +46,19 @@
                 background-color: #f6f8fb !important;
             }
 
+            @media (min-width: 992px){
+                .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-item.active, .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-item:active {
+                    background: rgb(75 75 75 / 24%);
+                }
+
+                .navbar-expand-lg .nav-item.active {
+                    background: linear-gradient(90deg, #0075FF -116.47%, rgba(0, 0, 0, 0.00) 101.1%);
+                }
+                .navbar-vertical.navbar-expand-lg{
+                    overflow-y: auto;
+                }
+            }
+
 
         </style>
     </head>
@@ -597,18 +610,19 @@
                                 <div class="dropdown-menu {{request()->is("admin/real-count*") ? "show" : ''}}">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            <a
-                                                class="dropdown-item {{request()->is("admin/data/saksi*") ? "active" : ''}}"
-                                                href="{{ route('admin.real-count.saksi.index') }}"
-                                            >
-                                                Saksi
-                                            </a>
-                                            <a
-                                                class="dropdown-item {{request()->is("admin/data/dapil*") ? "active" : ''}}"
+                                             <a
+                                                class="dropdown-item {{request()->is("admin/real-count/dapil*") ? "active" : ''}}"
                                                 href="{{ route('admin.real-count.dapil.index') }}"
                                             >
                                                 Dapil
                                             </a>
+                                            <a
+                                                class="dropdown-item {{request()->is("admin/real-count/saksi*") ? "active" : ''}}"
+                                                href="{{ route('admin.real-count.saksi.index') }}"
+                                            >
+                                                Saksi
+                                            </a>
+
                                         </div>
                                     </div>
                                 </div>
@@ -828,13 +842,13 @@
                 var form =  $(this).closest("form");
                 event.preventDefault();
                 Swal.fire({
-                    title: `Are you sure you want to delete this record?`,
-                    text: "If you delete this, it will be gone forever.",
+                    title: `Kamu yakin akan menghapus data ini?`,
+                    text: "Jika anda menghapusnya, itu akan hilang selamanya.",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
+                    confirmButtonText: 'Ya, hapus!'
                 })
                 .then((result) => {
                     if (result.isConfirmed) {

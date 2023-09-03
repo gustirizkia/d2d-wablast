@@ -20,7 +20,7 @@ export default function QuizIndex({ target, kecamatan }) {
 
     useEffect(() => {
         axios
-            .get(`/api/all-quiz/${target.id}`)
+            .get(`https://d2d.binamuda.com/api/all-quiz/${target.id}`)
             .then((ress) => {
                 let dataObj = ress.data.soal_general;
                 console.log("dataObj", dataObj);
@@ -64,14 +64,14 @@ export default function QuizIndex({ target, kecamatan }) {
                 newData.push(el);
                 if (el.id === soal.id) {
                     if (
-                        SoalGeneral[index + 1].skip_soal_id !== soal.id &&
+                        SoalGeneral[index + 1]?.skip_soal_id !== soal.id &&
                         soal.skip_soal?.skip_if_yes_no !== pilihan
                     ) {
                         el.skip_soal_many.forEach((element_skip_many) => {
                             newData.push(element_skip_many);
                         });
                     } else {
-                        if (SoalGeneral[index + 1].skip_soal_id === soal.id) {
+                        if (SoalGeneral[index + 1]?.skip_soal_id === soal.id) {
                             if (soal.skip_soal?.skip_if_yes_no === pilihan) {
                                 filterArray = SoalGeneral.filter(
                                     (item) => item.skip_soal_id !== soal.id
@@ -138,7 +138,7 @@ export default function QuizIndex({ target, kecamatan }) {
                 newData.push(el);
                 if (el.id === soal.id) {
                     if (
-                        SoalGeneral[index + 1].skip_soal_id !== soal.id &&
+                        SoalGeneral[index + 1]?.skip_soal_id !== soal.id &&
                         soal.skip_soal?.skip_if_pilihan_id !== pilihan
                     ) {
                         el.skip_soal_many.forEach((element_skip_many) => {
@@ -146,7 +146,7 @@ export default function QuizIndex({ target, kecamatan }) {
                         });
                         // newData.push(el.skip_soal);
                     } else {
-                        if (SoalGeneral[index + 1].skip_soal_id === soal.id) {
+                        if (SoalGeneral[index + 1]?.skip_soal_id === soal.id) {
                             if (
                                 soal.skip_soal?.skip_if_pilihan_id === pilihan
                             ) {

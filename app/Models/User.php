@@ -55,6 +55,8 @@ class User extends Authenticatable
     ];
 
     public function saksi(){
-        return $this->hasOne(Saksi::class, 'saksi_id', 'id');
+        return $this->hasOne(Saksi::class, 'user_id', 'id');
     }
+
+
 }
