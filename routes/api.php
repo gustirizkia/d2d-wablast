@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\RealCountController;
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\SurveyApiController;
@@ -36,4 +37,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('updateProfile', [AuthController::class, 'updateProfile']);
     Route::get('logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'getUser']);
+    Route::get('real-count-get-data', [RealCountController::class, 'getData']);
+    Route::post('real-count/inputSaksi', [RealCountController::class, 'inputSaksi']);
 });

@@ -140,6 +140,7 @@ class DapilController extends Controller
                         'nama' => $caleg['nama'],
                         'nomor' => $caleg['nomor'],
 
+                        'created_at' => now(),
                         'updated_at' => now(),
                         'dapil_uuid' => $id
                     ]);

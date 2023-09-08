@@ -745,6 +745,7 @@
                         @if ($errors->any())
                             <div class="mb-3">
                                 <div class="alert alert-danger">
+                                    <div class="fw-bold mb-2">Perhatikan!</div>
                                     <ul>
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>

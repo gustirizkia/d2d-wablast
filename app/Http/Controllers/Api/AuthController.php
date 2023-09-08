@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -60,7 +61,7 @@ class AuthController extends Controller
     {
 
 
-        $user = User::where('email', $request->email)->orWhere('username', $request->email)->first();
+        $user = User::where('email', $request->email)->with("saksi")->orWhere('username', $request->email)->first();
         if($user){
 
             if(Hash::check($request->password, $user->password)){
@@ -83,6 +84,10 @@ class AuthController extends Controller
     }
 
     public function getUser(){
-        return response()->json(auth()->user());
+        $user = User::where('email', auth()->user()->email)->with("saksi")->first();
+        if(!$user){
+            return response()->json("Not Auth", 401);
+        }
+        return response()->json($user);
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DataTarget;
 use App\Models\Kota;
 use App\Models\UserHasKota;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +45,7 @@ class SurveyApiController extends Controller
             'kota' => 'required|exists:kotas,id_kota',
             'kecamatan' => 'required|exists:kecamatans,id_kecamatan',
             'desa' => 'required|exists:desas,id',
+            'tanggal_lahir' => 'required'
         ]);
 
         if($validasi->fails()){
@@ -59,7 +61,8 @@ class SurveyApiController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
             'longitude' => $request->longitude,
-            'latitude' => $request->latitude
+            'latitude' => $request->latitude,
+            'tgl_lahir' => Carbon::parse($request->tanggal_lahir)
         ];
 
         $data['provinsi_id'] = $request->provinsi;

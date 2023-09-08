@@ -67,44 +67,75 @@
                 <div class="row mb-4">
                     <div class="col-md-3 mb-3">
                         <label for="" class="form-label">Provinsi</label>
-                        <select required name="provinsi" id="provinsi" class="form-select">
+                        <select required name="provinsi" id="provinsi" class="form-select @error('provinsi') is-invalid @enderror">
                             <option >Pilih Provinsi</option>
                             @foreach ($provinsi as $item)
                                 <option value="{{$item->id_provinsi}}">{{$item->nama}}</option>
                             @endforeach
                         </select>
+                        @error('provinsi')
+                            <small class="text-danger">
+                                <i>{{$message}}</i>
+                            </small>
+                        @enderror
                     </div>
 
                     <div class="col-md-3 mb-3">
                         <label for="" class="form-label">Kota/Kabupaten</label>
-                        <select required name="kota" id="kota" class="form-select">
+                        <select required name="kota" id="kota" class="form-select @error('kota') is-invalid @enderror">
                         </select>
+                        @error('kota')
+                            <small class="text-danger">
+                                <i>{{$message}}</i>
+                            </small>
+                        @enderror
                     </div>
                     <div class="col-md-3 mb-3">
                         <label for="" class="form-label">Kecamatan</label>
-                        <select required name="kecamatan" id="kecamatan" class="form-select">
+                        <select required name="kecamatan" id="kecamatan" class="form-select @error('kecamatan') is-invalid @enderror">
                         </select>
+                        @error('kecamatan')
+                            <small class="text-danger">
+                                <i>{{$message}}</i>
+                            </small>
+                        @enderror
                     </div>
                     <div class="col-md-3 mb-3">
                         <label for="" class="form-label">Desa</label>
-                        <select required name="desa" id="desa" class="form-select">
+                        <select required name="desa" id="desa" class="form-select @error('desa') is-invalid @enderror">
                         </select>
+
+                        @error('desa')
+                            <small class="text-danger">
+                                <i>{{$message}}</i>
+                            </small>
+                        @enderror
                     </div>
                     <div class="col-md-12">
                         <label for="" class="form-label">Alamat</label>
-                        <textarea name="alamat" class="form-control">{{old('alamat')}}</textarea>
+                        <textarea name="alamat" class="form-control @error('alamat') is-invalid @enderror">{{old('alamat')}}</textarea>
+                        @error('alamat')
+                            <small class="text-danger">
+                                <i>{{$message}}</i>
+                            </small>
+                        @enderror
                     </div>
                 </div>
                 {{-- alamat end --}}
 
                 <div class="mb-3">
                     <label for="" class="form-label">Dapil</label>
-                    <select name="dapil" id="" class="form-select">
+                    <select name="dapil" id="" class="form-select @error('dapil') is-invalid @enderror">
                         <option >Pilih Dapil</option>
                         @foreach ($dapil as $item)
                             <option value="{{$item->id}}" >{{$item->title}}</option>
                         @endforeach
                     </select>
+                    @error('dapil')
+                        <small class="text-danger">
+                            <i>{{$message}}</i>
+                        </small>
+                    @enderror
                 </div>
 
                 <div class="btn_submit btn btn-warning">Simpan Data</div>
