@@ -65,7 +65,8 @@
                     <tbody>
                         @forelse ($items as $dataItem)
                             <tr>
-                                <td>{{$dataItem->soal->title}}</td>
+                                <td>{{$dataItem->soal ? $dataItem->soal->title : "-"}}</td>
+
                                 <td>
                                     @if ($dataItem->yes_no)
                                         {{$dataItem->yes_no}}

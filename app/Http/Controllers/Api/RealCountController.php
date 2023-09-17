@@ -61,11 +61,17 @@ class RealCountController extends Controller
             'golput' => $request->golput,
             'created_at' => now(),
             'updated_at' => now(),
+            "user_id" => auth()->user()->id,
         ];
 
         DB::beginTransaction();
 
         try {
+
+            $cekInputanSaksi = DB::table("inputan_saksis")->where("user_id", auth()->user()->id)->first();
+            if($cekInputanSaksi){
+                return response()->json("Saksi sudah melakukan penginputan", 422);
+            }
 
             $inputsaksi = DB::table('inputan_saksis')->insertGetId($formInputSaksi);
 
@@ -80,6 +86,13 @@ class RealCountController extends Controller
                     'updated_at' => now(),
                 ]);
             }
+
+            DB::rollBack();
+
+            return response()->json([
+                'status' => 'success',
+                "message" => "berhasil input data saksi"
+            ]);
 
         } catch (Exception $th) {
             DB::rollBack();
