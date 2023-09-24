@@ -46,14 +46,14 @@
                 background-color: #f6f8fb !important;
             }
 
+            .navbar-expand-lg .nav-item.active {
+                background: linear-gradient(90deg, #0075FF -116.47%, rgba(0, 0, 0, 0.00) 101.1%);
+            }
             @media (min-width: 992px){
                 .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-item.active, .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-item:active {
                     background: rgb(75 75 75 / 24%);
                 }
 
-                .navbar-expand-lg .nav-item.active {
-                    background: linear-gradient(90deg, #0075FF -116.47%, rgba(0, 0, 0, 0.00) 101.1%);
-                }
                 .navbar-vertical.navbar-expand-lg{
                     overflow-y: auto;
                 }
@@ -706,6 +706,16 @@
                                         <i class="bi bi-bar-chart-line"></i>
                                     </span>
                                     <span class="nav-link-title">Grafik Hasil Kuisioner </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{request()->is('admin/wa*') ? 'active' : ''}}">
+                                <a class="nav-link" href="{{route('admin.wa.index')}}">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block"
+                                        >
+                                        <i class="bi bi-whatsapp"></i>
+                                    </span>
+                                    <span class="nav-link-title">Whatsapp Blast </span>
                                 </a>
                             </li>
                             <li class="nav-item">

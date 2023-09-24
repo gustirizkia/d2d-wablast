@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\SaksiController;
 use App\Http\Controllers\Admin\SkipLogikController;
 use App\Http\Controllers\Admin\StatistikController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\WaController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('admin')->group(function(){
@@ -72,6 +73,12 @@ Route::middleware('admin')->group(function(){
         Route::get('soal', [StatistikController::class, 'soal'])->name("soal");
     });
 
+    Route::resource('wa', WaController::class);
+
 });
+
+Route::post('getSoal', [WaController::class, "getSoal"])->name("getSoal");
+Route::post('getJawaban', [WaController::class, "getJawaban"])->name("getJawaban");
+
 Route::get("getKecamatanById/{kecamatan_id}", [BankSoalController::class, 'getKecamatanById'])->name("getKecamatanById");
 
