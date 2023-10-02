@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BankSoalController;
 use App\Http\Controllers\Admin\CalonController;
 use App\Http\Controllers\Admin\DapilController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DPTController;
 use App\Http\Controllers\Admin\KuisionerKecamatanController;
 use App\Http\Controllers\Admin\LokasiController;
 use App\Http\Controllers\Admin\QuickCountController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\Admin\SaksiController;
 use App\Http\Controllers\Admin\SkipLogikController;
 use App\Http\Controllers\Admin\StatistikController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\Wa\DeviceController;
 use App\Http\Controllers\WaController;
 use Illuminate\Support\Facades\Route;
 
@@ -73,7 +75,15 @@ Route::middleware('admin')->group(function(){
         Route::get('soal', [StatistikController::class, 'soal'])->name("soal");
     });
 
-    Route::resource('wa', WaController::class);
+    Route::prefix("wa")->name("wa.")->group(function(){
+        Route::resource('/', WaController::class);
+        Route::resource("device", DeviceController::class);
+    });
+
+    Route::prefix("dpt")->name("dpt.")->group(function(){
+        Route::get("/", [DPTController::class, 'index']);
+        Route::post("prosesImport", [DPTController::class, 'prosesImport'])->name("prosesImport");
+    });
 
 });
 

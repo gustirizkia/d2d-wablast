@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class MessageWa extends Model
 {
     use HasFactory;
+
+    public function msgHasJawaban(){
+        return $this->hasMany(MessageHasJawaban::class, "message_id", "id");
+    }
 }

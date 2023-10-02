@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\RealCountController;
 use App\Http\Controllers\AlamatController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\RelawanController;
 use App\Http\Controllers\Api\SurveyApiController;
 use App\Http\Controllers\Api\SurveyController;
 use App\Http\Controllers\QuizController;
@@ -29,6 +30,9 @@ Route::get("all-quiz/{id_target}", [QuizController::class, 'getAllSoal']);
 Route::post("saveOne", [QuizController::class, 'saveOne']);
 Route::get("detailKecamatan/{kota_id}", [SurveyApiController::class, "detailKecamatan"]);
 Route::get("listDesa", [AlamatController::class, "listDesa"]);
+Route::get("allProvinsi", [AlamatController::class, "allProvinsi"]);
+Route::get("listKota", [AlamatController::class, "listKota"]);
+Route::get("listKecamatan", [AlamatController::class, "listKecamatan"]);
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('survey-index', [SurveyApiController::class, 'index']);
@@ -39,4 +43,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('user', [AuthController::class, 'getUser']);
     Route::get('real-count-get-data', [RealCountController::class, 'getData']);
     Route::post('real-count/inputSaksi', [RealCountController::class, 'inputSaksi']);
+    Route::post("inputRelawan", [RelawanController::class, "store"]);
 });
+
+Route::get("wa-blast", [SurveyApiController::class, "waBlast"]);

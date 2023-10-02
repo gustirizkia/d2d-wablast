@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MessageHasJawaban;
+use App\Models\MessageWa;
 use App\Models\Soal;
 use Exception;
 use Illuminate\Http\Request;
@@ -14,7 +16,8 @@ class WaController extends Controller
      */
     public function index()
     {
-        $message = DB::table("message_was")->get();
+        $message = MessageWa::withCount("msgHasJawaban")->paginate(12);
+
         return view('pages.wa.index', [
             'message' => $message
         ]);
@@ -25,7 +28,8 @@ class WaController extends Controller
      */
     public function create()
     {
-        $soal = Soal::orderBy('title')->get();
+        $messageHasJawaban = MessageHasJawaban::get();
+        $soal = Soal::orderBy('title')->whereNotIn("id", $messageHasJawaban->pluck("soal_id"))->get();
         return view("pages.wa.create", [
             'soals' => $soal
         ]);
@@ -57,10 +61,11 @@ class WaController extends Controller
                 foreach($request->jawaban_id as $jawaban){
 
                     $pilihan = DB::table("pilihan_gandas")->find($jawaban);
+
                     $messageHasJawaban = DB::table("message_has_jawabans")->insertGetId([
                         'message_id' => $insertMessage,
                         'pilihan_id' => $jawaban,
-                        "soal_id" => $pilihan->id,
+                        "soal_id" => $pilihan->soal_id,
                         'created_at' => now()
                     ]);
                 }
@@ -84,7 +89,7 @@ class WaController extends Controller
             return redirect()->route("admin.wa.index")->with("success", "Berhasil tambah data");
         } catch (Exception $th) {
             DB::rollBack();
-            dd($th->getMessage());
+
             return redirect()->back()->with("error", "Gagal tambah data");
         }
 
@@ -103,7 +108,17 @@ class WaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $message = MessageWa::findOrFail($id);
+        $messageHasJawaban = MessageHasJawaban::where("message_id", $id)->get();
+        $soalActive = Soal::whereIn("id", $messageHasJawaban->pluck("soal_id"))->orderBy("title")->get();
+        $soal = Soal::orderBy('title')->whereNotIn("id", $messageHasJawaban->pluck("soal_id"))->get();
+
+        return view("pages.wa.edit", [
+            'soals' => $soal,
+            'message' => $message,
+            'messageHasJawaban' => $messageHasJawaban,
+            "soalActive" => $soalActive
+        ]);
     }
 
     /**
@@ -119,7 +134,12 @@ class WaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $message = MessageWa::findOrFail($id);
+        $detail = MessageHasJawaban::where("message_id", $id)->delete();
+
+        $message->delete();
+
+        return redirect()->back()->with("success", "Berhasil hapus data");
     }
 
     public function getSoal(Request $request)

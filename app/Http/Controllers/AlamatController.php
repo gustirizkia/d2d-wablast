@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Provinsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class AlamatController extends Controller
 {
+    public function allProvinsi(Request $request)
+    {
+        $data = Provinsi::orderBy("nama")->get();
+
+        return response()->json($data);
+    }
+
     public function listKota(Request $request)
     {
         $validasi = Validator::make($request->all(),[

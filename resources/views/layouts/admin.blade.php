@@ -570,16 +570,7 @@
                             </li>
 
 
-                            {{-- <li class="nav-item {{request()->is('admin/calon*') ? 'active' : ''}}">
-                                <a class="nav-link" href="{{route('admin.calon-legislatif.index')}}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"
-                                        >
-                                        <i class="bi bi-people"></i>
-                                    </span>
-                                    <span class="nav-link-title"> Calon Legislatif </span>
-                                </a>
-                            </li> --}}
+
                             <li class="nav-item {{request()->is('admin/lokasi*') ? 'active' : ''}}">
                                 <a class="nav-link" href="{{route('admin.lokasi.index')}}">
                                     <span
@@ -588,6 +579,17 @@
                                         <i class="bi bi-globe-americas"></i>
                                     </span>
                                     <span class="nav-link-title"> Lokasi Survey </span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item {{request()->is('admin/dpt*') ? 'active' : ''}}">
+                                <a class="nav-link" href="{{route('admin.dpt.')}}">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block"
+                                        >
+                                       <i class="bi bi-person-vcard"></i>
+                                    </span>
+                                    <span class="nav-link-title"> DPT </span>
                                 </a>
                             </li>
 
@@ -677,12 +679,6 @@
                                             >
                                                 Kuisioner Kecamatan
                                             </a>
-                                            {{-- <a
-                                                class="dropdown-item {{request()->is("admin/data/report*") ? "active" : ''}}"
-                                                href="{{ route('admin.data.report') }}"
-                                            >
-                                                Report Grafik
-                                            </a> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -708,16 +704,40 @@
                                     <span class="nav-link-title">Grafik Hasil Kuisioner </span>
                                 </a>
                             </li>
-                            <li class="nav-item {{request()->is('admin/wa*') ? 'active' : ''}}">
-                                <a class="nav-link" href="{{route('admin.wa.index')}}">
+
+
+                            {{-- Wa --}}
+                            <li class="nav-item dropdown {{request()->is("admin/wa*") ? "active" : ''}}">
+                                <a
+                                    class="nav-link dropdown-toggle"
+                                    href="#navbar-extra"
+                                    data-bs-toggle="dropdown"
+                                    data-bs-auto-close="false"
+                                    role="button"
+                                    aria-expanded="false"
+                                >
                                     <span
                                         class="nav-link-icon d-md-none d-lg-inline-block"
-                                        >
+                                        ><!-- Download SVG icon from http://tabler-icons.io/i/star -->
                                         <i class="bi bi-whatsapp"></i>
                                     </span>
-                                    <span class="nav-link-title">Whatsapp Blast </span>
+                                    <span class="nav-link-title"> Whatsapp Blast </span>
                                 </a>
+                                <div class="dropdown-menu {{request()->is("admin/wa*") ? "show" : ''}}">
+                                    <div class="dropdown-menu-columns">
+                                        <div class="dropdown-menu-column">
+                                            <a
+                                                class="dropdown-item {{request()->is("admin/wa/device*") ? "active" : ''}}"
+                                                href="{{ route('admin.wa.device.index') }}"
+                                            >
+                                                Nomor
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </li>
+                            {{-- Wa end --}}
+
                             <li class="nav-item">
                                 <a class="nav-link" href="/logoutData">
                                     <span

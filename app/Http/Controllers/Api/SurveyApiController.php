@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendWaJob;
 use App\Models\DataTarget;
 use App\Models\Kota;
 use App\Models\UserHasKota;
@@ -14,6 +15,13 @@ use Illuminate\Support\Facades\Validator;
 
 class SurveyApiController extends Controller
 {
+    public function waBlast(){
+        dispatch(new SendWaJob(11, 1));
+
+
+        return response()->json("OK Berhasil");
+    }
+
     public function index(Request $request)
     {
         $data = DataTarget::withCount('pilihanTarget')->where("user_survey_id", auth()->user()->id)->orderBy('id', 'desc')->get();
